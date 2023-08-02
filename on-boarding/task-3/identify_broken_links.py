@@ -3,15 +3,16 @@ from bs4 import BeautifulSoup
 from urllib.parse import urljoin
 
 
-def is_alive(url):
+
+def is_alive(url: str) -> bool:
     try:
         return 100 <= requests.get(url).status_code <= 399
     except:
         return False
 
 
-def get_broken_urls(site):
-    response = requests.get(site)
+def get_broken_urls(url: str) -> list[str]:
+    response = requests.get(url)
     parsed = BeautifulSoup(response.text, 'lxml')
 
     a_tags = parsed.find_all('a', href=True)
@@ -19,7 +20,7 @@ def get_broken_urls(site):
     links = set()
 
     for a_tag in a_tags:
-        absolute_url = urljoin(site, a_tag['href'])
+        absolute_url = urljoin(url, a_tag['href'])
 
         if not is_alive(absolute_url):
             links.add(absolute_url)
