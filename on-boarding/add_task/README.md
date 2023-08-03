@@ -14,4 +14,4 @@ You are tasked with implementing a user interface in Flutter that replicates the
 
 ## Screenshot
 
-![Screenshot](https://github.com/meraf00/2023-project-phase-mobile-tasks/blob/main/on-boarding/add_task/screenshot/screenshot.png?raw=true)
+![Screenshot](https://github.com/meraf00/2023-project-phase-mobile-tasks/blob/main/on-boarding/add_task/screenshot/add_task.png?raw=true)

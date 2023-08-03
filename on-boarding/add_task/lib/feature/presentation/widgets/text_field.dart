@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class MyTextField extends StatelessWidget {
+class CustomTextField extends StatelessWidget {
   final String label;
   final TextInputType? keyboardType;
   final int? minLines;
   final int? maxLines;
   final int? maxLength;
 
-  const MyTextField(
+  const CustomTextField(
       {Key? key,
       required this.label,
       this.keyboardType,
@@ -30,36 +30,33 @@ class MyTextField extends StatelessWidget {
         ),
         const SizedBox(height: 10),
         Container(
-            decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.background,
-              borderRadius: BorderRadius.circular(16),
-              boxShadow: [
-                BoxShadow(
-                  color: Theme.of(context).colorScheme.surface.withOpacity(.5),
-                  blurRadius: 10,
-                  offset: const Offset(0, 5),
-                ),
-              ],
+          decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.background,
+            borderRadius: BorderRadius.circular(16),
+            boxShadow: [
+              BoxShadow(
+                color: Theme.of(context).colorScheme.surface.withOpacity(.5),
+                blurRadius: 10,
+                offset: const Offset(0, 5),
+              ),
+            ],
+          ),
+          child: TextField(
+            keyboardType: keyboardType,
+            minLines: minLines,
+            maxLines: maxLines,
+            maxLength: maxLength,
+            style: Theme.of(context)
+                .textTheme
+                .bodyMedium
+                ?.copyWith(fontWeight: FontWeight.w600),
+            decoration: const InputDecoration(
+              border: InputBorder.none,
+              contentPadding:
+                  EdgeInsets.symmetric(horizontal: 20, vertical: 15),
             ),
-            child: Stack(
-              children: [
-                TextField(
-                  keyboardType: keyboardType,
-                  minLines: minLines,
-                  maxLines: maxLines,
-                  maxLength: maxLength,
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyMedium
-                      ?.copyWith(fontWeight: FontWeight.w600),
-                  decoration: const InputDecoration(
-                    border: InputBorder.none,
-                    contentPadding:
-                        EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-                  ),
-                ),
-              ],
-            )),
+          ),
+        ),
       ],
     );
   }

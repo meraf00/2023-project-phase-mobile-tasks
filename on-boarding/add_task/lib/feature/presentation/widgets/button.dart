@@ -5,14 +5,16 @@ class Button extends StatelessWidget {
   final VoidCallback onPressed;
   final Color? color;
   final Color? textColor;
+  final BorderRadius? borderRadius;
 
-  const Button({
-    Key? key,
-    required this.label,
-    required this.onPressed,
-    this.color,
-    this.textColor,
-  }) : super(key: key);
+  const Button(
+      {Key? key,
+      required this.label,
+      required this.onPressed,
+      this.color,
+      this.textColor,
+      this.borderRadius})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +23,7 @@ class Button extends StatelessWidget {
       style: ElevatedButton.styleFrom(
         backgroundColor: color ?? Theme.of(context).colorScheme.primary,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(9999),
+          borderRadius: borderRadius ?? BorderRadius.circular(5),
         ),
         padding: const EdgeInsets.all(15),
       ),

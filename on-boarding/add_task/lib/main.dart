@@ -2,17 +2,16 @@ import 'package:flutter/material.dart';
 import './feature/presentation/screens/add_task.dart';
 
 void main() {
-  runApp(const Home());
+  runApp(const App());
 }
 
-class Home extends StatelessWidget {
-  const Home({Key? key}) : super(key: key);
+class App extends StatelessWidget {
+  const App({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Todo App',
-      home: const AddTask(),
       theme: ThemeData(
         colorScheme: const ColorScheme(
           brightness: Brightness.light,
@@ -30,15 +29,7 @@ class Home extends StatelessWidget {
         fontFamily: 'Poppins',
         textTheme: const TextTheme(
           titleSmall: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.w500,
-          ),
-          titleMedium: TextStyle(
-            fontSize: 28,
-            fontWeight: FontWeight.w500,
-          ),
-          titleLarge: TextStyle(
-            fontSize: 36,
+            fontSize: 16,
             fontWeight: FontWeight.w500,
           ),
           bodySmall: TextStyle(
@@ -49,13 +40,10 @@ class Home extends StatelessWidget {
             fontSize: 16,
             fontWeight: FontWeight.w400,
           ),
-          bodyLarge: TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.w400,
-          ),
         ),
       ),
       debugShowCheckedModeBanner: false,
+      home: const AddTaskScreen(),
     );
   }
 }
