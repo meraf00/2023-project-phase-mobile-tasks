@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:todo_app/todo/data/repositories/task_repository.dart';
+import '../../../core/util.dart';
+import '../../data/repositories/task_repository.dart';
 import '../../domain/entities/task.dart';
 import '../screens/add_task.dart';
 import '../screens/task_detail.dart';
 import '../widgets/button.dart';
 import '../widgets/task_card.dart';
-import 'dart:developer';
 
 class TaskListScreen extends StatefulWidget {
+  static const routeName = "tasks";
+
   const TaskListScreen({Key? key}) : super(key: key);
 
   @override
@@ -79,18 +81,17 @@ class _TaskListScreenState extends State<TaskListScreen> {
                     padding: const EdgeInsets.symmetric(vertical: 8),
                     child: GestureDetector(
                       onTap: () async {
-                        await Navigator.push(
+                        await Navigator.pushNamed(
                           context,
-                          MaterialPageRoute(
-                            builder: (context) => TaskDetailScreen(task: task),
-                          ),
+                          TaskDetailScreen.routeName,
+                          arguments: task,
                         );
 
                         loadTasks();
                       },
                       child: TaskCard(
                         title: task.title,
-                        deadline: task.dueDate.toIso8601String().split("T")[0],
+                        deadline: dateTimeToString(task.dueDate),
                         completed: task.completed,
                       ),
                     ),
@@ -105,12 +106,7 @@ class _TaskListScreenState extends State<TaskListScreen> {
               child: Button(
                 label: "Create task",
                 onPressed: () async {
-                  await Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => AddTaskScreen(),
-                    ),
-                  );
+                  await Navigator.pushNamed(context, AddTaskScreen.routeName);
 
                   await loadTasks();
                 },

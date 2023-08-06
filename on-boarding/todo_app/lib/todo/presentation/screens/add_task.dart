@@ -6,6 +6,8 @@ import '../widgets/date_field.dart';
 import '../widgets/text_field.dart';
 
 class AddTaskScreen extends StatelessWidget {
+  static const routeName = '/add-task';
+
   final _taskTitleController = TextEditingController();
   final _taskDescriptionController = TextEditingController();
   final _taskDueDateController = TextEditingController();
@@ -95,7 +97,7 @@ class AddTaskScreen extends StatelessWidget {
             ),
             const SizedBox(height: 30),
             Button(
-              label: "Add task",
+              label: task != null ? "Update task" : "Add task",
               onPressed: () =>
                   task != null ? _updateTask(context) : _addTask(context),
               borderRadius: BorderRadius.circular(9999),

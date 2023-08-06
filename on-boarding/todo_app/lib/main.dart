@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:todo_app/todo/presentation/screens/add_task.dart';
+import 'todo/presentation/screens/task_detail.dart';
+import 'todo/presentation/screens/task_list.dart';
+import 'todo/domain/entities/task.dart';
 import 'todo/presentation/screens/onboarding.dart';
 
 void main() {
@@ -56,6 +60,46 @@ class App extends StatelessWidget {
       ),
       debugShowCheckedModeBanner: false,
       home: const OnboardingScreen(),
+      onGenerateRoute: (settings) {
+        //
+        // onboarding
+        if (settings.name == OnboardingScreen.routeName) {
+          return MaterialPageRoute(
+            builder: (context) => const OnboardingScreen(),
+          );
+        }
+        //
+        // task list screen
+        else if (settings.name == TaskListScreen.routeName) {
+          return MaterialPageRoute(
+            builder: (context) => const TaskListScreen(),
+          );
+        }
+        //
+        // task detail screen
+        else if (settings.name == TaskDetailScreen.routeName) {
+          final task = settings.arguments as Task;
+
+          return MaterialPageRoute(
+            builder: (context) => TaskDetailScreen(task: task),
+          );
+        }
+        //
+        // task create/edit screen
+        else if (settings.name == AddTaskScreen.routeName) {
+          if (settings.arguments == null) {
+            return MaterialPageRoute(builder: (context) => AddTaskScreen());
+          }
+
+          final task = settings.arguments as Task;
+
+          return MaterialPageRoute(
+            builder: (context) => AddTaskScreen(task: task),
+          );
+        }
+
+        assert(false, 'Need to implement ${settings.name}');
+      },
     );
   }
 }
