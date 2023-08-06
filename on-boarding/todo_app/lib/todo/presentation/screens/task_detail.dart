@@ -1,24 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:todo_app/core/util.dart';
 
 import '../../data/repositories/task_repository.dart';
 import '../../domain/entities/task.dart';
 import 'add_task.dart';
 
 class TaskDetailScreen extends StatefulWidget {
-  final List<String> _months = const [
-    'January',
-    'February',
-    'March',
-    'April',
-    'May',
-    'June',
-    'July',
-    'August',
-    'September',
-    'October',
-    'November',
-    'December'
-  ];
+  static const routeName = "/task-detail";
+
   final Task task;
 
   const TaskDetailScreen({Key? key, required this.task}) : super(key: key);
@@ -45,12 +34,9 @@ class _TaskDetailScreenState extends State<TaskDetailScreen> {
   }
 
   void _updateTask(BuildContext context) async {
-    final updatedTask = await Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => AddTaskScreen(task: task),
-      ),
-    ) as Task;
+    final updatedTask = await Navigator.pushNamed(
+        context, AddTaskScreen.routeName,
+        arguments: task) as Task;
 
     setState(() {
       task = updatedTask;
@@ -192,7 +178,7 @@ class _TaskDetailScreenState extends State<TaskDetailScreen> {
               child: Padding(
                 padding: const EdgeInsets.all(10),
                 child: Text(
-                  "${widget._months[task.dueDate.month - 1]} ${task.dueDate.day}, ${task.dueDate.year}",
+                  dateTimeToString(task.dueDate),
                   style: Theme.of(context).textTheme.bodyMedium,
                 ),
               ),

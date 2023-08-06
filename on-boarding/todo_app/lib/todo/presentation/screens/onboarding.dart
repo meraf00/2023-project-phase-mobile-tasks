@@ -3,6 +3,8 @@ import '../screens/task_list.dart';
 import '../widgets/button.dart';
 
 class OnboardingScreen extends StatelessWidget {
+  static const routeName = '/';
+
   const OnboardingScreen({Key? key}) : super(key: key);
 
   @override
@@ -23,11 +25,7 @@ class OnboardingScreen extends StatelessWidget {
                 label: "Get started",
                 color: Theme.of(context).colorScheme.secondary,
                 onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const TaskListScreen()),
-                  );
+                  Navigator.pushNamed(context, TaskListScreen.routeName);
                 },
               ),
             ),
