@@ -12,8 +12,10 @@ class AddTaskScreen extends StatelessWidget {
   final _taskDescriptionController = TextEditingController();
   final _taskDueDateController = TextEditingController();
   final Task? task;
+  final TaskRepository taskRepository;
 
-  AddTaskScreen({Key? key, this.task}) : super(key: key) {
+  AddTaskScreen({Key? key, this.task, required this.taskRepository})
+      : super(key: key) {
     if (task != null) {
       _taskTitleController.text = task!.title;
       _taskDescriptionController.text = task!.description;
@@ -21,15 +23,34 @@ class AddTaskScreen extends StatelessWidget {
     }
   }
 
+  bool isValid() {
+    if (_taskTitleController.text.isNotEmpty &&
+        _taskDescriptionController.text.isNotEmpty &&
+        _taskDueDateController.text.isNotEmpty) {
+      return DateTime.tryParse(_taskDueDateController.text) != null;
+    }
+
+    return false;
+  }
+
   void _updateTask(BuildContext context) async {
+    if (!isValid()) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(DateTime.tryParse(_taskDueDateController.text) == null
+              ? "Invalid date format"
+              : "All fields are required")));
+
+      return;
+    }
+
     final updatedTask = Task(
       id: task!.id,
       title: _taskTitleController.text,
       description: _taskDescriptionController.text,
-      dueDate: DateTime.tryParse(_taskDueDateController.text) ?? DateTime.now(),
+      dueDate: DateTime.parse(_taskDueDateController.text),
       completed: task!.completed,
     );
-    await TaskRepository().updateTask(updatedTask);
+    await taskRepository.updateTask(updatedTask);
 
     if (context.mounted) {
       Navigator.pop(context, updatedTask);
@@ -37,13 +58,22 @@ class AddTaskScreen extends StatelessWidget {
   }
 
   void _addTask(BuildContext context) async {
+    if (!isValid()) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(DateTime.tryParse(_taskDueDateController.text) == null
+              ? "Invalid date format"
+              : "All fields are required")));
+
+      return;
+    }
+
     final task = Task(
       title: _taskTitleController.text,
       description: _taskDescriptionController.text,
-      dueDate: DateTime.tryParse(_taskDueDateController.text) ?? DateTime.now(),
+      dueDate: DateTime.parse(_taskDueDateController.text),
       completed: false,
     );
-    await TaskRepository().addTask(task);
+    await taskRepository.addTask(task);
 
     if (context.mounted) {
       Navigator.pop(context);

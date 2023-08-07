@@ -6,7 +6,7 @@ class TaskRepository implements ITaskRepository {
   final TaskStore _taskStore;
 
   TaskRepository([TaskStore? taskStore])
-      : _taskStore = taskStore ?? TaskStore.instance;
+      : _taskStore = taskStore ?? TaskStore();
 
   @override
   Future<List<Task>> getTasks() async {

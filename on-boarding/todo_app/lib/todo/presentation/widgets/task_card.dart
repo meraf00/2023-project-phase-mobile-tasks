@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 
+import '../../../core/util.dart';
+
 class TaskCard extends StatelessWidget {
   final String title;
-  final String deadline;
+  final DateTime deadline;
   final bool completed;
 
   const TaskCard(
@@ -45,7 +47,7 @@ class TaskCard extends StatelessWidget {
             Row(
               children: [
                 Text(
-                  deadline,
+                  dateTimeToString(deadline),
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
                         overflow: TextOverflow.ellipsis,
                       ),

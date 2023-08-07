@@ -4,12 +4,6 @@ class TaskStore {
   final List<Task> _tasks = [];
   var _id = 0;
 
-  static TaskStore? _instance;
-
-  static get instance => _instance ??= TaskStore._();
-
-  TaskStore._();
-
   Future<Task> getTask(int id) async {
     return _tasks.firstWhere((element) => element.id == id);
   }
