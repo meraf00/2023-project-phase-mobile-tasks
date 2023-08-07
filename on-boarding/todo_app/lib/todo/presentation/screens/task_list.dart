@@ -9,8 +9,10 @@ import '../widgets/task_card.dart';
 
 class TaskListScreen extends StatefulWidget {
   static const routeName = "tasks";
+  final TaskRepository taskRepository;
 
-  const TaskListScreen({Key? key}) : super(key: key);
+  const TaskListScreen({Key? key, required this.taskRepository})
+      : super(key: key);
 
   @override
   State<TaskListScreen> createState() => _TaskListScreenState();
@@ -19,8 +21,14 @@ class TaskListScreen extends StatefulWidget {
 class _TaskListScreenState extends State<TaskListScreen> {
   var _tasks = <Task>[];
 
+  @override
+  void initState() {
+    loadTasks();
+    super.initState();
+  }
+
   Future<void> loadTasks() async {
-    final allTasks = await TaskRepository().getTasks();
+    final allTasks = await widget.taskRepository.getTasks();
 
     setState(() {
       _tasks = allTasks;
@@ -91,7 +99,7 @@ class _TaskListScreenState extends State<TaskListScreen> {
                       },
                       child: TaskCard(
                         title: task.title,
-                        deadline: dateTimeToString(task.dueDate),
+                        deadline: task.dueDate,
                         completed: task.completed,
                       ),
                     ),

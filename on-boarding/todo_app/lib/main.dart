@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:todo_app/todo/data/repositories/task_repository.dart';
 import 'package:todo_app/todo/presentation/screens/add_task.dart';
 import 'todo/presentation/screens/task_detail.dart';
 import 'todo/presentation/screens/task_list.dart';
@@ -6,11 +7,15 @@ import 'todo/domain/entities/task.dart';
 import 'todo/presentation/screens/onboarding.dart';
 
 void main() {
-  runApp(const App());
+  final repository = TaskRepository();
+
+  runApp(App(taskRepository: repository));
 }
 
 class App extends StatelessWidget {
-  const App({Key? key}) : super(key: key);
+  final TaskRepository taskRepository;
+
+  const App({Key? key, required this.taskRepository}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -72,7 +77,8 @@ class App extends StatelessWidget {
         // task list screen
         else if (settings.name == TaskListScreen.routeName) {
           return MaterialPageRoute(
-            builder: (context) => const TaskListScreen(),
+            builder: (context) =>
+                TaskListScreen(taskRepository: taskRepository),
           );
         }
         //
@@ -81,20 +87,24 @@ class App extends StatelessWidget {
           final task = settings.arguments as Task;
 
           return MaterialPageRoute(
-            builder: (context) => TaskDetailScreen(task: task),
+            builder: (context) =>
+                TaskDetailScreen(task: task, taskRepository: taskRepository),
           );
         }
         //
         // task create/edit screen
         else if (settings.name == AddTaskScreen.routeName) {
           if (settings.arguments == null) {
-            return MaterialPageRoute(builder: (context) => AddTaskScreen());
+            return MaterialPageRoute(
+                builder: (context) =>
+                    AddTaskScreen(taskRepository: taskRepository));
           }
 
           final task = settings.arguments as Task;
 
           return MaterialPageRoute(
-            builder: (context) => AddTaskScreen(task: task),
+            builder: (context) =>
+                AddTaskScreen(task: task, taskRepository: taskRepository),
           );
         }
 

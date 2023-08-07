@@ -9,8 +9,11 @@ class TaskDetailScreen extends StatefulWidget {
   static const routeName = "/task-detail";
 
   final Task task;
+  final TaskRepository taskRepository;
 
-  const TaskDetailScreen({Key? key, required this.task}) : super(key: key);
+  const TaskDetailScreen(
+      {Key? key, required this.task, required this.taskRepository})
+      : super(key: key);
 
   @override
   State<TaskDetailScreen> createState() => _TaskDetailScreenState();
@@ -21,12 +24,14 @@ class _TaskDetailScreenState extends State<TaskDetailScreen> {
 
   @override
   void initState() {
-    task = widget.task;
+    setState(() {
+      task = widget.task;
+    });
     super.initState();
   }
 
   void _deleteTask(BuildContext context) async {
-    await TaskRepository().deleteTask(task.id!);
+    await widget.taskRepository.deleteTask(task.id!);
 
     if (context.mounted) {
       Navigator.pop(context);
@@ -51,7 +56,7 @@ class _TaskDetailScreenState extends State<TaskDetailScreen> {
       dueDate: task.dueDate,
       completed: !task.completed,
     );
-    await TaskRepository().updateTask(updatedTask);
+    await widget.taskRepository.updateTask(updatedTask);
 
     if (context.mounted) {
       Navigator.pop(context);
