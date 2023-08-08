@@ -75,34 +75,34 @@ class MockTaskRepository extends _i1.Mock implements _i3.TaskRepository {
         )),
       ) as _i4.Future<_i2.Either<_i5.Failure, _i6.Task>>);
   @override
-  _i4.Future<_i2.Either<_i5.Failure, void>> createTask(_i6.Task? todo) =>
+  _i4.Future<_i2.Either<_i5.Failure, void>> createTask(_i6.Task? task) =>
       (super.noSuchMethod(
         Invocation.method(
           #createTask,
-          [todo],
+          [task],
         ),
         returnValue: _i4.Future<_i2.Either<_i5.Failure, void>>.value(
             _FakeEither_0<_i5.Failure, void>(
           this,
           Invocation.method(
             #createTask,
-            [todo],
+            [task],
           ),
         )),
       ) as _i4.Future<_i2.Either<_i5.Failure, void>>);
   @override
-  _i4.Future<_i2.Either<_i5.Failure, void>> updateTask(_i6.Task? todo) =>
+  _i4.Future<_i2.Either<_i5.Failure, void>> updateTask(_i6.Task? task) =>
       (super.noSuchMethod(
         Invocation.method(
           #updateTask,
-          [todo],
+          [task],
         ),
         returnValue: _i4.Future<_i2.Either<_i5.Failure, void>>.value(
             _FakeEither_0<_i5.Failure, void>(
           this,
           Invocation.method(
             #updateTask,
-            [todo],
+            [task],
           ),
         )),
       ) as _i4.Future<_i2.Either<_i5.Failure, void>>);

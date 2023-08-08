@@ -31,12 +31,11 @@ void main() {
     when(mockTaskRepository.getTask(tTaskId))
         .thenAnswer((_) async => Right(tTask));
 
-    final result = await usecase(Params(id: tTaskId));
+    final result = await usecase(const Params(id: tTaskId));
 
     expect(result, Right(tTask));
 
     verify(mockTaskRepository.getTask(tTaskId));
     verifyNoMoreInteractions(mockTaskRepository);
-
   });
 }

@@ -5,14 +5,16 @@ class Task extends Equatable {
   final String title;
   final String description;
   final DateTime dueDate;
+  final bool completed;
 
   const Task({
     required this.id,
     required this.title,
     required this.description,
     required this.dueDate,
+    this.completed = false,
   });
 
   @override
-  List<Object?> get props => [id, title, description, dueDate];
+  List<Object?> get props => [id, title, description, dueDate, completed];
 }
