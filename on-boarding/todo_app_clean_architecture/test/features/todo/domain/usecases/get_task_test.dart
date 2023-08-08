@@ -1,41 +1,42 @@
 import 'package:dartz/dartz.dart' hide Task;
+import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:flutter_test/flutter_test.dart';
-import 'package:todo_app_clean_architecture/core/error/failures.dart';
 import 'package:todo_app_clean_architecture/features/todo/domain/entities/task.dart';
 import 'package:todo_app_clean_architecture/features/todo/domain/repositories/task_repository.dart';
-import 'package:todo_app_clean_architecture/features/todo/domain/usecases/create_task.dart';
+import 'package:todo_app_clean_architecture/features/todo/domain/usecases/get_task.dart';
 
-import 'create_task_test.mocks.dart';
+import 'get_task_test.mocks.dart';
 
 @GenerateMocks([TaskRepository])
 void main() {
-  late CreateTask usecase;
   late MockTaskRepository mockTaskRepository;
+  late GetTask usecase;
 
   setUp(() {
     mockTaskRepository = MockTaskRepository();
-    usecase = CreateTask(mockTaskRepository);
+    usecase = GetTask(mockTaskRepository);
   });
 
+  const tTaskId = 1;
+
   final tTask = Task(
-    id: -1,
+    id: tTaskId,
     title: 'Test Task',
     description: 'Test Description',
     dueDate: DateTime.now(),
   );
 
-  test('should create new task and add it to repository', () async {
-    when(mockTaskRepository.createTask(tTask))
-        .thenAnswer((_) async => const Right(null));
+  test('should get task from  repository', () async {
+    when(mockTaskRepository.getTask(tTaskId))
+        .thenAnswer((_) async => Right(tTask));
 
-    final result = await usecase(Params(task: tTask));
+    final result = await usecase(Params(id: tTaskId));
 
-    expect(result, const Right(null));
+    expect(result, Right(tTask));
 
-    verify(mockTaskRepository.createTask(tTask));
-
+    verify(mockTaskRepository.getTask(tTaskId));
     verifyNoMoreInteractions(mockTaskRepository);
+
   });
 }

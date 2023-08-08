@@ -3,25 +3,24 @@ import 'package:equatable/equatable.dart';
 
 import '../../../../core/error/failures.dart';
 import '../../../../core/usecases/usecase.dart';
-import '../entities/task.dart';
-import '../repositories/task_repository.dart';
+import '../../domain/repositories/task_repository.dart';
 
-class CreateTask extends UseCase<void, Params> {
+class DeleteTask extends UseCase<void, Params> {
   final TaskRepository _taskRepository;
 
-  CreateTask(this._taskRepository);
+  DeleteTask(this._taskRepository);
 
   @override
   Future<Either<Failure, void>> call(Params params) async {
-    return await _taskRepository.createTask(params.task);
+    return await _taskRepository.deleteTask(params.id);
   }
 }
 
 class Params extends Equatable {
-  final Task task;
+  final int id;
 
-  const Params({required this.task});
+  const Params({required this.id});
 
   @override
-  List<Object?> get props => [task];
+  List<Object?> get props => [id];
 }
