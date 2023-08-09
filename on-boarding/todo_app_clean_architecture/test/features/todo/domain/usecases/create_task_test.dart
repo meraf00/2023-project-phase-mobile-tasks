@@ -27,11 +27,11 @@ void main() {
 
   test('should create new task and add it to repository', () async {
     when(mockTaskRepository.createTask(tTask))
-        .thenAnswer((_) async => const Right(null));
+        .thenAnswer((_) async => Right(tTask));
 
-    final result = await usecase(Params(task: tTask));
+    final result = await usecase(CreateParams(task: tTask));
 
-    expect(result, const Right(null));
+    expect(result, Right(tTask));
 
     verify(mockTaskRepository.createTask(tTask));
 

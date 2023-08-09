@@ -75,21 +75,21 @@ class MockTaskRepository extends _i1.Mock implements _i3.TaskRepository {
         )),
       ) as _i4.Future<_i2.Either<_i5.Failure, _i6.Task>>);
   @override
-  _i4.Future<_i2.Either<_i5.Failure, void>> createTask(_i6.Task? task) =>
+  _i4.Future<_i2.Either<_i5.Failure, _i6.Task>> createTask(_i6.Task? task) =>
       (super.noSuchMethod(
         Invocation.method(
           #createTask,
           [task],
         ),
-        returnValue: _i4.Future<_i2.Either<_i5.Failure, void>>.value(
-            _FakeEither_0<_i5.Failure, void>(
+        returnValue: _i4.Future<_i2.Either<_i5.Failure, _i6.Task>>.value(
+            _FakeEither_0<_i5.Failure, _i6.Task>(
           this,
           Invocation.method(
             #createTask,
             [task],
           ),
         )),
-      ) as _i4.Future<_i2.Either<_i5.Failure, void>>);
+      ) as _i4.Future<_i2.Either<_i5.Failure, _i6.Task>>);
   @override
   _i4.Future<_i2.Either<_i5.Failure, void>> updateTask(_i6.Task? task) =>
       (super.noSuchMethod(
@@ -107,19 +107,19 @@ class MockTaskRepository extends _i1.Mock implements _i3.TaskRepository {
         )),
       ) as _i4.Future<_i2.Either<_i5.Failure, void>>);
   @override
-  _i4.Future<_i2.Either<_i5.Failure, void>> deleteTask(int? id) =>
+  _i4.Future<_i2.Either<_i5.Failure, _i6.Task>> deleteTask(int? id) =>
       (super.noSuchMethod(
         Invocation.method(
           #deleteTask,
           [id],
         ),
-        returnValue: _i4.Future<_i2.Either<_i5.Failure, void>>.value(
-            _FakeEither_0<_i5.Failure, void>(
+        returnValue: _i4.Future<_i2.Either<_i5.Failure, _i6.Task>>.value(
+            _FakeEither_0<_i5.Failure, _i6.Task>(
           this,
           Invocation.method(
             #deleteTask,
             [id],
           ),
         )),
-      ) as _i4.Future<_i2.Either<_i5.Failure, void>>);
+      ) as _i4.Future<_i2.Either<_i5.Failure, _i6.Task>>);
 }

@@ -6,21 +6,21 @@ import '../../../../core/usecases/usecase.dart';
 import '../entities/task.dart';
 import '../repositories/task_repository.dart';
 
-class UpdateTask extends UseCase<void, Params> {
+class UpdateTask extends UseCase<void, UpdateParams> {
   final TaskRepository _taskRepository;
 
   UpdateTask(this._taskRepository);
 
   @override
-  Future<Either<Failure, void>> call(Params params) async {
+  Future<Either<Failure, void>> call(UpdateParams params) async {
     return await _taskRepository.updateTask(params.task);
   }
 }
 
-class Params extends Equatable {
+class UpdateParams extends Equatable {
   final Task task;
 
-  const Params({required this.task});
+  const UpdateParams({required this.task});
 
   @override
   List<Object?> get props => [task];

@@ -29,7 +29,7 @@ void main() {
     when(mockTaskRepository.updateTask(tTask))
         .thenAnswer((_) async => const Right(null));
 
-    final result = await usecase(Params(task: tTask));
+    final result = await usecase(UpdateParams(task: tTask));
 
     expect(result, const Right(null));
 

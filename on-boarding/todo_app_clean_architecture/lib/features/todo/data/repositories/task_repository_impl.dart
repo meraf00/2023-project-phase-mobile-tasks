@@ -11,15 +11,15 @@ class TaskRepositoryImpl extends TaskRepository {
   TaskRepositoryImpl({required this.localDataSource});
 
   @override
-  Future<Either<Failure, void>> createTask(Task task) async {
-    await localDataSource.createTask(task.toModel());
-    return const Right(null);
+  Future<Either<Failure, Task>> createTask(Task task) async {
+    final taskModel = await localDataSource.createTask(task.toModel());
+    return Right(taskModel.toEntity());
   }
 
   @override
-  Future<Either<Failure, void>> deleteTask(int id) async {
-    await localDataSource.deleteTask(id);
-    return const Right(null);
+  Future<Either<Failure, Task>> deleteTask(int id) async {
+    final taskModel = await localDataSource.deleteTask(id);
+    return Right(taskModel.toEntity());
   }
 
   @override

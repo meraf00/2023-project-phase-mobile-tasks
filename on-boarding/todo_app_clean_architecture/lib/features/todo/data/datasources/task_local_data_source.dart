@@ -11,9 +11,9 @@ const sharedPreferenceIdKey = 'CACHED_TASKS_LAST_USED_ID';
 abstract class TaskLocalDataSource {
   Future<List<TaskModel>> getTasks();
   Future<TaskModel> getTask(int id);
-  Future<void> createTask(TaskModel todo);
+  Future<TaskModel> createTask(TaskModel todo);
   Future<void> updateTask(TaskModel todo);
-  Future<void> deleteTask(int id);
+  Future<TaskModel> deleteTask(int id);
 }
 
 class TaskLocalDataSourceImpl implements TaskLocalDataSource {
@@ -28,7 +28,7 @@ class TaskLocalDataSourceImpl implements TaskLocalDataSource {
   }
 
   @override
-  Future<void> createTask(TaskModel task) async {
+  Future<TaskModel> createTask(TaskModel task) async {
     final tasks = await getTasks();
 
     final id = await _generateId();
@@ -44,6 +44,8 @@ class TaskLocalDataSourceImpl implements TaskLocalDataSource {
 
     await sharedPreferences.setString(
         sharedPreferenceStorageKey, jsonEncode(tasks));
+
+    return task;
   }
 
   @override
@@ -89,12 +91,16 @@ class TaskLocalDataSourceImpl implements TaskLocalDataSource {
   }
 
   @override
-  Future<void> deleteTask(int id) async {
+  Future<TaskModel> deleteTask(int id) async {
     final tasks = await getTasks();
+
+    final task = await getTask(id);
 
     tasks.removeWhere((element) => element.id == id);
 
     await sharedPreferences.setString(
         sharedPreferenceStorageKey, jsonEncode(tasks));
+
+    return task;
   }
 }

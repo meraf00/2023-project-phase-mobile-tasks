@@ -3,6 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mockito/annotations.dart';
 import 'package:todo_app_clean_architecture/features/todo/data/datasources/task_local_data_source.dart';
+import 'package:todo_app_clean_architecture/features/todo/data/models/task_mapper.dart';
 import 'package:todo_app_clean_architecture/features/todo/data/models/task_model.dart';
 import 'package:todo_app_clean_architecture/features/todo/data/repositories/task_repository_impl.dart';
 import 'package:todo_app_clean_architecture/features/todo/domain/entities/task.dart';
@@ -65,7 +66,8 @@ void main() {
   });
 
   test('should call delete tasks from local data source', () async {
-    when(mockTaskLocalDataSource.deleteTask(tTaskId)).thenAnswer((_) async {});
+    when(mockTaskLocalDataSource.deleteTask(tTaskId))
+        .thenAnswer((_) async => tTaskModel);
 
     await taskRepositoryImpl.deleteTask(tTaskId);
 
@@ -75,7 +77,7 @@ void main() {
 
   test('should call create tasks from local data source', () async {
     when(mockTaskLocalDataSource.createTask(tTaskModel))
-        .thenAnswer((_) async => tTask);
+        .thenAnswer((_) async => tTask.toModel());
 
     await taskRepositoryImpl.createTask(tTask);
 
