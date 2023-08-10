@@ -8,7 +8,7 @@
 
 ### Features
 
-- create a new task
+- Create a new task
 - Delete a task
 - Mark a task as competed or incomplete
 - Edit a task
@@ -36,46 +36,102 @@
   <img width='180'
   src="screenshots/6.png?raw=true"
   />
-
-<img width='180'
+  <img width='180'
       src="screenshots/7.png?raw=true"
     />
-<img width='180'
+  <img width='180'
       src="screenshots/8.png?raw=true"
     />
-
-<img width='180'
+  <img width='180'
       src="screenshots/9.png?raw=true"
     />
-
-<img width='180'
+  <img width='180'
       src="screenshots/10.png?raw=true"
     />
-<img width='180'
+  <img width='180'
       src="screenshots/11.png?raw=true"
     />
-<img width='180'
+  <img width='180'
       src="screenshots/12.png?raw=true"
     />
-
 </div>
 
 ### Updates
 
+### [Change log]
+
+#### UI and bloc integration
+
+- Write widget test
+- Refactor UI to use components and dependency injection
+- Integrate domain layer with presentation layer
+
+### [Change log]
+
+#### Dependency injection
+
+- Integrate `getIt` (external package) to manage dependency injection
+- Register dependencies in [dependency injection file](lib/injection_container.dart)
+
+### [Change log]
+
+#### Bloc implementation
+
+- Integrate `flutter_bloc` (external package) to manage state
+- Write tests for task bloc
+- Define [task states](lib/features/todo/presentation/bloc/task_state.dart)
+- Define [task events](lib/features/todo/presentation/bloc/task_event.dart)
+- Implement [task bloc](lib/features/todo/presentation/bloc/task_bloc.dart)
+
+### [Change log]
+
+#### Local data source implementation
+
+- Write tests for TaskLocalDataSource concrete implementation
+- Implement [task local data source](lib/features/todo/data/datasources/task_local_data_source.dart) concrete implementation
+- Integrate `shared_preference` (external package) to store data locally
+
+### [Change log]
+
+#### Repository implementation
+
+- Write tests for task repository
+- Implement [task repository](lib/features/todo/data/repositories/task_repository_impl.dart)
+- Define interfaces for local data source
+
+### [Change log]
+
 #### Repository interface
 
-Add [task repository](/lib/features/todo/domain/repositories/task_repository.dart) interface to abstract data layer from domain layer.
+- Add [task repository interface](lib/features/todo/domain/repositories/task_repository.dart) to abstract data layer from domain layer.
 
 #### Network info
 
-Add external package `InternetConnectionChecker` to check internet connection.
-Implement `NetworkInfo` class to check internet connection.
+- Write tests for network info
+- Add external package `InternetConnectionChecker` to check internet connection.
+- Implement `NetworkInfo` class to check internet connection.
+
+### [Change log]
+
+#### Models
+
+- Write tests for data convertion logic between `JSON` and `TaskModel`
+- Add [task models](lib/features/todo/data/models/task_model.dart) in the data source layer to abstract data layer from domain layer.
+- Add [task mapper](lib/features/todo/data/models/task_mapper.dart) in the data source to convert between task model and task entity
+
+#### Error handling
+
+- Utilize `dartz` `Either` to handle error values.
+
+### [Change log]
 
 #### Use cases
 
-Added use cases for view specific task, view all tasks creating, deleting, updating, marking as completed.
+- Write tests for Use cases
+- Define [base class](lib/core/usecases/usecase.dart) for all use cases
+- Add [usecases](lib/features/todo/domain/usecases/) to view specific task, view all tasks create, delete, update task.
 
-[Usecases](/lib/features/todo/domain/usecases/)
+### [Change log]
 
 #### Create task entity
 
