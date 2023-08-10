@@ -55,6 +55,7 @@ class TaskCard extends StatelessWidget {
                 SizedBox(
                   height: 30,
                   child: VerticalDivider(
+                    thickness: 2,
                     color: completed ? Colors.green : Colors.red,
                   ),
                 ),

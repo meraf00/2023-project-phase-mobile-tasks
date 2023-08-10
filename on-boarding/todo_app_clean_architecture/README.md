@@ -1,16 +1,63 @@
-# todo_app_clean_architecture
+# Task manager app
 
-A new Flutter project.
+### How to run
 
-## Getting Started
+- Clone this repository
+- Run `flutter pub get`
+- Run `flutter run`
 
-This project is a starting point for a Flutter application.
+### Features
 
-A few resources to get you started if this is your first Flutter project:
+- Add a new task
+- Delete a task
+- Mark a task as competed or incomplete
+- Edit a task
+- View task details
+- Improved user experience
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+### Screenshots
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+<div style="display: flex; height: 400px; justify-content: space-between">
+  <img    
+    src="https://github.com/meraf00/2023-project-phase-mobile-tasks/blob/main/on-boarding/todo_app_clean_architecture/screenshots/1.png?raw=true"
+  />
+  <img
+    src="https://github.com/meraf00/2023-project-phase-mobile-tasks/blob/main/on-boarding/todo_app_clean_architecture/screenshots/2.png?raw=true"
+  />
+  <img
+    src="https://github.com/meraf00/2023-project-phase-mobile-tasks/blob/main/on-boarding/todo_app_clean_architecture/screenshots/3.png?raw=true"
+  />
+</div>
+<div style="display: flex; height: 400px; justify-content: space-between">
+  <img
+    src="https://github.com/meraf00/2023-project-phase-mobile-tasks/blob/main/on-boarding/todo_app_clean_architecture/screenshots/4.png?raw=true"
+  />
+  <img
+    src="https://github.com/meraf00/2023-project-phase-mobile-tasks/blob/main/on-boarding/todo_app_clean_architecture/screenshots/5.png?raw=true"
+  />
+  <img
+    src="https://github.com/meraf00/2023-project-phase-mobile-tasks/blob/main/on-boarding/todo_app_clean_architecture/screenshots/6.png?raw=true"
+  />
+</div>
+<div style="display: flex; height: 400px; justify-content: space-between">
+  <img
+    src="https://github.com/meraf00/2023-project-phase-mobile-tasks/blob/main/on-boarding/todo_app_clean_architecture/screenshots/7.png?raw=true"
+  />
+  <img
+    src="https://github.com/meraf00/2023-project-phase-mobile-tasks/blob/main/on-boarding/todo_app_clean_architecture/screenshots/8.png?raw=true"
+  />
+  <img
+    src="https://github.com/meraf00/2023-project-phase-mobile-tasks/blob/main/on-boarding/todo_app_clean_architecture/screenshots/9.png?raw=true"
+  />
+</div>
+<div style="display: flex; height: 400px; justify-content: space-between">
+  <img
+    src="https://github.com/meraf00/2023-project-phase-mobile-tasks/blob/main/on-boarding/todo_app_clean_architecture/screenshots/10.png?raw=true"
+  />
+  <img
+    src="https://github.com/meraf00/2023-project-phase-mobile-tasks/blob/main/on-boarding/todo_app_clean_architecture/screenshots/11.png?raw=true"
+  />
+  <img
+    src="https://github.com/meraf00/2023-project-phase-mobile-tasks/blob/main/on-boarding/todo_app_clean_architecture/screenshots/12.png?raw=true"
+  />
+</div>

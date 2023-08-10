@@ -11,22 +11,18 @@ import 'features/todo/presentation/screens/onboarding_screen.dart';
 import 'injection_container.dart' as di;
 
 Future<void> main() async {
-  await di.init();
-
   if (kDebugMode) {
     print('Running in debug mode');
 
     BlocOverrides.runZoned(
-      () {
+      () async {
         WidgetsFlutterBinding.ensureInitialized();
+        await di.init();
         runApp(const App());
       },
       blocObserver: SimpleBlocObserver(),
     );
-  }
-
-  //
-  else {
+  } else {
     WidgetsFlutterBinding.ensureInitialized();
     runApp(const App());
   }
