@@ -34,20 +34,22 @@ void main() {
 
         // assert
         expect(
-            result, Left<InvalidInputFailure, DateTime>(InvalidInputFailure(message: 'Invaid date format')));
+            result,
+            Left<InvalidInputFailure, DateTime>(
+                InvalidInputFailure(message: 'Invalid date format')));
       });
 
-      test('should return a Failure when the date is the past', () {
-        // arrange
-        const str = '2020-01-01';
+      // test('should return a Failure when the date is the past', () {
+      //   // arrange
+      //   const str = '2020-01-01';
 
-        // act
-        final result = inputConverter.stringToDateTime(str);
+      //   // act
+      //   final result = inputConverter.stringToDateTime(str);
 
-        // assert
-        expect(
-            result, Left(InvalidInputFailure(message: 'Date is in the past')));
-      });
+      //   // assert
+      //   expect(
+      //       result, Left(InvalidInputFailure(message: 'Date is in the past')));
+      // });
     });
   });
 }

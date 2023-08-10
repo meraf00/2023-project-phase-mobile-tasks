@@ -2,6 +2,7 @@ import 'package:dartz/dartz.dart' hide Task;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mockito/annotations.dart';
+import 'package:todo_app_clean_architecture/core/error/failures.dart';
 import 'package:todo_app_clean_architecture/features/todo/data/datasources/task_local_data_source.dart';
 import 'package:todo_app_clean_architecture/features/todo/data/models/task_mapper.dart';
 import 'package:todo_app_clean_architecture/features/todo/data/models/task_model.dart';
@@ -49,7 +50,7 @@ void main() {
 
     final result = await taskRepositoryImpl.getTask(tTaskId);
 
-    expect(result, Right(tTask));
+    expect(result, Right<Failure, Task>(tTask));
 
     verify(mockTaskLocalDataSource.getTask(tTaskId));
     verifyNoMoreInteractions(mockTaskLocalDataSource);
