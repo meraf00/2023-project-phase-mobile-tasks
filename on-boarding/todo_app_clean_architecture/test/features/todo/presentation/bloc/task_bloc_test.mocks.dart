@@ -17,9 +17,9 @@ import 'package:todo_app_clean_architecture/features/todo/domain/usecases/create
     as _i10;
 import 'package:todo_app_clean_architecture/features/todo/domain/usecases/delete_task.dart'
     as _i12;
-import 'package:todo_app_clean_architecture/features/todo/domain/usecases/get_all_tasks.dart'
+import 'package:todo_app_clean_architecture/features/todo/domain/usecases/view_all_tasks.dart'
     as _i4;
-import 'package:todo_app_clean_architecture/features/todo/domain/usecases/get_task.dart'
+import 'package:todo_app_clean_architecture/features/todo/domain/usecases/view_task.dart'
     as _i9;
 import 'package:todo_app_clean_architecture/features/todo/domain/usecases/update_task.dart'
     as _i11;
@@ -73,7 +73,7 @@ class MockInputConverter extends _i1.Mock implements _i3.InputConverter {
 /// A class which mocks [GetAllTasks].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockGetAllTasks extends _i1.Mock implements _i4.GetAllTasks {
+class MockGetAllTasks extends _i1.Mock implements _i4.ViewAllTasks {
   MockGetAllTasks() {
     _i1.throwOnMissingStub(this);
   }
@@ -100,7 +100,7 @@ class MockGetAllTasks extends _i1.Mock implements _i4.GetAllTasks {
 /// A class which mocks [GetTask].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockGetTask extends _i1.Mock implements _i9.GetTask {
+class MockGetTask extends _i1.Mock implements _i9.ViewTask {
   MockGetTask() {
     _i1.throwOnMissingStub(this);
   }

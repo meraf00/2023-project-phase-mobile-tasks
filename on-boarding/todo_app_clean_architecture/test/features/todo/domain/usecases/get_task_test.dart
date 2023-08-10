@@ -4,18 +4,18 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:todo_app_clean_architecture/features/todo/domain/entities/task.dart';
 import 'package:todo_app_clean_architecture/features/todo/domain/repositories/task_repository.dart';
-import 'package:todo_app_clean_architecture/features/todo/domain/usecases/get_task.dart';
+import 'package:todo_app_clean_architecture/features/todo/domain/usecases/view_task.dart';
 
 import 'get_task_test.mocks.dart';
 
 @GenerateMocks([TaskRepository])
 void main() {
   late MockTaskRepository mockTaskRepository;
-  late GetTask usecase;
+  late ViewTask usecase;
 
   setUp(() {
     mockTaskRepository = MockTaskRepository();
-    usecase = GetTask(mockTaskRepository);
+    usecase = ViewTask(mockTaskRepository);
   });
 
   const tTaskId = 1;
