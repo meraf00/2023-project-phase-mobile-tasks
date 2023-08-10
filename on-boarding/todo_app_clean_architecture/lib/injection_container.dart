@@ -36,10 +36,10 @@ Future<void> init() async {
     () => usecases.DeleteTask(serviceLocator()),
   );
   serviceLocator.registerLazySingleton(
-    () => usecases.GetAllTasks(serviceLocator()),
+    () => usecases.ViewAllTasks(serviceLocator()),
   );
   serviceLocator.registerLazySingleton(
-    () => usecases.GetTask(serviceLocator()),
+    () => usecases.ViewTask(serviceLocator()),
   );
 
   // Validators

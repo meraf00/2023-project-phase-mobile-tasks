@@ -15,8 +15,8 @@ import 'task_bloc_test.mocks.dart';
 
 @GenerateMocks([
   InputConverter,
-  usecases.GetAllTasks,
-  usecases.GetTask,
+  usecases.ViewAllTasks,
+  usecases.ViewTask,
   usecases.CreateTask,
   usecases.UpdateTask,
   usecases.DeleteTask

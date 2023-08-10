@@ -12,8 +12,8 @@ part 'task_state.dart';
 part 'task_messages.dart';
 
 class TaskBloc extends Bloc<TaskEvent, TaskState> {
-  final usecases.GetTask getTask;
-  final usecases.GetAllTasks getAllTasks;
+  final usecases.ViewTask getTask;
+  final usecases.ViewAllTasks getAllTasks;
   final usecases.CreateTask createTask;
   final usecases.UpdateTask updateTask;
   final usecases.DeleteTask deleteTask;
