@@ -1,5 +1,5 @@
 import 'package:dartz/dartz.dart';
-import '../../../features/todo/domain/validator/validator.dart';
+import 'validator/validator.dart';
 import '../../../injection_container.dart';
 
 String? dateValidator(String? value) {

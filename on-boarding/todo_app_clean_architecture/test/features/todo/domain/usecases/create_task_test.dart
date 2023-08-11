@@ -22,7 +22,7 @@ void main() {
     id: -1,
     title: 'Test Task',
     description: 'Test Description',
-    dueDate: DateTime.now(),
+    dueDate: DateTime(2020, 1, 1),
   );
 
   test('should create new task and add it to repository', () async {

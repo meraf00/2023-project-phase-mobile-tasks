@@ -24,8 +24,8 @@ import 'task_bloc_test.mocks.dart';
 void main() {
   late TaskBloc taskBloc;
   late MockInputConverter mockInputConverter;
-  late MockGetAllTasks mockGetAllTasks;
-  late MockGetTask mockGetTask;
+  late MockViewAllTasks mockGetAllTasks;
+  late MockViewTask mockGetTask;
   late MockCreateTask mockCreateTask;
   late MockUpdateTask mockUpdateTask;
   late MockDeleteTask mockDeleteTask;
@@ -33,8 +33,8 @@ void main() {
   setUp(() {
     mockInputConverter = MockInputConverter();
 
-    mockGetAllTasks = MockGetAllTasks();
-    mockGetTask = MockGetTask();
+    mockGetAllTasks = MockViewAllTasks();
+    mockGetTask = MockViewTask();
     mockCreateTask = MockCreateTask();
     mockUpdateTask = MockUpdateTask();
     mockDeleteTask = MockDeleteTask();

@@ -1,9 +1,12 @@
 import 'package:dartz/dartz.dart' hide Task;
 import 'package:flutter_test/flutter_test.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mockito/annotations.dart';
 import 'package:todo_app_clean_architecture/core/error/failures.dart';
+import 'package:todo_app_clean_architecture/core/network/network_info.dart';
 import 'package:todo_app_clean_architecture/features/todo/data/datasources/task_local_data_source.dart';
+import 'package:todo_app_clean_architecture/features/todo/data/datasources/task_remote_data_source.dart';
 import 'package:todo_app_clean_architecture/features/todo/data/models/task_mapper.dart';
 import 'package:todo_app_clean_architecture/features/todo/data/models/task_model.dart';
 import 'package:todo_app_clean_architecture/features/todo/data/repositories/task_repository_impl.dart';
@@ -11,15 +14,32 @@ import 'package:todo_app_clean_architecture/features/todo/domain/entities/task.d
 
 import 'task_repository_impl_test.mocks.dart';
 
-@GenerateMocks([TaskLocalDataSource])
+@GenerateMocks([
+  TaskLocalDataSource,
+  TaskRemoteDataSource,
+  NetworkInfo,
+  InternetConnectionChecker
+])
 void main() {
+  late MockInternetConnectionChecker mockInternetConnectionChecker;
+  late MockNetworkInfo mockNetworkInfo;
   late MockTaskLocalDataSource mockTaskLocalDataSource;
+  late MockTaskRemoteDataSource mockTaskRemoteDataSource;
   late TaskRepositoryImpl taskRepositoryImpl;
 
   setUp(() {
     mockTaskLocalDataSource = MockTaskLocalDataSource();
-    taskRepositoryImpl =
-        TaskRepositoryImpl(localDataSource: mockTaskLocalDataSource);
+    mockTaskRemoteDataSource = MockTaskRemoteDataSource();
+    mockInternetConnectionChecker = MockInternetConnectionChecker();
+    mockNetworkInfo = MockNetworkInfo();
+    taskRepositoryImpl = TaskRepositoryImpl(
+        localDataSource: mockTaskLocalDataSource,
+        networkInfo: mockNetworkInfo,
+        remoteDataSource: mockTaskRemoteDataSource);
+
+    when(mockInternetConnectionChecker.hasConnection)
+        .thenAnswer((_) async => true);
+    when(mockNetworkInfo.isConnected).thenAnswer((_) async => false);
   });
 
   const tTaskId = 1;
@@ -27,12 +47,12 @@ void main() {
       id: 1,
       title: 'Test Task',
       description: 'Test Description',
-      dueDate: DateTime.now());
+      dueDate: DateTime(2020, 1, 1));
   final tTaskModel = TaskModel(
       id: 1,
       title: 'Test Task',
       description: 'Test Description',
-      dueDate: DateTime.now(),
+      dueDate: DateTime(2020, 1, 1),
       completed: false);
 
   test('should call get tasks from local data source', () async {

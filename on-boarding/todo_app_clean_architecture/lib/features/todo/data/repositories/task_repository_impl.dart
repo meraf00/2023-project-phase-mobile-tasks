@@ -1,5 +1,8 @@
 import 'package:dartz/dartz.dart' hide Task;
+import 'package:todo_app_clean_architecture/features/todo/data/datasources/task_remote_data_source.dart';
+import 'package:todo_app_clean_architecture/features/todo/data/models/task_model.dart';
 import '../../../../core/error/failures.dart';
+import '../../../../core/network/network_info.dart';
 import '../../domain/entities/task.dart';
 import '../../domain/repositories/task_repository.dart';
 import '../datasources/task_local_data_source.dart';
@@ -7,8 +10,14 @@ import '../models/task_mapper.dart';
 
 class TaskRepositoryImpl extends TaskRepository {
   final TaskLocalDataSource localDataSource;
+  final TaskRemoteDataSource remoteDataSource;
+  final NetworkInfo networkInfo;
 
-  TaskRepositoryImpl({required this.localDataSource});
+  TaskRepositoryImpl({
+    required this.remoteDataSource,
+    required this.localDataSource,
+    required this.networkInfo,
+  });
 
   @override
   Future<Either<Failure, Task>> createTask(Task task) async {
@@ -30,7 +39,14 @@ class TaskRepositoryImpl extends TaskRepository {
 
   @override
   Future<Either<Failure, List<Task>>> getTasks() async {
-    final taskModels = await localDataSource.getTasks();
+    List<TaskModel> taskModels;
+
+    if (await networkInfo.isConnected) {
+      taskModels = await remoteDataSource.getTasks();
+    } else {
+      taskModels = await localDataSource.getTasks();
+    }
+
     final tasks = taskModels.map((e) => e.toEntity()).toList();
     return Right(tasks);
   }
