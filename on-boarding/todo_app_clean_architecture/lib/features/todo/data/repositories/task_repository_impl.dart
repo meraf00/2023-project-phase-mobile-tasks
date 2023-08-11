@@ -6,7 +6,6 @@ import '../../../../core/network/network_info.dart';
 import '../../domain/entities/task.dart';
 import '../../domain/repositories/task_repository.dart';
 import '../datasources/task_local_data_source.dart';
-import '../models/task_mapper.dart';
 
 class TaskRepositoryImpl extends TaskRepository {
   final TaskLocalDataSource localDataSource;

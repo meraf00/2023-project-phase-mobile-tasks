@@ -1,5 +1,4 @@
-import '../../domain/entities/task.dart';
-import 'task_model.dart';
+part of 'task_model.dart';
 
 extension TaskMapper on TaskModel {
   Task toEntity() {
