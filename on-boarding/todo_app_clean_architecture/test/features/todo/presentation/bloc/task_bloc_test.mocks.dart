@@ -17,12 +17,12 @@ import 'package:todo_app_clean_architecture/features/todo/domain/usecases/create
     as _i10;
 import 'package:todo_app_clean_architecture/features/todo/domain/usecases/delete_task.dart'
     as _i12;
+import 'package:todo_app_clean_architecture/features/todo/domain/usecases/update_task.dart'
+    as _i11;
 import 'package:todo_app_clean_architecture/features/todo/domain/usecases/view_all_tasks.dart'
     as _i4;
 import 'package:todo_app_clean_architecture/features/todo/domain/usecases/view_task.dart'
     as _i9;
-import 'package:todo_app_clean_architecture/features/todo/domain/usecases/update_task.dart'
-    as _i11;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -54,6 +54,14 @@ class MockInputConverter extends _i1.Mock implements _i3.InputConverter {
   }
 
   @override
+  String dateTimeToString(DateTime? datetime) => (super.noSuchMethod(
+        Invocation.method(
+          #dateTimeToString,
+          [datetime],
+        ),
+        returnValue: '',
+      ) as String);
+  @override
   _i2.Either<_i3.InvalidInputFailure, DateTime> stringToDateTime(String? str) =>
       (super.noSuchMethod(
         Invocation.method(
@@ -70,11 +78,11 @@ class MockInputConverter extends _i1.Mock implements _i3.InputConverter {
       ) as _i2.Either<_i3.InvalidInputFailure, DateTime>);
 }
 
-/// A class which mocks [GetAllTasks].
+/// A class which mocks [ViewAllTasks].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockGetAllTasks extends _i1.Mock implements _i4.ViewAllTasks {
-  MockGetAllTasks() {
+class MockViewAllTasks extends _i1.Mock implements _i4.ViewAllTasks {
+  MockViewAllTasks() {
     _i1.throwOnMissingStub(this);
   }
 
@@ -97,11 +105,11 @@ class MockGetAllTasks extends _i1.Mock implements _i4.ViewAllTasks {
       ) as _i5.Future<_i2.Either<_i6.Failure, List<_i7.Task>>>);
 }
 
-/// A class which mocks [GetTask].
+/// A class which mocks [ViewTask].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockGetTask extends _i1.Mock implements _i9.ViewTask {
-  MockGetTask() {
+class MockViewTask extends _i1.Mock implements _i9.ViewTask {
+  MockViewTask() {
     _i1.throwOnMissingStub(this);
   }
 

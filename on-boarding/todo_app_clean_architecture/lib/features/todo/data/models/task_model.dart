@@ -1,4 +1,7 @@
 import 'package:equatable/equatable.dart';
+import '../../domain/entities/task.dart';
+
+part 'task_mapper.dart';
 
 class TaskModel extends Equatable {
   final int id;

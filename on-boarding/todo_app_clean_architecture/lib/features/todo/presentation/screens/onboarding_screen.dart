@@ -5,7 +5,7 @@ import 'package:todo_app_clean_architecture/features/todo/presentation/widgets/w
 class OnboardingScreen extends StatelessWidget {
   static const routeName = '/';
 
-  const OnboardingScreen({Key? key}) : super(key: key);
+  const OnboardingScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

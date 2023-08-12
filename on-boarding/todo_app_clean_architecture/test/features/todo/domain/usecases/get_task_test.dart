@@ -24,7 +24,7 @@ void main() {
     id: tTaskId,
     title: 'Test Task',
     description: 'Test Description',
-    dueDate: DateTime.now(),
+    dueDate: DateTime(2020, 1, 1),
   );
 
   test('should get task from  repository', () async {
