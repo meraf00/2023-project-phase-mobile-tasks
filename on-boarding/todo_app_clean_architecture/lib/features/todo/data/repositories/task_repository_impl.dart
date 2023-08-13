@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart' hide Task;
+import 'package:todo_app_clean_architecture/core/error/exception.dart';
 import 'package:todo_app_clean_architecture/features/todo/data/datasources/task_remote_data_source.dart';
 import 'package:todo_app_clean_architecture/features/todo/data/models/task_model.dart';
 import '../../../../core/error/failures.dart';
@@ -26,14 +27,33 @@ class TaskRepositoryImpl extends TaskRepository {
 
   @override
   Future<Either<Failure, Task>> deleteTask(int id) async {
-    final taskModel = await localDataSource.deleteTask(id);
-    return Right(taskModel.toEntity());
+    if (await networkInfo.isConnected) {
+      try {
+        await remoteDataSource.deleteTask(id);
+        final taskModel = await localDataSource.deleteTask(id);
+        return Right(taskModel.toEntity());
+      } on ServerException catch (e) {
+        return Left(ServerFailure(message: e.message));
+      }
+    } else {
+      final taskModel = await localDataSource.deleteTask(id);
+      return Right(taskModel.toEntity());
+    }
   }
 
   @override
   Future<Either<Failure, Task>> getTask(int id) async {
-    final task = await localDataSource.getTask(id);
-    return Right(task.toEntity());
+    if (await networkInfo.isConnected) {
+      try {
+        final taskModel = await remoteDataSource.getTask(id);
+        return Right(taskModel.toEntity());
+      } on ServerException catch (e) {
+        return Left(ServerFailure(message: e.message));
+      }
+    } else {
+      final task = await localDataSource.getTask(id);
+      return Right(task.toEntity());
+    }
   }
 
   @override
@@ -52,6 +72,14 @@ class TaskRepositoryImpl extends TaskRepository {
 
   @override
   Future<Either<Failure, void>> updateTask(Task task) async {
-    return Right(localDataSource.updateTask(task.toModel()));
+    if (await networkInfo.isConnected) {
+      try {
+        return Right(await remoteDataSource.updateTask(task.toModel()));
+      } on ServerException catch (e) {
+        return Left(ServerFailure(message: e.message));
+      }
+    } else {
+      return Right(localDataSource.updateTask(task.toModel()));
+    }
   }
 }
