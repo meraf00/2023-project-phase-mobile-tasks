@@ -60,6 +60,20 @@
 
 ### [Change log]
 
+#### Remote repository implementation
+
+- Write tests for remote task repository
+- Add remote data source to repository [task repository](lib/features/todo/data/repositories/task_repository_impl.dart)
+
+### [Change log]
+
+#### Remote data source implementation
+
+- Write tests for remote data source repository
+- Add remote data source [task repository](lib/features/todo/data/datasources/task_remote_data_source.dart)
+
+### [Change log]
+
 #### UI and bloc integration
 
 - Write widget test
