@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:todo_app_clean_architecture/features/todo/presentation/bloc/task_bloc.dart';
-import 'package:todo_app_clean_architecture/features/todo/presentation/widgets/app_bar.dart';
-import 'package:todo_app_clean_architecture/features/todo/presentation/widgets/loading.dart';
-import 'package:todo_app_clean_architecture/features/todo/presentation/widgets/tasks_list_view.dart';
-import 'package:todo_app_clean_architecture/injection_container.dart';
+
+import '../../../../injection_container.dart';
+import '../bloc/task_bloc.dart';
+import '../widgets/app_bar.dart';
 import '../widgets/custom_button.dart';
+import '../widgets/loading.dart';
+import '../widgets/tasks_list_view.dart';
 import 'create_task_screen.dart';
 
 class TaskListScreen extends StatefulWidget {
-  static const routeName = "/tasks";
+  static const routeName = '/tasks';
 
   const TaskListScreen({super.key});
 
@@ -21,7 +22,7 @@ class _TaskListScreenState extends State<TaskListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const CustomAppBar(title: "Todo List"),
+      appBar: const CustomAppBar(title: 'Todo List'),
       body: BlocProvider(
         create: (context) => serviceLocator<TaskBloc>()..add(GetTasks()),
         child: BlocBuilder<TaskBloc, TaskState>(
@@ -42,14 +43,14 @@ class _TaskListScreenState extends State<TaskListScreen> {
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height * .25,
             child: Image.asset(
-              "assets/images/task_list.png",
+              'assets/images/task_list.png',
             ),
           ),
           const SizedBox(height: 30),
 
           // Title
           Text(
-            "Tasks list",
+            'Tasks list',
             style: Theme.of(context).textTheme.titleMedium,
           ),
           const SizedBox(height: 10),
@@ -81,7 +82,7 @@ class _TaskListScreenState extends State<TaskListScreen> {
           // Create task button
           Center(
             child: CustomButton(
-              label: "Create task",
+              label: 'Create task',
               onPressed: () async {
                 await Navigator.pushNamed(context, CreateTaskScreen.routeName);
 

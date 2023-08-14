@@ -1,8 +1,8 @@
 import 'package:dartz/dartz.dart' hide Task;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
-import 'package:mockito/mockito.dart';
 import 'package:mockito/annotations.dart';
+import 'package:mockito/mockito.dart';
 import 'package:todo_app_clean_architecture/core/error/failures.dart';
 import 'package:todo_app_clean_architecture/core/network/network_info.dart';
 import 'package:todo_app_clean_architecture/features/todo/data/datasources/task_local_data_source.dart';

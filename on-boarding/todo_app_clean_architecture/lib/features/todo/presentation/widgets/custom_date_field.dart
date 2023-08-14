@@ -74,8 +74,8 @@ class CustomDateField extends StatelessWidget {
                             lastDate: DateTime(2050));
 
                         controller?.text =
-                            pickedDate?.toIso8601String().split("T")[0] ??
-                                DateTime.now().toIso8601String().split("T")[0];
+                            pickedDate?.toIso8601String().split('T')[0] ??
+                                DateTime.now().toIso8601String().split('T')[0];
                       },
                     ),
                   ),

@@ -1,12 +1,13 @@
 import 'package:dartz/dartz.dart' hide Task;
-import 'package:todo_app_clean_architecture/core/error/exception.dart';
-import 'package:todo_app_clean_architecture/features/todo/data/datasources/task_remote_data_source.dart';
-import 'package:todo_app_clean_architecture/features/todo/data/models/task_model.dart';
+
+import '../../../../core/error/exception.dart';
 import '../../../../core/error/failures.dart';
 import '../../../../core/network/network_info.dart';
 import '../../domain/entities/task.dart';
 import '../../domain/repositories/task_repository.dart';
 import '../datasources/task_local_data_source.dart';
+import '../datasources/task_remote_data_source.dart';
+import '../models/task_model.dart';
 
 class TaskRepositoryImpl extends TaskRepository {
   final TaskLocalDataSource localDataSource;

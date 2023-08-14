@@ -19,7 +19,7 @@ class InputConverter {
       'December'
     ];
 
-    return "${months[datetime.month - 1]} ${datetime.day}, ${datetime.year}";
+    return '${months[datetime.month - 1]} ${datetime.day}, ${datetime.year}';
   }
 
   Either<InvalidInputFailure, DateTime> stringToDateTime(String str) {

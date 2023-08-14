@@ -1,15 +1,15 @@
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:dartz/dartz.dart' hide Task;
 import 'package:equatable/equatable.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../core/usecases/usecase.dart';
 import '../../../../core/presentation/util/input_converter.dart';
-import '../../domain/usecases/usecases.dart' as usecases;
+import '../../../../core/usecases/usecase.dart';
 import '../../domain/entities/task.dart';
+import '../../domain/usecases/usecases.dart' as usecases;
 
 part 'task_event.dart';
-part 'task_state.dart';
 part 'task_messages.dart';
+part 'task_state.dart';
 
 class TaskBloc extends Bloc<TaskEvent, TaskState> {
   final usecases.ViewTask getTask;

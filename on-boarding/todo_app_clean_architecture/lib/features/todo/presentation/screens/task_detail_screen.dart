@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:todo_app_clean_architecture/core/presentation/util/input_converter.dart';
-import 'package:todo_app_clean_architecture/features/todo/presentation/screens/create_task_screen.dart';
-import 'package:todo_app_clean_architecture/features/todo/presentation/widgets/app_bar.dart';
-import 'package:todo_app_clean_architecture/features/todo/presentation/widgets/loading.dart';
-import 'package:todo_app_clean_architecture/features/todo/presentation/widgets/snackbar.dart';
-import 'package:todo_app_clean_architecture/features/todo/presentation/widgets/task_detail_card.dart';
-import 'package:todo_app_clean_architecture/injection_container.dart';
+
+import '../../../../core/presentation/util/input_converter.dart';
+import '../../../../injection_container.dart';
 import '../../domain/entities/task.dart';
 import '../bloc/task_bloc.dart';
+import '../widgets/app_bar.dart';
+import '../widgets/loading.dart';
+import '../widgets/snackbar.dart';
+import '../widgets/task_detail_card.dart';
+import 'create_task_screen.dart';
 
 class TaskDetailScreen extends StatelessWidget {
-  static const routeName = "/task-detail";
+  static const routeName = '/task-detail';
 
   final int taskId;
 
@@ -25,10 +26,10 @@ class TaskDetailScreen extends StatelessWidget {
         listener: (context, state) {
           if (state is TaskUpdated) {
             final message = state.task.completed ? 'complete' : 'incomplete';
-            showSuccess(context, "Task marked as $message");
+            showSuccess(context, 'Task marked as $message');
             Navigator.of(context).pop();
           } else if (state is TaskDeleted) {
-            showSuccess(context, "Task deleted successfully");
+            showSuccess(context, 'Task deleted successfully');
             Navigator.of(context).pop();
           }
         },
@@ -61,27 +62,27 @@ class TaskDetailScreen extends StatelessWidget {
                 arguments: task);
 
             taskBloc.add(GetTask(taskId));
-          } else if (value == "toggle_complete") {
+          } else if (value == 'toggle_complete') {
             context.read<TaskBloc>().add(UpdateTask(task.id, task.title,
                 task.description, task.dueDate.toString(), !task.completed));
-          } else if (value == "delete") {
+          } else if (value == 'delete') {
             context.read<TaskBloc>().add(DeleteTask(task.id));
           }
         },
         icon: const Icon(Icons.more_vert),
         itemBuilder: (_) => [
           PopupMenuItem(
-            value: "edit",
+            value: 'edit',
             child: Text('Edit', style: Theme.of(context).textTheme.bodySmall),
           ),
           PopupMenuItem(
-            value: "toggle_complete",
+            value: 'toggle_complete',
             child: Text(
                 task.completed ? 'Mark as incomplete' : 'Mark as complete',
                 style: Theme.of(context).textTheme.bodySmall),
           ),
           PopupMenuItem(
-            value: "delete",
+            value: 'delete',
             child: Text('Delete', style: Theme.of(context).textTheme.bodySmall),
           ),
         ],
@@ -99,22 +100,22 @@ class TaskDetailScreen extends StatelessWidget {
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height * .3,
             child: Image.asset(
-              "assets/images/ui_design.png",
+              'assets/images/ui_design.png',
             ),
           ),
 
           //
           const SizedBox(height: 30),
-          TaskDetailCard(title: "Title", content: task.title),
+          TaskDetailCard(title: 'Title', content: task.title),
 
           //
           const SizedBox(height: 20),
-          TaskDetailCard(title: "Description", content: task.description),
+          TaskDetailCard(title: 'Description', content: task.description),
 
           //
           const SizedBox(height: 20),
           TaskDetailCard(
-              title: "Deadline",
+              title: 'Deadline',
               content: serviceLocator<InputConverter>()
                   .dateTimeToString(task.dueDate)),
         ],

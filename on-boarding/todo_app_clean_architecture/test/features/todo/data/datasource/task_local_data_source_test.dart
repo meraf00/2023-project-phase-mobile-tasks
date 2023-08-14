@@ -1,8 +1,8 @@
 import 'dart:convert';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/mockito.dart';
 import 'package:mockito/annotations.dart';
+import 'package:mockito/mockito.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:todo_app_clean_architecture/core/error/exception.dart';
 import 'package:todo_app_clean_architecture/features/todo/data/datasources/task_local_data_source.dart';
@@ -24,15 +24,15 @@ void main() {
 
   final tTask = TaskModel(
       id: 1,
-      title: "Task 1",
-      description: "Task 1 description",
+      title: 'Task 1',
+      description: 'Task 1 description',
       completed: true,
       dueDate: DateTime(2019, 1, 1));
 
   final tTaskUpdated = TaskModel(
       id: 1,
-      title: "Task 2",
-      description: "Task 2 description",
+      title: 'Task 2',
+      description: 'Task 2 description',
       completed: true,
       dueDate: DateTime(2019, 1, 1));
 

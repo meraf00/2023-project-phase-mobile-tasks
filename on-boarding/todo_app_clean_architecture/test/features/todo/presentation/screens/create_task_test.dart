@@ -40,10 +40,10 @@ void main() async {
     testWidgets('display validation failure on empty input', (tester) async {
       await navigateToCreateTask(tester);
 
-      await tester.tap(find.text("Add task"));
+      await tester.tap(find.text('Add task'));
       await tester.pumpAndSettle();
 
-      expect(find.text("Please enter a title"), findsOneWidget);
+      expect(find.text('Please enter a title'), findsOneWidget);
     });
 
     tearDownAll(() {
@@ -57,9 +57,9 @@ Future<void> navigateToCreateTask(tester) async {
 
   await tester.pumpWidget(widget);
 
-  await tester.tap(find.text("Get started"));
+  await tester.tap(find.text('Get started'));
   await tester.pumpAndSettle();
 
-  await tester.tap(find.text("Create task"));
+  await tester.tap(find.text('Create task'));
   await tester.pumpAndSettle();
 }

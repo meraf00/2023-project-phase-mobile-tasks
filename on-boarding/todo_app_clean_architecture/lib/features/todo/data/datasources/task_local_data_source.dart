@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:todo_app_clean_architecture/core/error/exception.dart';
+import '../../../../core/error/exception.dart';
 
 import '../models/task_model.dart';
 
@@ -64,7 +64,7 @@ class TaskLocalDataSourceImpl implements TaskLocalDataSource {
   @override
   Future<List<TaskModel>> getTasks() async {
     final serialized =
-        sharedPreferences.getString(sharedPreferenceStorageKey) ?? "[]";
+        sharedPreferences.getString(sharedPreferenceStorageKey) ?? '[]';
     try {
       final json = jsonDecode(serialized) as List;
       final tasks = json.map((e) => TaskModel.fromJson(e)).toList();
