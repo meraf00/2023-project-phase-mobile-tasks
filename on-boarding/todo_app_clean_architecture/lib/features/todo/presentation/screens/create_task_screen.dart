@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:todo_app_clean_architecture/core/presentation/util/input_validator.dart';
-import 'package:todo_app_clean_architecture/features/todo/presentation/bloc/task_bloc.dart';
-import 'package:todo_app_clean_architecture/features/todo/presentation/widgets/app_bar.dart';
-import 'package:todo_app_clean_architecture/features/todo/presentation/widgets/custom_button.dart';
-import 'package:todo_app_clean_architecture/features/todo/presentation/widgets/custom_date_field.dart';
-import 'package:todo_app_clean_architecture/features/todo/presentation/widgets/snackbar.dart';
-import 'package:todo_app_clean_architecture/injection_container.dart';
 
+import '../../../../core/presentation/util/input_validator.dart';
+import '../../../../injection_container.dart';
 import '../../domain/entities/task.dart';
+import '../bloc/task_bloc.dart';
+import '../widgets/app_bar.dart';
+import '../widgets/custom_button.dart';
+import '../widgets/custom_date_field.dart';
 import '../widgets/custom_text_field.dart';
+import '../widgets/snackbar.dart';
 
 class CreateTaskScreen extends StatelessWidget {
   static const routeName = '/create-task';
@@ -37,7 +37,7 @@ class CreateTaskScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: CustomAppBar(
-          title: task != null ? "Update task" : "Create new task",
+          title: task != null ? 'Update task' : 'Create new task',
         ),
 
         // body
@@ -45,19 +45,19 @@ class CreateTaskScreen extends StatelessWidget {
           create: (_) => serviceLocator<TaskBloc>(),
           child: BlocConsumer<TaskBloc, TaskState>(
             listener: (context, state) {
-              if (state is TaskError) {
+              if (state is ErrorState) {
                 showError(context, state.message);
               }
 
               // updated
-              else if (state is TaskUpdated) {
-                showSuccess(context, "Task updated successfully");
+              else if (state is UpdatedTaskState) {
+                showSuccess(context, 'Task updated successfully');
                 Navigator.of(context).pop();
               }
 
               // created
-              else if (state is TaskCreated) {
-                showSuccess(context, "Task created successfully");
+              else if (state is CreatedTaskState) {
+                showSuccess(context, 'Task created successfully');
                 Navigator.of(context).pop();
               }
             },
@@ -76,19 +76,19 @@ class CreateTaskScreen extends StatelessWidget {
         child: Column(
           children: [
             CustomTextField(
-              label: "Main task name",
+              label: 'Main task name',
               controller: titleController,
               validator: titleValidator,
             ),
             const SizedBox(height: 30),
             CustomDateField(
-              label: "Due date",
+              label: 'Due date',
               controller: dueDateController,
               validator: dateValidator,
             ),
             const SizedBox(height: 30),
             CustomTextField(
-              label: "Description",
+              label: 'Description',
               controller: descriptionController,
               minLines: 1,
               maxLines: 5,
@@ -97,7 +97,7 @@ class CreateTaskScreen extends StatelessWidget {
             ),
             const SizedBox(height: 30),
             CustomButton(
-              label: task != null ? "Update task" : "Add task",
+              label: task != null ? 'Update task' : 'Add task',
               onPressed: () => task != null
                   ? dispatchUpdate(context)
                   : dispatchCreate(context),
@@ -111,7 +111,7 @@ class CreateTaskScreen extends StatelessWidget {
 
   void dispatchCreate(BuildContext context) {
     if (_formKey.currentState!.validate()) {
-      BlocProvider.of<TaskBloc>(context).add(CreateTask(
+      BlocProvider.of<TaskBloc>(context).add(CreateTaskEvent(
         titleController.text,
         descriptionController.text,
         dueDateController.text,
@@ -121,7 +121,7 @@ class CreateTaskScreen extends StatelessWidget {
 
   void dispatchUpdate(BuildContext context) {
     if (_formKey.currentState!.validate()) {
-      BlocProvider.of<TaskBloc>(context).add(UpdateTask(
+      BlocProvider.of<TaskBloc>(context).add(UpdateTaskEvent(
           task!.id,
           titleController.text,
           descriptionController.text,

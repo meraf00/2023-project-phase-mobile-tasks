@@ -26,12 +26,13 @@ void main() {
   );
 
   test('should update task from repository', () async {
-    when(mockTaskRepository.updateTask(tTask))
-        .thenAnswer((_) async => const Right(null));
+    when(mockTaskRepository.updateTask(tTask)).thenAnswer((_) async* {
+      yield Right(tTask);
+    });
 
-    final result = await usecase(UpdateParams(task: tTask));
+    final result = usecase(UpdateParams(task: tTask));
 
-    expect(result, const Right(null));
+    expect(result, emitsInOrder([Right(tTask)]));
 
     verify(mockTaskRepository.updateTask(tTask));
     verifyNoMoreInteractions(mockTaskRepository);

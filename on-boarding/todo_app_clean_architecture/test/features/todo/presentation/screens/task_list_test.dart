@@ -25,7 +25,7 @@ void main() async {
         .thenAnswer((_) async => false);
   });
 
-  group("Task list screen", () {
+  group('Task list screen', () {
     setUpAll(() async {
       SharedPreferences.setMockInitialValues(<String, Object>{});
 
@@ -37,15 +37,15 @@ void main() async {
           () => NetworkInfoImpl(mockInternetConnectionChecker));
     });
 
-    testWidgets("should display image", (tester) async {
+    testWidgets('should display image', (tester) async {
       await navigateToTaskList(tester);
 
-      final image = find.image(const AssetImage("assets/images/task_list.png"));
+      final image = find.image(const AssetImage('assets/images/task_list.png'));
 
       expect(image, findsOneWidget);
     });
 
-    testWidgets("should display create task button", (tester) async {
+    testWidgets('should display create task button', (tester) async {
       await navigateToTaskList(tester);
 
       final buttonFinder = find.byType(CustomButton);
@@ -53,13 +53,13 @@ void main() async {
       final button = tester.firstWidget(buttonFinder) as CustomButton;
 
       expect(buttonFinder, findsOneWidget);
-      expect(button.label, "Create task");
+      expect(button.label, 'Create task');
     });
 
-    testWidgets("should display empty tasks message", (tester) async {
+    testWidgets('should display empty tasks message', (tester) async {
       await navigateToTaskList(tester);
 
-      expect(find.text("No tasks found, why not add one?"), findsOneWidget);
+      expect(find.text('No tasks found, why not add one?'), findsOneWidget);
     });
 
     tearDownAll(() {
@@ -67,7 +67,7 @@ void main() async {
     });
   });
 
-  group("Task list screen", () {
+  group('Task list screen', () {
     setUpAll(() async {
       SharedPreferences.setMockInitialValues({
         sharedPreferenceStorageKey:
@@ -82,7 +82,7 @@ void main() async {
           () => NetworkInfoImpl(mockInternetConnectionChecker));
     });
 
-    testWidgets("should display tasks", (tester) async {
+    testWidgets('should display tasks', (tester) async {
       await navigateToTaskList(tester);
 
       final taskCardFinder = find.byType(TaskCard);
@@ -103,6 +103,6 @@ Future<void> navigateToTaskList(tester) async {
 
   await tester.pumpWidget(widget);
 
-  await tester.tap(find.text("Get started"));
+  await tester.tap(find.text('Get started'));
   await tester.pumpAndSettle();
 }

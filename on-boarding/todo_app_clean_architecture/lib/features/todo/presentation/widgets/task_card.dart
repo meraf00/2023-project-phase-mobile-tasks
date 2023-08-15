@@ -35,7 +35,7 @@ class TaskCard extends StatelessWidget {
           children: [
             CircleAvatar(
               backgroundColor: Theme.of(context).colorScheme.surface,
-              child: Text(title.isNotEmpty ? title[0] : ""),
+              child: Text(title.isNotEmpty ? title[0] : ''),
             ),
             Text(
               title,

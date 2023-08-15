@@ -4,9 +4,9 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
+import 'package:todo_app_clean_architecture/core/constants/constants.dart';
 import 'package:todo_app_clean_architecture/core/error/exception.dart';
 import 'package:todo_app_clean_architecture/features/todo/data/datasources/task_remote_data_source.dart';
-import 'package:todo_app_clean_architecture/core/constants/constants.dart';
 import 'package:todo_app_clean_architecture/features/todo/data/models/task_model.dart';
 
 import '../../../../fixture/fixture_reader.dart';
@@ -235,6 +235,7 @@ void main() {
         Uri.parse(deleteTaskApiUrl),
         headers: {'Content-Type': 'application/json'},
       ));
+
       verifyNoMoreInteractions(mockClient);
     });
 
@@ -250,6 +251,7 @@ void main() {
         Uri.parse(deleteTaskApiUrl),
         headers: {'Content-Type': 'application/json'},
       ));
+
       verifyNoMoreInteractions(mockClient);
     });
   });

@@ -11,9 +11,7 @@ abstract class Validator {
 }
 
 class ValidationFailure extends Failure {
-  final String message;
-
-  ValidationFailure({required this.message});
+  const ValidationFailure({required super.message});
 
   @override
   List<Object?> get props => [message];

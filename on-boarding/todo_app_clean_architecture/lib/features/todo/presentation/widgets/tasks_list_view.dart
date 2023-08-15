@@ -41,7 +41,7 @@ class _TasksListViewState extends State<TasksListView> {
                 );
 
                 if (mounted) {
-                  context.read<TaskBloc>().add(GetTasks());
+                  context.read<TaskBloc>().add(LoadAllTasksEvent());
                 }
               },
               child: TaskCard(

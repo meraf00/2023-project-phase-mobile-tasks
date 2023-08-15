@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:todo_app_clean_architecture/core/error/exception.dart';
+import '../../../../core/error/exception.dart';
 
 import '../models/task_model.dart';
 
@@ -12,7 +12,7 @@ abstract class TaskLocalDataSource {
   Future<List<TaskModel>> getTasks();
   Future<TaskModel> getTask(int id);
   Future<TaskModel> createTask(TaskModel todo);
-  Future<void> updateTask(TaskModel todo);
+  Future<TaskModel> updateTask(TaskModel todo);
   Future<TaskModel> deleteTask(int id);
 }
 
@@ -64,7 +64,7 @@ class TaskLocalDataSourceImpl implements TaskLocalDataSource {
   @override
   Future<List<TaskModel>> getTasks() async {
     final serialized =
-        sharedPreferences.getString(sharedPreferenceStorageKey) ?? "[]";
+        sharedPreferences.getString(sharedPreferenceStorageKey) ?? '[]';
     try {
       final json = jsonDecode(serialized) as List;
       final tasks = json.map((e) => TaskModel.fromJson(e)).toList();
@@ -75,7 +75,7 @@ class TaskLocalDataSourceImpl implements TaskLocalDataSource {
   }
 
   @override
-  Future<void> updateTask(TaskModel task) async {
+  Future<TaskModel> updateTask(TaskModel task) async {
     final tasks = await getTasks();
 
     for (int i = 0; i < tasks.length; i++) {
@@ -83,7 +83,7 @@ class TaskLocalDataSourceImpl implements TaskLocalDataSource {
         tasks[i] = task;
         await sharedPreferences.setString(
             sharedPreferenceStorageKey, jsonEncode(tasks));
-        return;
+        return task;
       }
     }
 

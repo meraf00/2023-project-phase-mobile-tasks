@@ -27,12 +27,13 @@ void main() {
       completed: false);
 
   test('should delete task from repository', () async {
-    when(mockTaskRepository.deleteTask(tTaskId))
-        .thenAnswer((_) async => Right(tTask));
+    when(mockTaskRepository.deleteTask(tTaskId)).thenAnswer((_) async* {
+      yield Right(tTask);
+    });
 
-    final result = await usecase(const DeleteParams(id: tTaskId));
+    final result = usecase(const DeleteParams(id: tTaskId));
 
-    expect(result, Right(tTask));
+    expect(result, emitsInOrder([Right(tTask)]));
 
     verify(mockTaskRepository.deleteTask(tTaskId));
     verifyNoMoreInteractions(mockTaskRepository);

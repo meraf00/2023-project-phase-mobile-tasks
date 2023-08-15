@@ -1,22 +1,21 @@
-import 'package:dartz/dartz.dart' hide Task;
 import 'package:bloc_test/bloc_test.dart';
+import 'package:dartz/dartz.dart' hide Task;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:todo_app_clean_architecture/core/error/failures.dart';
-
 import 'package:todo_app_clean_architecture/core/presentation/util/input_converter.dart';
 import 'package:todo_app_clean_architecture/features/todo/domain/entities/task.dart';
-import 'package:todo_app_clean_architecture/features/todo/presentation/bloc/task_bloc.dart';
 import 'package:todo_app_clean_architecture/features/todo/domain/usecases/usecases.dart'
     as usecases;
+import 'package:todo_app_clean_architecture/features/todo/presentation/bloc/task_bloc.dart';
 
 import 'task_bloc_test.mocks.dart';
 
 @GenerateMocks([
   InputConverter,
-  usecases.ViewAllTasks,
-  usecases.ViewTask,
+  usecases.GetAllTasks,
+  usecases.GetTask,
   usecases.CreateTask,
   usecases.UpdateTask,
   usecases.DeleteTask
@@ -24,8 +23,8 @@ import 'task_bloc_test.mocks.dart';
 void main() {
   late TaskBloc taskBloc;
   late MockInputConverter mockInputConverter;
-  late MockViewAllTasks mockGetAllTasks;
-  late MockViewTask mockGetTask;
+  late MockGetAllTasks mockGetAllTasks;
+  late MockGetTask mockGetTask;
   late MockCreateTask mockCreateTask;
   late MockUpdateTask mockUpdateTask;
   late MockDeleteTask mockDeleteTask;
@@ -33,8 +32,8 @@ void main() {
   setUp(() {
     mockInputConverter = MockInputConverter();
 
-    mockGetAllTasks = MockViewAllTasks();
-    mockGetTask = MockViewTask();
+    mockGetAllTasks = MockGetAllTasks();
+    mockGetTask = MockGetTask();
     mockCreateTask = MockCreateTask();
     mockUpdateTask = MockUpdateTask();
     mockDeleteTask = MockDeleteTask();
@@ -65,20 +64,22 @@ void main() {
 
   group('Task bloc', () {
     test('initial state should be TaskInitial', () {
-      expect(taskBloc.state, equals(TaskInitial()));
+      expect(taskBloc.state, equals(InitialState()));
     });
 
     blocTest<TaskBloc, TaskState>(
       'should emit TaskLoading, TasksLoaded states for GetAllTasks',
       build: () => taskBloc,
       act: (bloc) {
-        when(mockGetAllTasks(any)).thenAnswer((_) async => const Right([]));
+        when(mockGetAllTasks(any)).thenAnswer((_) async* {
+          yield const Right([]);
+        });
 
-        bloc.add(GetTasks());
+        bloc.add(LoadAllTasksEvent());
       },
       expect: () => [
-        TaskLoading(),
-        const TasksLoaded([]),
+        LoadingState(),
+        const LoadedAllTasksState([]),
       ],
     );
 
@@ -86,13 +87,15 @@ void main() {
       'should emit TaskLoading, TaskLoaded for GetTask',
       build: () => taskBloc,
       act: (bloc) {
-        when(mockGetTask(any)).thenAnswer((_) async => Right(tTask));
+        when(mockGetTask(any)).thenAnswer((_) async* {
+          yield Right(tTask);
+        });
 
-        bloc.add(const GetTask(tTaskId));
+        bloc.add(const GetSingleTaskEvent(tTaskId));
       },
       expect: () => [
-        TaskLoading(),
-        TaskLoaded(tTask),
+        LoadingState(),
+        LoadedSingleTaskState(tTask),
       ],
     );
 
@@ -101,14 +104,16 @@ void main() {
       'should emit TaskCreated when new task is created',
       build: () => taskBloc,
       act: (bloc) {
-        when(mockCreateTask(any)).thenAnswer((_) async => Right(tTask));
+        when(mockCreateTask(any)).thenAnswer((_) async* {
+          yield Right(tTask);
+        });
         when(mockInputConverter.stringToDateTime(any))
             .thenAnswer((_) => Right(tDate));
 
-        bloc.add(CreateTask(tTask.title, tTask.description, tDateString));
+        bloc.add(CreateTaskEvent(tTask.title, tTask.description, tDateString));
       },
       expect: () => [
-        TaskCreated(tTask),
+        CreatedTaskState(tTask),
       ],
     );
 
@@ -117,14 +122,14 @@ void main() {
       build: () => taskBloc,
       act: (bloc) {
         when(mockInputConverter.stringToDateTime(any))
-            .thenAnswer((_) => Left(InvalidInputFailure()));
+            .thenAnswer((_) => const Left(InvalidInputFailure()));
 
-        bloc.add(CreateTask(tTask.title, tTask.description, tDateString));
+        bloc.add(CreateTaskEvent(tTask.title, tTask.description, tDateString));
 
         verifyNoMoreInteractions(mockCreateTask);
       },
       expect: () => [
-        const TaskError(invalidDateFailureMessage),
+        const ErrorState(invalidDateFailureMessage),
       ],
     );
 
@@ -133,15 +138,17 @@ void main() {
       'should emit TaskUpdated for on successful task update',
       build: () => taskBloc,
       act: (bloc) {
-        when(mockUpdateTask(any)).thenAnswer((_) async => const Right(null));
+        when(mockUpdateTask(any)).thenAnswer((_) async* {
+          yield Right(tTask);
+        });
         when(mockInputConverter.stringToDateTime(any))
             .thenAnswer((_) => Right(DateTime(2020, 1, 1)));
 
-        bloc.add(UpdateTask(tTask.id, tTask.title, tTask.description,
+        bloc.add(UpdateTaskEvent(tTask.id, tTask.title, tTask.description,
             tDateString, tTask.completed));
       },
       expect: () => [
-        TaskUpdated(tTask),
+        UpdatedTaskState(tTask),
       ],
     );
 
@@ -150,15 +157,15 @@ void main() {
       build: () => taskBloc,
       act: (bloc) {
         when(mockInputConverter.stringToDateTime(any))
-            .thenAnswer((_) => Left(InvalidInputFailure()));
+            .thenAnswer((_) => const Left(InvalidInputFailure()));
 
-        bloc.add(UpdateTask(tTask.id, tTask.title, tTask.description,
+        bloc.add(UpdateTaskEvent(tTask.id, tTask.title, tTask.description,
             tDateString, tTask.completed));
 
         verifyNoMoreInteractions(mockUpdateTask);
       },
       expect: () => [
-        const TaskError(invalidDateFailureMessage),
+        const ErrorState(invalidDateFailureMessage),
       ],
     );
 
@@ -167,12 +174,14 @@ void main() {
       'should emit TaskDelete on successful task delete',
       build: () => taskBloc,
       act: (bloc) {
-        when(mockDeleteTask(any)).thenAnswer((_) async => Right(tTask));
+        when(mockDeleteTask(any)).thenAnswer((_) async* {
+          yield Right(tTask);
+        });
 
-        bloc.add(DeleteTask(tTask.id));
+        bloc.add(DeleteTaskEvent(tTask.id));
       },
       expect: () => [
-        TaskDeleted(tTask),
+        DeletedTaskState(tTask),
       ],
     );
 
@@ -180,15 +189,16 @@ void main() {
       'should emit TaskError for when task delete fails',
       build: () => taskBloc,
       act: (bloc) {
-        when(mockDeleteTask(any)).thenAnswer(
-            (_) async => Left(CacheFailure(message: cacheFailureMessage)));
+        when(mockDeleteTask(any)).thenAnswer((_) async* {
+          yield const Left(CacheFailure(message: cacheFailureMessage));
+        });
 
-        bloc.add(DeleteTask(tTask.id));
+        bloc.add(DeleteTaskEvent(tTask.id));
 
         verifyNoMoreInteractions(mockUpdateTask);
       },
       expect: () => [
-        const TaskError(cacheFailureMessage),
+        const ErrorState(cacheFailureMessage),
       ],
     );
   });

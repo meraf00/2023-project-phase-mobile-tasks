@@ -17,12 +17,12 @@ import 'package:todo_app_clean_architecture/features/todo/domain/usecases/create
     as _i10;
 import 'package:todo_app_clean_architecture/features/todo/domain/usecases/delete_task.dart'
     as _i12;
+import 'package:todo_app_clean_architecture/features/todo/domain/usecases/get_all_tasks.dart'
+    as _i4;
+import 'package:todo_app_clean_architecture/features/todo/domain/usecases/get_task.dart'
+    as _i9;
 import 'package:todo_app_clean_architecture/features/todo/domain/usecases/update_task.dart'
     as _i11;
-import 'package:todo_app_clean_architecture/features/todo/domain/usecases/view_all_tasks.dart'
-    as _i4;
-import 'package:todo_app_clean_architecture/features/todo/domain/usecases/view_task.dart'
-    as _i9;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -78,58 +78,45 @@ class MockInputConverter extends _i1.Mock implements _i3.InputConverter {
       ) as _i2.Either<_i3.InvalidInputFailure, DateTime>);
 }
 
-/// A class which mocks [ViewAllTasks].
+/// A class which mocks [GetAllTasks].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockViewAllTasks extends _i1.Mock implements _i4.ViewAllTasks {
-  MockViewAllTasks() {
+class MockGetAllTasks extends _i1.Mock implements _i4.GetAllTasks {
+  MockGetAllTasks() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i5.Future<_i2.Either<_i6.Failure, List<_i7.Task>>> call(
+  _i5.Stream<_i2.Either<_i6.Failure, List<_i7.Task>>> call(
           _i8.NoParams? params) =>
       (super.noSuchMethod(
         Invocation.method(
           #call,
           [params],
         ),
-        returnValue: _i5.Future<_i2.Either<_i6.Failure, List<_i7.Task>>>.value(
-            _FakeEither_0<_i6.Failure, List<_i7.Task>>(
-          this,
-          Invocation.method(
-            #call,
-            [params],
-          ),
-        )),
-      ) as _i5.Future<_i2.Either<_i6.Failure, List<_i7.Task>>>);
+        returnValue:
+            _i5.Stream<_i2.Either<_i6.Failure, List<_i7.Task>>>.empty(),
+      ) as _i5.Stream<_i2.Either<_i6.Failure, List<_i7.Task>>>);
 }
 
-/// A class which mocks [ViewTask].
+/// A class which mocks [GetTask].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockViewTask extends _i1.Mock implements _i9.ViewTask {
-  MockViewTask() {
+class MockGetTask extends _i1.Mock implements _i9.GetTask {
+  MockGetTask() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i5.Future<_i2.Either<_i6.Failure, _i7.Task>> call(
+  _i5.Stream<_i2.Either<_i6.Failure, _i7.Task>> call(
           _i9.GetTaskParams? params) =>
       (super.noSuchMethod(
         Invocation.method(
           #call,
           [params],
         ),
-        returnValue: _i5.Future<_i2.Either<_i6.Failure, _i7.Task>>.value(
-            _FakeEither_0<_i6.Failure, _i7.Task>(
-          this,
-          Invocation.method(
-            #call,
-            [params],
-          ),
-        )),
-      ) as _i5.Future<_i2.Either<_i6.Failure, _i7.Task>>);
+        returnValue: _i5.Stream<_i2.Either<_i6.Failure, _i7.Task>>.empty(),
+      ) as _i5.Stream<_i2.Either<_i6.Failure, _i7.Task>>);
 }
 
 /// A class which mocks [CreateTask].
@@ -141,22 +128,15 @@ class MockCreateTask extends _i1.Mock implements _i10.CreateTask {
   }
 
   @override
-  _i5.Future<_i2.Either<_i6.Failure, _i7.Task>> call(
+  _i5.Stream<_i2.Either<_i6.Failure, _i7.Task>> call(
           _i10.CreateParams? params) =>
       (super.noSuchMethod(
         Invocation.method(
           #call,
           [params],
         ),
-        returnValue: _i5.Future<_i2.Either<_i6.Failure, _i7.Task>>.value(
-            _FakeEither_0<_i6.Failure, _i7.Task>(
-          this,
-          Invocation.method(
-            #call,
-            [params],
-          ),
-        )),
-      ) as _i5.Future<_i2.Either<_i6.Failure, _i7.Task>>);
+        returnValue: _i5.Stream<_i2.Either<_i6.Failure, _i7.Task>>.empty(),
+      ) as _i5.Stream<_i2.Either<_i6.Failure, _i7.Task>>);
 }
 
 /// A class which mocks [UpdateTask].
@@ -168,21 +148,15 @@ class MockUpdateTask extends _i1.Mock implements _i11.UpdateTask {
   }
 
   @override
-  _i5.Future<_i2.Either<_i6.Failure, void>> call(_i11.UpdateParams? params) =>
+  _i5.Stream<_i2.Either<_i6.Failure, _i7.Task>> call(
+          _i11.UpdateParams? params) =>
       (super.noSuchMethod(
         Invocation.method(
           #call,
           [params],
         ),
-        returnValue: _i5.Future<_i2.Either<_i6.Failure, void>>.value(
-            _FakeEither_0<_i6.Failure, void>(
-          this,
-          Invocation.method(
-            #call,
-            [params],
-          ),
-        )),
-      ) as _i5.Future<_i2.Either<_i6.Failure, void>>);
+        returnValue: _i5.Stream<_i2.Either<_i6.Failure, _i7.Task>>.empty(),
+      ) as _i5.Stream<_i2.Either<_i6.Failure, _i7.Task>>);
 }
 
 /// A class which mocks [DeleteTask].
@@ -194,20 +168,13 @@ class MockDeleteTask extends _i1.Mock implements _i12.DeleteTask {
   }
 
   @override
-  _i5.Future<_i2.Either<_i6.Failure, _i7.Task>> call(
+  _i5.Stream<_i2.Either<_i6.Failure, _i7.Task>> call(
           _i12.DeleteParams? params) =>
       (super.noSuchMethod(
         Invocation.method(
           #call,
           [params],
         ),
-        returnValue: _i5.Future<_i2.Either<_i6.Failure, _i7.Task>>.value(
-            _FakeEither_0<_i6.Failure, _i7.Task>(
-          this,
-          Invocation.method(
-            #call,
-            [params],
-          ),
-        )),
-      ) as _i5.Future<_i2.Either<_i6.Failure, _i7.Task>>);
+        returnValue: _i5.Stream<_i2.Either<_i6.Failure, _i7.Task>>.empty(),
+      ) as _i5.Stream<_i2.Either<_i6.Failure, _i7.Task>>);
 }

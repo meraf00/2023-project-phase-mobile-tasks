@@ -1,9 +1,10 @@
 import 'package:dartz/dartz.dart';
-import 'validator/validator.dart';
+
 import '../../../injection_container.dart';
+import 'validator/validator.dart';
 
 String? dateValidator(String? value) {
-  final result = serviceLocator<DateValidator>().validate(value ?? "");
+  final result = serviceLocator<DateValidator>().validate(value ?? '');
 
   if (result.isLeft()) {
     return (result as Left<ValidationFailure, void>).value.message;
@@ -13,7 +14,7 @@ String? dateValidator(String? value) {
 }
 
 String? titleValidator(String? value) {
-  final result = serviceLocator<TitleValidator>().validate(value ?? "");
+  final result = serviceLocator<TitleValidator>().validate(value ?? '');
 
   if (result.isLeft()) {
     return (result as Left<ValidationFailure, void>).value.message;
@@ -23,7 +24,7 @@ String? titleValidator(String? value) {
 }
 
 String? descriptionValidator(String? value) {
-  final result = serviceLocator<DescriptionValidator>().validate(value ?? "");
+  final result = serviceLocator<DescriptionValidator>().validate(value ?? '');
 
   if (result.isLeft()) {
     return (result as Left<ValidationFailure, void>).value.message;

@@ -4,9 +4,9 @@ import '../../../../core/error/failures.dart';
 import '../entities/task.dart';
 
 abstract class TaskRepository {
-  Future<Either<Failure, List<Task>>> getTasks();
-  Future<Either<Failure, Task>> getTask(int id);
-  Future<Either<Failure, Task>> createTask(Task task);
-  Future<Either<Failure, void>> updateTask(Task task);
-  Future<Either<Failure, Task>> deleteTask(int id);
+  Stream<Either<Failure, List<Task>>> getTasks();
+  Stream<Either<Failure, Task>> getTask(int id);
+  Stream<Either<Failure, Task>> createTask(Task task);
+  Stream<Either<Failure, Task>> updateTask(Task task);
+  Stream<Either<Failure, Task>> deleteTask(int id);
 }

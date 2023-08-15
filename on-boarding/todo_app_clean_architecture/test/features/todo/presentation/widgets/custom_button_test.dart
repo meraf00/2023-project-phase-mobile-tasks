@@ -1,7 +1,7 @@
-import "package:flutter/material.dart";
-import "package:flutter_test/flutter_test.dart";
-import "package:mockito/mockito.dart";
-import "package:todo_app_clean_architecture/features/todo/presentation/widgets/custom_button.dart";
+import 'package:flutter/material.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:mockito/mockito.dart';
+import 'package:todo_app_clean_architecture/features/todo/presentation/widgets/custom_button.dart';
 
 class Functions {
   void call() {}
@@ -16,21 +16,21 @@ void main() {
     mockFunction = MockFunction();
   });
 
-  group("Test button", () {
-    testWidgets("displays correct label", (tester) async {
+  group('Test button', () {
+    testWidgets('displays correct label', (tester) async {
       await tester.pumpWidget(
         MaterialApp(
-          home: CustomButton(onPressed: mockFunction, label: "Button"),
+          home: CustomButton(onPressed: mockFunction, label: 'Button'),
         ),
       );
 
-      expect(find.text("Button"), findsOneWidget);
+      expect(find.text('Button'), findsOneWidget);
     });
 
-    testWidgets("handles click event", (tester) async {
+    testWidgets('handles click event', (tester) async {
       final button = CustomButton(
         onPressed: mockFunction,
-        label: "Button",
+        label: 'Button',
       );
 
       final widget = MaterialApp(home: button);

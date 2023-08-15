@@ -1,19 +1,19 @@
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:dartz/dartz.dart' hide Task;
 import 'package:equatable/equatable.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../core/usecases/usecase.dart';
 import '../../../../core/presentation/util/input_converter.dart';
-import '../../domain/usecases/usecases.dart' as usecases;
+import '../../../../core/usecases/usecase.dart';
 import '../../domain/entities/task.dart';
+import '../../domain/usecases/usecases.dart' as usecases;
 
 part 'task_event.dart';
-part 'task_state.dart';
 part 'task_messages.dart';
+part 'task_state.dart';
 
 class TaskBloc extends Bloc<TaskEvent, TaskState> {
-  final usecases.ViewTask getTask;
-  final usecases.ViewAllTasks getAllTasks;
+  final usecases.GetTask getTask;
+  final usecases.GetAllTasks getAllTasks;
   final usecases.CreateTask createTask;
   final usecases.UpdateTask updateTask;
   final usecases.DeleteTask deleteTask;
@@ -27,41 +27,61 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
       required this.getTask,
       required this.getAllTasks,
       required this.inputConverter})
-      : super(TaskInitial()) {
+      : super(InitialState()) {
     //
     //
     // Get all tasks
-    on<GetTasks>((event, emit) async {
-      emit(TaskLoading());
+    on<LoadAllTasksEvent>((event, emit) async {
+      emit(LoadingState());
 
-      final result = await getAllTasks(NoParams());
+      final stream = getAllTasks(NoParams());
 
-      result.fold(
-        (failure) => emit(const TaskError(cacheFailureMessage)),
-        (task) => emit(TasksLoaded(task)),
-      );
+      await emit.forEach(stream, onData: (result) {
+        late TaskState state;
+
+        result.fold(
+          (failure) {
+            state = ErrorState(failure.message);
+          },
+          (task) {
+            state = LoadedAllTasksState(task);
+          },
+        );
+
+        return state;
+      });
     });
 
     //
     // Get task
-    on<GetTask>((event, emit) async {
-      emit(TaskLoading());
+    on<GetSingleTaskEvent>((event, emit) async {
+      emit(LoadingState());
 
-      final result = await getTask(usecases.GetTaskParams(id: event.id));
+      final stream = getTask(usecases.GetTaskParams(id: event.id));
 
-      result.fold(
-        (failure) => emit(const TaskError(cacheFailureMessage)),
-        (task) => emit(TaskLoaded(task)),
-      );
+      await emit.forEach(stream, onData: (result) {
+        late TaskState state;
+
+        result.fold(
+          (failure) {
+            state = ErrorState(failure.message);
+          },
+          (task) {
+            state = LoadedSingleTaskState(task);
+          },
+        );
+
+        return state;
+      });
     });
 
     //
     // Create task
-    on<CreateTask>((event, emit) async {
+    on<CreateTaskEvent>((event, emit) async {
       final parsedDate = inputConverter.stringToDateTime(event.date);
 
       if (parsedDate.isLeft()) {
-        emit(const TaskError(invalidDateFailureMessage));
+        emit(const ErrorState(invalidDateFailureMessage));
         return;
       }
 
@@ -72,21 +92,31 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
           completed: false,
           dueDate: (parsedDate as Right).value);
 
-      final result = await createTask(usecases.CreateParams(task: task));
+      final stream = createTask(usecases.CreateParams(task: task));
 
-      result.fold(
-        (failure) => emit(const TaskError(cacheFailureMessage)),
-        (task) => emit(TaskCreated(task)),
-      );
+      await emit.forEach(stream, onData: (result) {
+        late TaskState state;
+
+        result.fold(
+          (failure) {
+            state = ErrorState(failure.message);
+          },
+          (task) {
+            state = CreatedTaskState(task);
+          },
+        );
+
+        return state;
+      });
     });
 
     //
     // Update task
-    on<UpdateTask>((event, emit) async {
+    on<UpdateTaskEvent>((event, emit) async {
       final parsedDate = inputConverter.stringToDateTime(event.date);
 
       if (parsedDate.isLeft()) {
-        emit(const TaskError(invalidDateFailureMessage));
+        emit(const ErrorState(invalidDateFailureMessage));
         return;
       }
 
@@ -97,23 +127,43 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
           completed: event.completed,
           dueDate: (parsedDate as Right).value);
 
-      final result = await updateTask(usecases.UpdateParams(task: task));
+      final stream = updateTask(usecases.UpdateParams(task: task));
 
-      result.fold(
-        (failure) => emit(const TaskError(cacheFailureMessage)),
-        (_) => emit(TaskUpdated(task)),
-      );
+      await emit.forEach(stream, onData: (result) {
+        late TaskState state;
+
+        result.fold(
+          (failure) {
+            state = ErrorState(failure.message);
+          },
+          (task) {
+            state = UpdatedTaskState(task);
+          },
+        );
+
+        return state;
+      });
     });
 
     //
     // Delete task
-    on<DeleteTask>((event, emit) async {
-      final result = await deleteTask(usecases.DeleteParams(id: event.id));
+    on<DeleteTaskEvent>((event, emit) async {
+      final stream = deleteTask(usecases.DeleteParams(id: event.id));
 
-      result.fold(
-        (failure) => emit(const TaskError(cacheFailureMessage)),
-        (task) => emit(TaskDeleted(task)),
-      );
+      await emit.forEach(stream, onData: (result) {
+        late TaskState state;
+
+        result.fold(
+          (failure) {
+            state = ErrorState(failure.message);
+          },
+          (task) {
+            state = DeletedTaskState(task);
+          },
+        );
+
+        return state;
+      });
     });
   }
 }

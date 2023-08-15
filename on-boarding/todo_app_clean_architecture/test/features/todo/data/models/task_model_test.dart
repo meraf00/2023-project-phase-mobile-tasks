@@ -17,7 +17,7 @@ void main() {
       'id': 1,
       'title': 'Task 1',
       'description': 'Task 1 description',
-      'dueDate': "2020-01-01T00:00:00.000",
+      'dueDate': '2020-01-01T00:00:00.000',
       'completed': false,
     };
 
@@ -29,7 +29,7 @@ void main() {
       'id': 1,
       'title': 'Task 1',
       'description': 'Task 1 description',
-      'dueDate': "2020-01-01T00:00:00.000",
+      'dueDate': '2020-01-01T00:00:00.000',
       'completed': false,
     });
 

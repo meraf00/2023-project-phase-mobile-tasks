@@ -2,11 +2,12 @@ import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:todo_app_clean_architecture/features/todo/data/datasources/task_remote_data_source.dart';
+
 import 'core/network/network_info.dart';
 import 'core/presentation/util/input_converter.dart';
 import 'core/presentation/util/validator/validator.dart';
 import 'features/todo/data/datasources/task_local_data_source.dart';
+import 'features/todo/data/datasources/task_remote_data_source.dart';
 import 'features/todo/data/repositories/task_repository_impl.dart';
 import 'features/todo/domain/repositories/task_repository.dart';
 import 'features/todo/domain/usecases/usecases.dart' as usecases;
@@ -38,10 +39,10 @@ Future<void> init() async {
     () => usecases.DeleteTask(serviceLocator()),
   );
   serviceLocator.registerLazySingleton(
-    () => usecases.ViewAllTasks(serviceLocator()),
+    () => usecases.GetAllTasks(serviceLocator()),
   );
   serviceLocator.registerLazySingleton(
-    () => usecases.ViewTask(serviceLocator()),
+    () => usecases.GetTask(serviceLocator()),
   );
 
   // Validators
