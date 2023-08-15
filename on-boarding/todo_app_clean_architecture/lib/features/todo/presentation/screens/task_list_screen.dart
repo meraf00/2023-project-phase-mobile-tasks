@@ -6,6 +6,7 @@ import '../bloc/task_bloc.dart';
 import '../widgets/app_bar.dart';
 import '../widgets/custom_button.dart';
 import '../widgets/loading.dart';
+import '../widgets/snackbar.dart';
 import '../widgets/tasks_list_view.dart';
 import 'create_task_screen.dart';
 
@@ -56,7 +57,17 @@ class _TaskListScreenState extends State<TaskListScreen> {
           const SizedBox(height: 10),
 
           // Tasks list
-          BlocBuilder<TaskBloc, TaskState>(
+          BlocConsumer<TaskBloc, TaskState>(
+            buildWhen: (previous, current) => current is! TaskError,
+
+            //
+            listener: (context, state) {
+              if (state is TaskError) {
+                showError(context, state.message);
+              }
+            },
+
+            //
             builder: (context, state) {
               // task loading
               if (state is TaskLoading) {
@@ -66,11 +77,6 @@ class _TaskListScreenState extends State<TaskListScreen> {
               // tasks loaded
               else if (state is TasksLoaded) {
                 return TasksListView(tasks: state.tasks);
-              }
-
-              // tasks load failure
-              else if (state is TaskError) {
-                return Text(state.message);
               }
 
               return const CircularProgressIndicator();

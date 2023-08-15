@@ -35,7 +35,7 @@ void main() {
         // assert
         expect(
             result,
-            Left<InvalidInputFailure, DateTime>(
+            const Left<InvalidInputFailure, DateTime>(
                 InvalidInputFailure(message: 'Invalid date format')));
       });
 

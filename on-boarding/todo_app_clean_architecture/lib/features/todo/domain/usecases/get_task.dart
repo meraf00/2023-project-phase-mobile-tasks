@@ -6,14 +6,14 @@ import '../../../../core/usecases/usecase.dart';
 import '../entities/task.dart';
 import '../repositories/task_repository.dart';
 
-class ViewTask extends UseCase<Task, GetTaskParams> {
+class GetTask extends UseCase<Task, GetTaskParams> {
   final TaskRepository _taskRepository;
 
-  ViewTask(this._taskRepository);
+  GetTask(this._taskRepository);
 
   @override
-  Future<Either<Failure, Task>> call(GetTaskParams params) async {
-    return await _taskRepository.getTask(params.id);
+  Stream<Either<Failure, Task>> call(GetTaskParams params) {
+    return _taskRepository.getTask(params.id);
   }
 }
 

@@ -31,8 +31,11 @@ class TaskDetailScreen extends StatelessWidget {
           } else if (state is TaskDeleted) {
             showSuccess(context, 'Task deleted successfully');
             Navigator.of(context).pop();
+          } else if (state is TaskError) {
+            showError(context, state.message);
           }
         },
+        buildWhen: (previous, current) => current is! TaskError,
         builder: (context, state) {
           if (state is TaskLoaded) {
             return Scaffold(

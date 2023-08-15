@@ -235,6 +235,7 @@ void main() {
         Uri.parse(deleteTaskApiUrl),
         headers: {'Content-Type': 'application/json'},
       ));
+
       verifyNoMoreInteractions(mockClient);
     });
 
@@ -250,6 +251,7 @@ void main() {
         Uri.parse(deleteTaskApiUrl),
         headers: {'Content-Type': 'application/json'},
       ));
+
       verifyNoMoreInteractions(mockClient);
     });
   });

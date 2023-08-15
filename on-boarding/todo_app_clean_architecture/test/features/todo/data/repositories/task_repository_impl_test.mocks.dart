@@ -3,17 +3,15 @@
 // Do not manually edit this file.
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'dart:async' as _i5;
+import 'dart:async' as _i4;
 
-import 'package:internet_connection_checker/internet_connection_checker.dart'
-    as _i3;
 import 'package:mockito/mockito.dart' as _i1;
 import 'package:todo_app_clean_architecture/core/network/network_info.dart'
-    as _i7;
-import 'package:todo_app_clean_architecture/features/todo/data/datasources/task_local_data_source.dart'
-    as _i4;
-import 'package:todo_app_clean_architecture/features/todo/data/datasources/task_remote_data_source.dart'
     as _i6;
+import 'package:todo_app_clean_architecture/features/todo/data/datasources/task_local_data_source.dart'
+    as _i3;
+import 'package:todo_app_clean_architecture/features/todo/data/datasources/task_remote_data_source.dart'
+    as _i5;
 import 'package:todo_app_clean_architecture/features/todo/data/models/task_model.dart'
     as _i2;
 
@@ -38,265 +36,171 @@ class _FakeTaskModel_0 extends _i1.SmartFake implements _i2.TaskModel {
         );
 }
 
-class _FakeDuration_1 extends _i1.SmartFake implements Duration {
-  _FakeDuration_1(
-    Object parent,
-    Invocation parentInvocation,
-  ) : super(
-          parent,
-          parentInvocation,
-        );
-}
-
-class _FakeAddressCheckResult_2 extends _i1.SmartFake
-    implements _i3.AddressCheckResult {
-  _FakeAddressCheckResult_2(
-    Object parent,
-    Invocation parentInvocation,
-  ) : super(
-          parent,
-          parentInvocation,
-        );
-}
-
 /// A class which mocks [TaskLocalDataSource].
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockTaskLocalDataSource extends _i1.Mock
-    implements _i4.TaskLocalDataSource {
+    implements _i3.TaskLocalDataSource {
   MockTaskLocalDataSource() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i5.Future<List<_i2.TaskModel>> getTasks() => (super.noSuchMethod(
+  _i4.Future<List<_i2.TaskModel>> getTasks() => (super.noSuchMethod(
         Invocation.method(
           #getTasks,
           [],
         ),
-        returnValue: _i5.Future<List<_i2.TaskModel>>.value(<_i2.TaskModel>[]),
-      ) as _i5.Future<List<_i2.TaskModel>>);
+        returnValue: _i4.Future<List<_i2.TaskModel>>.value(<_i2.TaskModel>[]),
+      ) as _i4.Future<List<_i2.TaskModel>>);
   @override
-  _i5.Future<_i2.TaskModel> getTask(int? id) => (super.noSuchMethod(
+  _i4.Future<_i2.TaskModel> getTask(int? id) => (super.noSuchMethod(
         Invocation.method(
           #getTask,
           [id],
         ),
-        returnValue: _i5.Future<_i2.TaskModel>.value(_FakeTaskModel_0(
+        returnValue: _i4.Future<_i2.TaskModel>.value(_FakeTaskModel_0(
           this,
           Invocation.method(
             #getTask,
             [id],
           ),
         )),
-      ) as _i5.Future<_i2.TaskModel>);
+      ) as _i4.Future<_i2.TaskModel>);
   @override
-  _i5.Future<_i2.TaskModel> createTask(_i2.TaskModel? todo) =>
+  _i4.Future<_i2.TaskModel> createTask(_i2.TaskModel? todo) =>
       (super.noSuchMethod(
         Invocation.method(
           #createTask,
           [todo],
         ),
-        returnValue: _i5.Future<_i2.TaskModel>.value(_FakeTaskModel_0(
+        returnValue: _i4.Future<_i2.TaskModel>.value(_FakeTaskModel_0(
           this,
           Invocation.method(
             #createTask,
             [todo],
           ),
         )),
-      ) as _i5.Future<_i2.TaskModel>);
+      ) as _i4.Future<_i2.TaskModel>);
   @override
-  _i5.Future<void> updateTask(_i2.TaskModel? todo) => (super.noSuchMethod(
+  _i4.Future<_i2.TaskModel> updateTask(_i2.TaskModel? todo) =>
+      (super.noSuchMethod(
         Invocation.method(
           #updateTask,
           [todo],
         ),
-        returnValue: _i5.Future<void>.value(),
-        returnValueForMissingStub: _i5.Future<void>.value(),
-      ) as _i5.Future<void>);
+        returnValue: _i4.Future<_i2.TaskModel>.value(_FakeTaskModel_0(
+          this,
+          Invocation.method(
+            #updateTask,
+            [todo],
+          ),
+        )),
+      ) as _i4.Future<_i2.TaskModel>);
   @override
-  _i5.Future<_i2.TaskModel> deleteTask(int? id) => (super.noSuchMethod(
+  _i4.Future<_i2.TaskModel> deleteTask(int? id) => (super.noSuchMethod(
         Invocation.method(
           #deleteTask,
           [id],
         ),
-        returnValue: _i5.Future<_i2.TaskModel>.value(_FakeTaskModel_0(
+        returnValue: _i4.Future<_i2.TaskModel>.value(_FakeTaskModel_0(
           this,
           Invocation.method(
             #deleteTask,
             [id],
           ),
         )),
-      ) as _i5.Future<_i2.TaskModel>);
+      ) as _i4.Future<_i2.TaskModel>);
 }
 
 /// A class which mocks [TaskRemoteDataSource].
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockTaskRemoteDataSource extends _i1.Mock
-    implements _i6.TaskRemoteDataSource {
+    implements _i5.TaskRemoteDataSource {
   MockTaskRemoteDataSource() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i5.Future<List<_i2.TaskModel>> getTasks() => (super.noSuchMethod(
+  _i4.Future<List<_i2.TaskModel>> getTasks() => (super.noSuchMethod(
         Invocation.method(
           #getTasks,
           [],
         ),
-        returnValue: _i5.Future<List<_i2.TaskModel>>.value(<_i2.TaskModel>[]),
-      ) as _i5.Future<List<_i2.TaskModel>>);
+        returnValue: _i4.Future<List<_i2.TaskModel>>.value(<_i2.TaskModel>[]),
+      ) as _i4.Future<List<_i2.TaskModel>>);
   @override
-  _i5.Future<_i2.TaskModel> getTask(int? id) => (super.noSuchMethod(
+  _i4.Future<_i2.TaskModel> getTask(int? id) => (super.noSuchMethod(
         Invocation.method(
           #getTask,
           [id],
         ),
-        returnValue: _i5.Future<_i2.TaskModel>.value(_FakeTaskModel_0(
+        returnValue: _i4.Future<_i2.TaskModel>.value(_FakeTaskModel_0(
           this,
           Invocation.method(
             #getTask,
             [id],
           ),
         )),
-      ) as _i5.Future<_i2.TaskModel>);
+      ) as _i4.Future<_i2.TaskModel>);
   @override
-  _i5.Future<_i2.TaskModel> createTask(_i2.TaskModel? todo) =>
+  _i4.Future<_i2.TaskModel> createTask(_i2.TaskModel? todo) =>
       (super.noSuchMethod(
         Invocation.method(
           #createTask,
           [todo],
         ),
-        returnValue: _i5.Future<_i2.TaskModel>.value(_FakeTaskModel_0(
+        returnValue: _i4.Future<_i2.TaskModel>.value(_FakeTaskModel_0(
           this,
           Invocation.method(
             #createTask,
             [todo],
           ),
         )),
-      ) as _i5.Future<_i2.TaskModel>);
+      ) as _i4.Future<_i2.TaskModel>);
   @override
-  _i5.Future<void> updateTask(_i2.TaskModel? todo) => (super.noSuchMethod(
+  _i4.Future<_i2.TaskModel> updateTask(_i2.TaskModel? todo) =>
+      (super.noSuchMethod(
         Invocation.method(
           #updateTask,
           [todo],
         ),
-        returnValue: _i5.Future<void>.value(),
-        returnValueForMissingStub: _i5.Future<void>.value(),
-      ) as _i5.Future<void>);
+        returnValue: _i4.Future<_i2.TaskModel>.value(_FakeTaskModel_0(
+          this,
+          Invocation.method(
+            #updateTask,
+            [todo],
+          ),
+        )),
+      ) as _i4.Future<_i2.TaskModel>);
   @override
-  _i5.Future<_i2.TaskModel> deleteTask(int? id) => (super.noSuchMethod(
+  _i4.Future<_i2.TaskModel> deleteTask(int? id) => (super.noSuchMethod(
         Invocation.method(
           #deleteTask,
           [id],
         ),
-        returnValue: _i5.Future<_i2.TaskModel>.value(_FakeTaskModel_0(
+        returnValue: _i4.Future<_i2.TaskModel>.value(_FakeTaskModel_0(
           this,
           Invocation.method(
             #deleteTask,
             [id],
           ),
         )),
-      ) as _i5.Future<_i2.TaskModel>);
+      ) as _i4.Future<_i2.TaskModel>);
 }
 
 /// A class which mocks [NetworkInfo].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockNetworkInfo extends _i1.Mock implements _i7.NetworkInfo {
+class MockNetworkInfo extends _i1.Mock implements _i6.NetworkInfo {
   MockNetworkInfo() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i5.Future<bool> get isConnected => (super.noSuchMethod(
+  _i4.Future<bool> get isConnected => (super.noSuchMethod(
         Invocation.getter(#isConnected),
-        returnValue: _i5.Future<bool>.value(false),
-      ) as _i5.Future<bool>);
-}
-
-/// A class which mocks [InternetConnectionChecker].
-///
-/// See the documentation for Mockito's code generation for more information.
-class MockInternetConnectionChecker extends _i1.Mock
-    implements _i3.InternetConnectionChecker {
-  MockInternetConnectionChecker() {
-    _i1.throwOnMissingStub(this);
-  }
-
-  @override
-  Duration get checkInterval => (super.noSuchMethod(
-        Invocation.getter(#checkInterval),
-        returnValue: _FakeDuration_1(
-          this,
-          Invocation.getter(#checkInterval),
-        ),
-      ) as Duration);
-  @override
-  Duration get checkTimeout => (super.noSuchMethod(
-        Invocation.getter(#checkTimeout),
-        returnValue: _FakeDuration_1(
-          this,
-          Invocation.getter(#checkTimeout),
-        ),
-      ) as Duration);
-  @override
-  List<_i3.AddressCheckOptions> get addresses => (super.noSuchMethod(
-        Invocation.getter(#addresses),
-        returnValue: <_i3.AddressCheckOptions>[],
-      ) as List<_i3.AddressCheckOptions>);
-  @override
-  set addresses(List<_i3.AddressCheckOptions>? value) => super.noSuchMethod(
-        Invocation.setter(
-          #addresses,
-          value,
-        ),
-        returnValueForMissingStub: null,
-      );
-  @override
-  _i5.Future<bool> get hasConnection => (super.noSuchMethod(
-        Invocation.getter(#hasConnection),
-        returnValue: _i5.Future<bool>.value(false),
-      ) as _i5.Future<bool>);
-  @override
-  _i5.Future<_i3.InternetConnectionStatus> get connectionStatus =>
-      (super.noSuchMethod(
-        Invocation.getter(#connectionStatus),
-        returnValue: _i5.Future<_i3.InternetConnectionStatus>.value(
-            _i3.InternetConnectionStatus.connected),
-      ) as _i5.Future<_i3.InternetConnectionStatus>);
-  @override
-  _i5.Stream<_i3.InternetConnectionStatus> get onStatusChange =>
-      (super.noSuchMethod(
-        Invocation.getter(#onStatusChange),
-        returnValue: _i5.Stream<_i3.InternetConnectionStatus>.empty(),
-      ) as _i5.Stream<_i3.InternetConnectionStatus>);
-  @override
-  bool get hasListeners => (super.noSuchMethod(
-        Invocation.getter(#hasListeners),
-        returnValue: false,
-      ) as bool);
-  @override
-  bool get isActivelyChecking => (super.noSuchMethod(
-        Invocation.getter(#isActivelyChecking),
-        returnValue: false,
-      ) as bool);
-  @override
-  _i5.Future<_i3.AddressCheckResult> isHostReachable(
-          _i3.AddressCheckOptions? options) =>
-      (super.noSuchMethod(
-        Invocation.method(
-          #isHostReachable,
-          [options],
-        ),
-        returnValue:
-            _i5.Future<_i3.AddressCheckResult>.value(_FakeAddressCheckResult_2(
-          this,
-          Invocation.method(
-            #isHostReachable,
-            [options],
-          ),
-        )),
-      ) as _i5.Future<_i3.AddressCheckResult>);
+        returnValue: _i4.Future<bool>.value(false),
+      ) as _i4.Future<bool>);
 }

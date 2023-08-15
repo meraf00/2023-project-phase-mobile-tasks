@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:dartz/dartz.dart' hide Task;
 
 import '../../../../core/error/exception.dart';
@@ -21,66 +23,112 @@ class TaskRepositoryImpl extends TaskRepository {
   });
 
   @override
-  Future<Either<Failure, Task>> createTask(Task task) async {
-    final taskModel = await localDataSource.createTask(task.toModel());
-    return Right(taskModel.toEntity());
-  }
+  Stream<Either<Failure, Task>> createTask(Task task) {
+    final controller = StreamController<Either<Failure, Task>>();
 
-  @override
-  Future<Either<Failure, Task>> deleteTask(int id) async {
-    if (await networkInfo.isConnected) {
-      try {
-        await remoteDataSource.deleteTask(id);
-        final taskModel = await localDataSource.deleteTask(id);
-        return Right(taskModel.toEntity());
-      } on ServerException catch (e) {
-        return Left(ServerFailure(message: e.message));
+    networkInfo.isConnected.then((isConnected) async {
+      if (isConnected) {
+        try {
+          final taskModel = await remoteDataSource.createTask(task.toModel());
+          controller.add(Right(taskModel.toEntity()));
+        } on ServerException catch (e) {
+          controller.add(Left(ServerFailure(message: e.message)));
+        }
       }
-    } else {
-      final taskModel = await localDataSource.deleteTask(id);
-      return Right(taskModel.toEntity());
-    }
+      final taskModel = await localDataSource.createTask(task.toModel());
+      controller.add(Right(taskModel.toEntity()));
+    });
+
+    return controller.stream;
   }
 
   @override
-  Future<Either<Failure, Task>> getTask(int id) async {
-    if (await networkInfo.isConnected) {
-      try {
-        final taskModel = await remoteDataSource.getTask(id);
-        return Right(taskModel.toEntity());
-      } on ServerException catch (e) {
-        return Left(ServerFailure(message: e.message));
+  Stream<Either<Failure, Task>> deleteTask(int id) {
+    final controller = StreamController<Either<Failure, Task>>();
+
+    networkInfo.isConnected.then((isConnected) async {
+      if (isConnected) {
+        try {
+          await remoteDataSource.deleteTask(id);
+        } on ServerException catch (e) {
+          controller.add(Left(ServerFailure(message: e.message)));
+        }
       }
-    } else {
-      final task = await localDataSource.getTask(id);
-      return Right(task.toEntity());
-    }
+      final task = await localDataSource.deleteTask(id);
+      controller.add(Right(task.toEntity()));
+    });
+
+    return controller.stream;
   }
 
   @override
-  Future<Either<Failure, List<Task>>> getTasks() async {
-    List<TaskModel> taskModels;
+  Stream<Either<Failure, Task>> getTask(int id) {
+    final controller = StreamController<Either<Failure, Task>>();
 
-    if (await networkInfo.isConnected) {
-      taskModels = await remoteDataSource.getTasks();
-    } else {
-      taskModels = await localDataSource.getTasks();
-    }
+    localDataSource.getTask(id).then((taskModel) {
+      controller.add(Right(taskModel.toEntity()));
+    });
 
-    final tasks = taskModels.map((e) => e.toEntity()).toList();
-    return Right(tasks);
-  }
-
-  @override
-  Future<Either<Failure, void>> updateTask(Task task) async {
-    if (await networkInfo.isConnected) {
-      try {
-        return Right(await remoteDataSource.updateTask(task.toModel()));
-      } on ServerException catch (e) {
-        return Left(ServerFailure(message: e.message));
+    networkInfo.isConnected.then((isConnected) async {
+      if (isConnected) {
+        try {
+          final taskModel = await remoteDataSource.getTask(id);
+          controller.add(Right(taskModel.toEntity()));
+        } on ServerException catch (e) {
+          controller.add(Left(ServerFailure(message: e.message)));
+        }
+      } else {
+        final task = await localDataSource.getTask(id);
+        controller.add(Right(task.toEntity()));
       }
-    } else {
-      return Right(localDataSource.updateTask(task.toModel()));
-    }
+    });
+
+    return controller.stream;
+  }
+
+  @override
+  Stream<Either<Failure, List<Task>>> getTasks() {
+    final controller = StreamController<Either<Failure, List<Task>>>();
+
+    localDataSource.getTasks().then((taskModels) {
+      final tasks = taskModels.map((e) => e.toEntity()).toList();
+      controller.add(Right(tasks));
+    });
+
+    networkInfo.isConnected.then((isConnected) async {
+      if (isConnected) {
+        try {
+          final taskModels = await remoteDataSource.getTasks();
+          final tasks = taskModels.map((e) => e.toEntity()).toList();
+          controller.add(Right(tasks));
+        } on ServerException catch (e) {
+          controller.add(Left(ServerFailure(message: e.message)));
+        }
+      }
+    });
+
+    return controller.stream;
+  }
+
+  @override
+  Stream<Either<Failure, Task>> updateTask(Task task) {
+    final controller = StreamController<Either<Failure, Task>>();
+
+    localDataSource.updateTask(task.toModel()).then((updatedTask) {
+      controller.add(Right(updatedTask.toEntity()));
+    });
+
+    networkInfo.isConnected.then((isConnected) async {
+      if (isConnected) {
+        try {
+          final updatedTask = await remoteDataSource.updateTask(task.toModel());
+          controller.add(Right(updatedTask.toEntity()));
+        } on ServerException catch (e) {
+          controller.add(Left(ServerFailure(message: e.message)));
+        }
+      }
+    });
+
+    return controller.stream;
   }
 }

@@ -12,8 +12,8 @@ part 'task_messages.dart';
 part 'task_state.dart';
 
 class TaskBloc extends Bloc<TaskEvent, TaskState> {
-  final usecases.ViewTask getTask;
-  final usecases.ViewAllTasks getAllTasks;
+  final usecases.GetTask getTask;
+  final usecases.GetAllTasks getAllTasks;
   final usecases.CreateTask createTask;
   final usecases.UpdateTask updateTask;
   final usecases.DeleteTask deleteTask;
@@ -34,12 +34,22 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
     on<GetTasks>((event, emit) async {
       emit(TaskLoading());
 
-      final result = await getAllTasks(NoParams());
+      final stream = getAllTasks(NoParams());
 
-      result.fold(
-        (failure) => emit(const TaskError(cacheFailureMessage)),
-        (task) => emit(TasksLoaded(task)),
-      );
+      await emit.forEach(stream, onData: (result) {
+        late TaskState state;
+
+        result.fold(
+          (failure) {
+            state = TaskError(failure.message);
+          },
+          (task) {
+            state = TasksLoaded(task);
+          },
+        );
+
+        return state;
+      });
     });
 
     //
@@ -47,12 +57,22 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
     on<GetTask>((event, emit) async {
       emit(TaskLoading());
 
-      final result = await getTask(usecases.GetTaskParams(id: event.id));
+      final stream = getTask(usecases.GetTaskParams(id: event.id));
 
-      result.fold(
-        (failure) => emit(const TaskError(cacheFailureMessage)),
-        (task) => emit(TaskLoaded(task)),
-      );
+      await emit.forEach(stream, onData: (result) {
+        late TaskState state;
+
+        result.fold(
+          (failure) {
+            state = TaskError(failure.message);
+          },
+          (task) {
+            state = TaskLoaded(task);
+          },
+        );
+
+        return state;
+      });
     });
 
     //
@@ -72,12 +92,22 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
           completed: false,
           dueDate: (parsedDate as Right).value);
 
-      final result = await createTask(usecases.CreateParams(task: task));
+      final stream = createTask(usecases.CreateParams(task: task));
 
-      result.fold(
-        (failure) => emit(const TaskError(cacheFailureMessage)),
-        (task) => emit(TaskCreated(task)),
-      );
+      await emit.forEach(stream, onData: (result) {
+        late TaskState state;
+
+        result.fold(
+          (failure) {
+            state = TaskError(failure.message);
+          },
+          (task) {
+            state = TaskCreated(task);
+          },
+        );
+
+        return state;
+      });
     });
 
     //
@@ -97,23 +127,43 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
           completed: event.completed,
           dueDate: (parsedDate as Right).value);
 
-      final result = await updateTask(usecases.UpdateParams(task: task));
+      final stream = updateTask(usecases.UpdateParams(task: task));
 
-      result.fold(
-        (failure) => emit(const TaskError(cacheFailureMessage)),
-        (_) => emit(TaskUpdated(task)),
-      );
+      await emit.forEach(stream, onData: (result) {
+        late TaskState state;
+
+        result.fold(
+          (failure) {
+            state = TaskError(failure.message);
+          },
+          (task) {
+            state = TaskUpdated(task);
+          },
+        );
+
+        return state;
+      });
     });
 
     //
     // Delete task
     on<DeleteTask>((event, emit) async {
-      final result = await deleteTask(usecases.DeleteParams(id: event.id));
+      final stream = deleteTask(usecases.DeleteParams(id: event.id));
 
-      result.fold(
-        (failure) => emit(const TaskError(cacheFailureMessage)),
-        (task) => emit(TaskDeleted(task)),
-      );
+      await emit.forEach(stream, onData: (result) {
+        late TaskState state;
+
+        result.fold(
+          (failure) {
+            state = TaskError(failure.message);
+          },
+          (task) {
+            state = TaskDeleted(task);
+          },
+        );
+
+        return state;
+      });
     });
   }
 }

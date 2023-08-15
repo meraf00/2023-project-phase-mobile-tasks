@@ -1,6 +1,5 @@
 import 'package:dartz/dartz.dart' hide Task;
 import 'package:flutter_test/flutter_test.dart';
-import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:todo_app_clean_architecture/core/error/failures.dart';
@@ -17,10 +16,8 @@ import 'task_repository_impl_test.mocks.dart';
   TaskLocalDataSource,
   TaskRemoteDataSource,
   NetworkInfo,
-  InternetConnectionChecker
 ])
 void main() {
-  late MockInternetConnectionChecker mockInternetConnectionChecker;
   late MockNetworkInfo mockNetworkInfo;
   late MockTaskLocalDataSource mockTaskLocalDataSource;
   late MockTaskRemoteDataSource mockTaskRemoteDataSource;
@@ -29,16 +26,11 @@ void main() {
   setUp(() {
     mockTaskLocalDataSource = MockTaskLocalDataSource();
     mockTaskRemoteDataSource = MockTaskRemoteDataSource();
-    mockInternetConnectionChecker = MockInternetConnectionChecker();
     mockNetworkInfo = MockNetworkInfo();
     taskRepositoryImpl = TaskRepositoryImpl(
         localDataSource: mockTaskLocalDataSource,
         networkInfo: mockNetworkInfo,
         remoteDataSource: mockTaskRemoteDataSource);
-
-    when(mockInternetConnectionChecker.hasConnection)
-        .thenAnswer((_) async => true);
-    when(mockNetworkInfo.isConnected).thenAnswer((_) async => false);
   });
 
   const tTaskId = 1;
@@ -54,54 +46,84 @@ void main() {
       dueDate: DateTime(2020, 1, 1),
       completed: false);
 
-  test('should call get tasks from local data source', () async {
-    when(mockTaskLocalDataSource.getTasks()).thenAnswer((_) async => []);
+  group('when connected', () {
+    setUp(() {
+      when(mockNetworkInfo.isConnected).thenAnswer((_) async => true);
+    });
 
-    await taskRepositoryImpl.getTasks();
+    test('should call get tasks from local data source', () async {
+      when(mockTaskLocalDataSource.getTasks()).thenAnswer((_) async => []);
+      when(mockTaskRemoteDataSource.getTasks()).thenAnswer((_) async => []);
 
-    verify(mockTaskLocalDataSource.getTasks());
-    verifyNoMoreInteractions(mockTaskLocalDataSource);
-  });
+      final stream = taskRepositoryImpl.getTasks();
 
-  test('should call get task from local data source', () async {
-    when(mockTaskLocalDataSource.getTask(tTaskId))
-        .thenAnswer((_) async => tTaskModel);
+      expect(await stream.elementAt(0), isA<Right<Failure, List<Task>>>());
 
-    final result = await taskRepositoryImpl.getTask(tTaskId);
+      verify(mockTaskLocalDataSource.getTasks());
+      verify(mockTaskRemoteDataSource.getTasks());
+      verifyNoMoreInteractions(mockTaskLocalDataSource);
+      verifyNoMoreInteractions(mockTaskRemoteDataSource);
+    });
 
-    expect(result, Right<Failure, Task>(tTask));
+    test('should call get task from local data source', () async {
+      when(mockTaskLocalDataSource.getTask(tTaskId))
+          .thenAnswer((_) async => tTaskModel);
+      when(mockTaskRemoteDataSource.getTask(tTaskId))
+          .thenAnswer((_) async => tTaskModel);
 
-    verify(mockTaskLocalDataSource.getTask(tTaskId));
-    verifyNoMoreInteractions(mockTaskLocalDataSource);
-  });
+      final result = taskRepositoryImpl.getTask(tTaskId);
 
-  test('should call update tasks from local data source', () async {
-    when(mockTaskLocalDataSource.updateTask(tTaskModel))
-        .thenAnswer((_) async {});
+      await expectLater(result, emits(Right<Failure, Task>(tTask)));
 
-    await taskRepositoryImpl.updateTask(tTask);
+      verify(mockTaskLocalDataSource.getTask(tTaskId));
+      verify(mockTaskRemoteDataSource.getTask(tTaskId));
+      verifyNoMoreInteractions(mockTaskLocalDataSource);
+      verifyNoMoreInteractions(mockTaskRemoteDataSource);
+    });
 
-    verify(mockTaskLocalDataSource.updateTask(tTaskModel));
-    verifyNoMoreInteractions(mockTaskLocalDataSource);
-  });
+    test('should call update tasks from local data source', () async {
+      when(mockTaskLocalDataSource.updateTask(tTaskModel))
+          .thenAnswer((_) async => tTaskModel);
+      when(mockTaskRemoteDataSource.updateTask(tTaskModel))
+          .thenAnswer((_) async => tTaskModel);
 
-  test('should call delete tasks from local data source', () async {
-    when(mockTaskLocalDataSource.deleteTask(tTaskId))
-        .thenAnswer((_) async => tTaskModel);
+      final stream = taskRepositoryImpl.updateTask(tTask);
 
-    await taskRepositoryImpl.deleteTask(tTaskId);
+      await expectLater(stream, emits(Right(tTask)));
 
-    verify(mockTaskLocalDataSource.deleteTask(tTaskId));
-    verifyNoMoreInteractions(mockTaskLocalDataSource);
-  });
+      verify(mockTaskLocalDataSource.updateTask(tTaskModel));
+      verify(mockTaskRemoteDataSource.updateTask(tTaskModel));
+      verifyNoMoreInteractions(mockTaskLocalDataSource);
+    });
 
-  test('should call create tasks from local data source', () async {
-    when(mockTaskLocalDataSource.createTask(tTaskModel))
-        .thenAnswer((_) async => tTask.toModel());
+    test('should call delete tasks from local data source', () async {
+      when(mockTaskLocalDataSource.deleteTask(tTaskId))
+          .thenAnswer((_) async => tTaskModel);
+      when(mockTaskRemoteDataSource.deleteTask(tTaskId))
+          .thenAnswer((_) async => tTaskModel);
 
-    await taskRepositoryImpl.createTask(tTask);
+      final stream = taskRepositoryImpl.deleteTask(tTaskId);
 
-    verify(mockTaskLocalDataSource.createTask(tTaskModel));
-    verifyNoMoreInteractions(mockTaskLocalDataSource);
+      await expectLater(stream, emits(Right(tTask)));
+
+      verify(mockTaskLocalDataSource.deleteTask(tTaskId));
+      verify(mockTaskRemoteDataSource.deleteTask(tTaskId));
+      verifyNoMoreInteractions(mockTaskLocalDataSource);
+    });
+
+    test('should call create tasks from local data source', () async {
+      when(mockTaskLocalDataSource.createTask(tTaskModel))
+          .thenAnswer((_) async => tTask.toModel());
+      when(mockTaskRemoteDataSource.createTask(tTaskModel))
+          .thenAnswer((_) async => tTaskModel);
+
+      final stream = taskRepositoryImpl.createTask(tTask);
+
+      await expectLater(stream, emits(Right(tTask)));
+
+      verify(mockTaskLocalDataSource.createTask(tTaskModel));
+      verify(mockTaskRemoteDataSource.createTask(tTaskModel));
+      verifyNoMoreInteractions(mockTaskLocalDataSource);
+    });
   });
 }

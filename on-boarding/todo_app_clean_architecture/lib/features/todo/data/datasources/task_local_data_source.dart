@@ -12,7 +12,7 @@ abstract class TaskLocalDataSource {
   Future<List<TaskModel>> getTasks();
   Future<TaskModel> getTask(int id);
   Future<TaskModel> createTask(TaskModel todo);
-  Future<void> updateTask(TaskModel todo);
+  Future<TaskModel> updateTask(TaskModel todo);
   Future<TaskModel> deleteTask(int id);
 }
 
@@ -75,7 +75,7 @@ class TaskLocalDataSourceImpl implements TaskLocalDataSource {
   }
 
   @override
-  Future<void> updateTask(TaskModel task) async {
+  Future<TaskModel> updateTask(TaskModel task) async {
     final tasks = await getTasks();
 
     for (int i = 0; i < tasks.length; i++) {
@@ -83,7 +83,7 @@ class TaskLocalDataSourceImpl implements TaskLocalDataSource {
         tasks[i] = task;
         await sharedPreferences.setString(
             sharedPreferenceStorageKey, jsonEncode(tasks));
-        return;
+        return task;
       }
     }
 

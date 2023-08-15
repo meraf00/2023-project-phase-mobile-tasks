@@ -4,18 +4,18 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:todo_app_clean_architecture/features/todo/domain/entities/task.dart';
 import 'package:todo_app_clean_architecture/features/todo/domain/repositories/task_repository.dart';
-import 'package:todo_app_clean_architecture/features/todo/domain/usecases/view_task.dart';
+import 'package:todo_app_clean_architecture/features/todo/domain/usecases/get_task.dart';
 
 import 'get_task_test.mocks.dart';
 
 @GenerateMocks([TaskRepository])
 void main() {
   late MockTaskRepository mockTaskRepository;
-  late ViewTask usecase;
+  late GetTask usecase;
 
   setUp(() {
     mockTaskRepository = MockTaskRepository();
-    usecase = ViewTask(mockTaskRepository);
+    usecase = GetTask(mockTaskRepository);
   });
 
   const tTaskId = 1;
@@ -28,12 +28,13 @@ void main() {
   );
 
   test('should get task from  repository', () async {
-    when(mockTaskRepository.getTask(tTaskId))
-        .thenAnswer((_) async => Right(tTask));
+    when(mockTaskRepository.getTask(tTaskId)).thenAnswer((_) async* {
+      yield Right(tTask);
+    });
 
-    final result = await usecase(const GetTaskParams(id: tTaskId));
+    final result = usecase(const GetTaskParams(id: tTaskId));
 
-    expect(result, Right(tTask));
+    expect(result, emitsInOrder([Right(tTask)]));
 
     verify(mockTaskRepository.getTask(tTaskId));
     verifyNoMoreInteractions(mockTaskRepository);

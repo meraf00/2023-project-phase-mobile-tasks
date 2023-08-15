@@ -14,8 +14,8 @@ import 'task_bloc_test.mocks.dart';
 
 @GenerateMocks([
   InputConverter,
-  usecases.ViewAllTasks,
-  usecases.ViewTask,
+  usecases.GetAllTasks,
+  usecases.GetTask,
   usecases.CreateTask,
   usecases.UpdateTask,
   usecases.DeleteTask
@@ -23,8 +23,8 @@ import 'task_bloc_test.mocks.dart';
 void main() {
   late TaskBloc taskBloc;
   late MockInputConverter mockInputConverter;
-  late MockViewAllTasks mockGetAllTasks;
-  late MockViewTask mockGetTask;
+  late MockGetAllTasks mockGetAllTasks;
+  late MockGetTask mockGetTask;
   late MockCreateTask mockCreateTask;
   late MockUpdateTask mockUpdateTask;
   late MockDeleteTask mockDeleteTask;
@@ -32,8 +32,8 @@ void main() {
   setUp(() {
     mockInputConverter = MockInputConverter();
 
-    mockGetAllTasks = MockViewAllTasks();
-    mockGetTask = MockViewTask();
+    mockGetAllTasks = MockGetAllTasks();
+    mockGetTask = MockGetTask();
     mockCreateTask = MockCreateTask();
     mockUpdateTask = MockUpdateTask();
     mockDeleteTask = MockDeleteTask();
@@ -71,7 +71,9 @@ void main() {
       'should emit TaskLoading, TasksLoaded states for GetAllTasks',
       build: () => taskBloc,
       act: (bloc) {
-        when(mockGetAllTasks(any)).thenAnswer((_) async => const Right([]));
+        when(mockGetAllTasks(any)).thenAnswer((_) async* {
+          yield const Right([]);
+        });
 
         bloc.add(GetTasks());
       },
@@ -85,7 +87,9 @@ void main() {
       'should emit TaskLoading, TaskLoaded for GetTask',
       build: () => taskBloc,
       act: (bloc) {
-        when(mockGetTask(any)).thenAnswer((_) async => Right(tTask));
+        when(mockGetTask(any)).thenAnswer((_) async* {
+          yield Right(tTask);
+        });
 
         bloc.add(const GetTask(tTaskId));
       },
@@ -100,7 +104,9 @@ void main() {
       'should emit TaskCreated when new task is created',
       build: () => taskBloc,
       act: (bloc) {
-        when(mockCreateTask(any)).thenAnswer((_) async => Right(tTask));
+        when(mockCreateTask(any)).thenAnswer((_) async* {
+          yield Right(tTask);
+        });
         when(mockInputConverter.stringToDateTime(any))
             .thenAnswer((_) => Right(tDate));
 
@@ -116,7 +122,7 @@ void main() {
       build: () => taskBloc,
       act: (bloc) {
         when(mockInputConverter.stringToDateTime(any))
-            .thenAnswer((_) => Left(InvalidInputFailure()));
+            .thenAnswer((_) => const Left(InvalidInputFailure()));
 
         bloc.add(CreateTask(tTask.title, tTask.description, tDateString));
 
@@ -132,7 +138,9 @@ void main() {
       'should emit TaskUpdated for on successful task update',
       build: () => taskBloc,
       act: (bloc) {
-        when(mockUpdateTask(any)).thenAnswer((_) async => const Right(null));
+        when(mockUpdateTask(any)).thenAnswer((_) async* {
+          yield Right(tTask);
+        });
         when(mockInputConverter.stringToDateTime(any))
             .thenAnswer((_) => Right(DateTime(2020, 1, 1)));
 
@@ -149,7 +157,7 @@ void main() {
       build: () => taskBloc,
       act: (bloc) {
         when(mockInputConverter.stringToDateTime(any))
-            .thenAnswer((_) => Left(InvalidInputFailure()));
+            .thenAnswer((_) => const Left(InvalidInputFailure()));
 
         bloc.add(UpdateTask(tTask.id, tTask.title, tTask.description,
             tDateString, tTask.completed));
@@ -166,7 +174,9 @@ void main() {
       'should emit TaskDelete on successful task delete',
       build: () => taskBloc,
       act: (bloc) {
-        when(mockDeleteTask(any)).thenAnswer((_) async => Right(tTask));
+        when(mockDeleteTask(any)).thenAnswer((_) async* {
+          yield Right(tTask);
+        });
 
         bloc.add(DeleteTask(tTask.id));
       },
@@ -179,8 +189,9 @@ void main() {
       'should emit TaskError for when task delete fails',
       build: () => taskBloc,
       act: (bloc) {
-        when(mockDeleteTask(any)).thenAnswer(
-            (_) async => Left(CacheFailure(message: cacheFailureMessage)));
+        when(mockDeleteTask(any)).thenAnswer((_) async* {
+          yield const Left(CacheFailure(message: cacheFailureMessage));
+        });
 
         bloc.add(DeleteTask(tTask.id));
 
