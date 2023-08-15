@@ -7,59 +7,67 @@ sealed class TaskState extends Equatable {
   List<Object> get props => [];
 }
 
-final class TaskInitial extends TaskState {}
+/// Task initial state
+final class InitialState extends TaskState {}
 
-final class TaskLoading extends TaskState {}
+/// Task loading state
+final class LoadingState extends TaskState {}
 
-final class TaskLoaded extends TaskState {
+/// Single task loaded state with [task] being the loaded task
+final class LoadedSingleTaskState extends TaskState {
   final Task task;
 
-  const TaskLoaded(this.task);
+  const LoadedSingleTaskState(this.task);
 
   @override
   List<Object> get props => [task];
 }
 
-final class TasksLoaded extends TaskState {
+/// All task loaded state with [tasks] being the loaded tasks
+final class LoadedAllTasksState extends TaskState {
   final List<Task> tasks;
 
-  const TasksLoaded(this.tasks);
+  const LoadedAllTasksState(this.tasks);
 
   @override
   List<Object> get props => [tasks];
 }
 
-final class TaskCreated extends TaskState {
+/// New task created state with [task] being the created tasks
+final class CreatedTaskState extends TaskState {
   final Task task;
 
-  const TaskCreated(this.task);
+  const CreatedTaskState(this.task);
 
   @override
   List<Object> get props => [task];
 }
 
-final class TaskUpdated extends TaskState {
+/// Task updated state with [task] being the updated tasks
+final class UpdatedTaskState extends TaskState {
   final Task task;
 
-  const TaskUpdated(this.task);
+  const UpdatedTaskState(this.task);
 
   @override
   List<Object> get props => [task];
 }
 
-final class TaskDeleted extends TaskState {
+/// Task deleted state with [task] being the deleted tasks
+final class DeletedTaskState extends TaskState {
   final Task task;
 
-  const TaskDeleted(this.task);
+  const DeletedTaskState(this.task);
 
   @override
   List<Object> get props => [task];
 }
 
-final class TaskError extends TaskState {
+/// Error state with [message] being error message
+final class ErrorState extends TaskState {
   final String message;
 
-  const TaskError(this.message);
+  const ErrorState(this.message);
 
   @override
   List<Object> get props => [message];

@@ -25,7 +25,8 @@ class _TaskListScreenState extends State<TaskListScreen> {
     return Scaffold(
       appBar: const CustomAppBar(title: 'Todo List'),
       body: BlocProvider(
-        create: (context) => serviceLocator<TaskBloc>()..add(GetTasks()),
+        create: (context) =>
+            serviceLocator<TaskBloc>()..add(LoadAllTasksEvent()),
         child: BlocBuilder<TaskBloc, TaskState>(
           builder: (context, _) => buildBody(context),
         ),
@@ -58,11 +59,11 @@ class _TaskListScreenState extends State<TaskListScreen> {
 
           // Tasks list
           BlocConsumer<TaskBloc, TaskState>(
-            buildWhen: (previous, current) => current is! TaskError,
+            buildWhen: (previous, current) => current is! ErrorState,
 
             //
             listener: (context, state) {
-              if (state is TaskError) {
+              if (state is ErrorState) {
                 showError(context, state.message);
               }
             },
@@ -70,12 +71,12 @@ class _TaskListScreenState extends State<TaskListScreen> {
             //
             builder: (context, state) {
               // task loading
-              if (state is TaskLoading) {
+              if (state is LoadingState) {
                 return const LoadingWidget();
               }
 
               // tasks loaded
-              else if (state is TasksLoaded) {
+              else if (state is LoadedAllTasksState) {
                 return TasksListView(tasks: state.tasks);
               }
 
@@ -93,7 +94,7 @@ class _TaskListScreenState extends State<TaskListScreen> {
                 await Navigator.pushNamed(context, CreateTaskScreen.routeName);
 
                 if (mounted) {
-                  context.read<TaskBloc>().add(GetTasks());
+                  context.read<TaskBloc>().add(LoadAllTasksEvent());
                 }
               },
             ),

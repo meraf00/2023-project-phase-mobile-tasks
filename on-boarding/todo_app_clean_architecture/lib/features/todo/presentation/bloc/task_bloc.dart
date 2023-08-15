@@ -27,12 +27,12 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
       required this.getTask,
       required this.getAllTasks,
       required this.inputConverter})
-      : super(TaskInitial()) {
+      : super(InitialState()) {
     //
     //
     // Get all tasks
-    on<GetTasks>((event, emit) async {
-      emit(TaskLoading());
+    on<LoadAllTasksEvent>((event, emit) async {
+      emit(LoadingState());
 
       final stream = getAllTasks(NoParams());
 
@@ -41,10 +41,10 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
 
         result.fold(
           (failure) {
-            state = TaskError(failure.message);
+            state = ErrorState(failure.message);
           },
           (task) {
-            state = TasksLoaded(task);
+            state = LoadedAllTasksState(task);
           },
         );
 
@@ -54,8 +54,8 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
 
     //
     // Get task
-    on<GetTask>((event, emit) async {
-      emit(TaskLoading());
+    on<GetSingleTaskEvent>((event, emit) async {
+      emit(LoadingState());
 
       final stream = getTask(usecases.GetTaskParams(id: event.id));
 
@@ -64,10 +64,10 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
 
         result.fold(
           (failure) {
-            state = TaskError(failure.message);
+            state = ErrorState(failure.message);
           },
           (task) {
-            state = TaskLoaded(task);
+            state = LoadedSingleTaskState(task);
           },
         );
 
@@ -77,11 +77,11 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
 
     //
     // Create task
-    on<CreateTask>((event, emit) async {
+    on<CreateTaskEvent>((event, emit) async {
       final parsedDate = inputConverter.stringToDateTime(event.date);
 
       if (parsedDate.isLeft()) {
-        emit(const TaskError(invalidDateFailureMessage));
+        emit(const ErrorState(invalidDateFailureMessage));
         return;
       }
 
@@ -99,10 +99,10 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
 
         result.fold(
           (failure) {
-            state = TaskError(failure.message);
+            state = ErrorState(failure.message);
           },
           (task) {
-            state = TaskCreated(task);
+            state = CreatedTaskState(task);
           },
         );
 
@@ -112,11 +112,11 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
 
     //
     // Update task
-    on<UpdateTask>((event, emit) async {
+    on<UpdateTaskEvent>((event, emit) async {
       final parsedDate = inputConverter.stringToDateTime(event.date);
 
       if (parsedDate.isLeft()) {
-        emit(const TaskError(invalidDateFailureMessage));
+        emit(const ErrorState(invalidDateFailureMessage));
         return;
       }
 
@@ -134,10 +134,10 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
 
         result.fold(
           (failure) {
-            state = TaskError(failure.message);
+            state = ErrorState(failure.message);
           },
           (task) {
-            state = TaskUpdated(task);
+            state = UpdatedTaskState(task);
           },
         );
 
@@ -147,7 +147,7 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
 
     //
     // Delete task
-    on<DeleteTask>((event, emit) async {
+    on<DeleteTaskEvent>((event, emit) async {
       final stream = deleteTask(usecases.DeleteParams(id: event.id));
 
       await emit.forEach(stream, onData: (result) {
@@ -155,10 +155,10 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
 
         result.fold(
           (failure) {
-            state = TaskError(failure.message);
+            state = ErrorState(failure.message);
           },
           (task) {
-            state = TaskDeleted(task);
+            state = DeletedTaskState(task);
           },
         );
 

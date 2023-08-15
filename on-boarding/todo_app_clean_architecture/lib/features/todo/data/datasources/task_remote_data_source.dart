@@ -21,22 +21,26 @@ class TaskRemoteDataSourceImpl extends TaskRemoteDataSource {
 
   @override
   Future<TaskModel> createTask(TaskModel todo) async {
-    final response = await client.post(
-      Uri.parse('$apiBaseUrl/task'),
-      headers: {'Content-Type': 'application/json'},
-      body: jsonEncode(todo.toJson()),
-    );
+    try {
+      final response = await client.post(
+        Uri.parse('$apiBaseUrl/task'),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode(todo.toJson()),
+      );
 
-    if (response.statusCode == 201) {
-      try {
-        final decoded = jsonDecode(response.body);
-        final taskModel = TaskModel.fromJson(decoded);
-        return taskModel;
-      } on FormatException {
-        throw ServerException(message: 'Invalid JSON format');
+      if (response.statusCode == 201) {
+        try {
+          final decoded = jsonDecode(response.body);
+          final taskModel = TaskModel.fromJson(decoded);
+          return taskModel;
+        } on FormatException {
+          throw ServerException(message: 'Invalid JSON format');
+        }
+      } else {
+        throw ServerException(message: 'Failed to load tasks');
       }
-    } else {
-      throw ServerException(message: 'Failed to load tasks');
+    } catch (e) {
+      throw ServerException(message: 'Network error');
     }
   }
 

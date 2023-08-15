@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'bloc_observer.dart'; 
+import 'bloc_observer.dart';
 import 'features/todo/domain/entities/task.dart';
 import 'features/todo/presentation/screens/create_task_screen.dart';
 import 'features/todo/presentation/screens/onboarding_screen.dart';
@@ -10,21 +10,13 @@ import 'features/todo/presentation/screens/task_list_screen.dart';
 import 'injection_container.dart' as di;
 
 Future<void> main() async {
-  if (kDebugMode) {
-    print('Running in debug mode');
+  /// logs bloc events and states
+  Bloc.observer = SimpleBlocObserver();
 
-    BlocOverrides.runZoned(
-      () async {
-        WidgetsFlutterBinding.ensureInitialized();
-        await di.init();
-        runApp(const App());
-      },
-      blocObserver: SimpleBlocObserver(),
-    );
-  } else {
-    WidgetsFlutterBinding.ensureInitialized();
-    runApp(const App());
-  }
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await di.init();
+  runApp(const App());
 }
 
 class App extends StatelessWidget {

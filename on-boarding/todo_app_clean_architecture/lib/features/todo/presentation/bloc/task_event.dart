@@ -7,46 +7,51 @@ sealed class TaskEvent extends Equatable {
   List<Object> get props => [];
 }
 
-final class GetTasks extends TaskEvent {}
+/// Event for fetching all tasks
+final class LoadAllTasksEvent extends TaskEvent {}
 
-final class GetTask extends TaskEvent {
+/// Event for fetching task with [id]
+final class GetSingleTaskEvent extends TaskEvent {
   final int id;
 
-  const GetTask(this.id);
+  const GetSingleTaskEvent(this.id);
 
   @override
   List<Object> get props => [id];
 }
 
-final class CreateTask extends TaskEvent {
+/// Event for creating new task with [title], [description] and [date]
+final class CreateTaskEvent extends TaskEvent {
   final String title;
   final String description;
   final String date;
 
-  const CreateTask(this.title, this.description, this.date);
+  const CreateTaskEvent(this.title, this.description, this.date);
 
   @override
   List<Object> get props => [title, description, date];
 }
 
-final class UpdateTask extends TaskEvent {
+/// Event for updating task with [id]
+final class UpdateTaskEvent extends TaskEvent {
   final int id;
   final String title;
   final String description;
   final String date;
   final bool completed;
 
-  const UpdateTask(
+  const UpdateTaskEvent(
       this.id, this.title, this.description, this.date, this.completed);
 
   @override
   List<Object> get props => [id, title, description, date, completed];
 }
 
-final class DeleteTask extends TaskEvent {
+/// Event for deleting task with [id]
+final class DeleteTaskEvent extends TaskEvent {
   final int id;
 
-  const DeleteTask(this.id);
+  const DeleteTaskEvent(this.id);
 
   @override
   List<Object> get props => [id];

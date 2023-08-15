@@ -64,7 +64,7 @@ void main() {
 
   group('Task bloc', () {
     test('initial state should be TaskInitial', () {
-      expect(taskBloc.state, equals(TaskInitial()));
+      expect(taskBloc.state, equals(InitialState()));
     });
 
     blocTest<TaskBloc, TaskState>(
@@ -75,11 +75,11 @@ void main() {
           yield const Right([]);
         });
 
-        bloc.add(GetTasks());
+        bloc.add(LoadAllTasksEvent());
       },
       expect: () => [
-        TaskLoading(),
-        const TasksLoaded([]),
+        LoadingState(),
+        const LoadedAllTasksState([]),
       ],
     );
 
@@ -91,11 +91,11 @@ void main() {
           yield Right(tTask);
         });
 
-        bloc.add(const GetTask(tTaskId));
+        bloc.add(const GetSingleTaskEvent(tTaskId));
       },
       expect: () => [
-        TaskLoading(),
-        TaskLoaded(tTask),
+        LoadingState(),
+        LoadedSingleTaskState(tTask),
       ],
     );
 
@@ -110,10 +110,10 @@ void main() {
         when(mockInputConverter.stringToDateTime(any))
             .thenAnswer((_) => Right(tDate));
 
-        bloc.add(CreateTask(tTask.title, tTask.description, tDateString));
+        bloc.add(CreateTaskEvent(tTask.title, tTask.description, tDateString));
       },
       expect: () => [
-        TaskCreated(tTask),
+        CreatedTaskState(tTask),
       ],
     );
 
@@ -124,12 +124,12 @@ void main() {
         when(mockInputConverter.stringToDateTime(any))
             .thenAnswer((_) => const Left(InvalidInputFailure()));
 
-        bloc.add(CreateTask(tTask.title, tTask.description, tDateString));
+        bloc.add(CreateTaskEvent(tTask.title, tTask.description, tDateString));
 
         verifyNoMoreInteractions(mockCreateTask);
       },
       expect: () => [
-        const TaskError(invalidDateFailureMessage),
+        const ErrorState(invalidDateFailureMessage),
       ],
     );
 
@@ -144,11 +144,11 @@ void main() {
         when(mockInputConverter.stringToDateTime(any))
             .thenAnswer((_) => Right(DateTime(2020, 1, 1)));
 
-        bloc.add(UpdateTask(tTask.id, tTask.title, tTask.description,
+        bloc.add(UpdateTaskEvent(tTask.id, tTask.title, tTask.description,
             tDateString, tTask.completed));
       },
       expect: () => [
-        TaskUpdated(tTask),
+        UpdatedTaskState(tTask),
       ],
     );
 
@@ -159,13 +159,13 @@ void main() {
         when(mockInputConverter.stringToDateTime(any))
             .thenAnswer((_) => const Left(InvalidInputFailure()));
 
-        bloc.add(UpdateTask(tTask.id, tTask.title, tTask.description,
+        bloc.add(UpdateTaskEvent(tTask.id, tTask.title, tTask.description,
             tDateString, tTask.completed));
 
         verifyNoMoreInteractions(mockUpdateTask);
       },
       expect: () => [
-        const TaskError(invalidDateFailureMessage),
+        const ErrorState(invalidDateFailureMessage),
       ],
     );
 
@@ -178,10 +178,10 @@ void main() {
           yield Right(tTask);
         });
 
-        bloc.add(DeleteTask(tTask.id));
+        bloc.add(DeleteTaskEvent(tTask.id));
       },
       expect: () => [
-        TaskDeleted(tTask),
+        DeletedTaskState(tTask),
       ],
     );
 
@@ -193,12 +193,12 @@ void main() {
           yield const Left(CacheFailure(message: cacheFailureMessage));
         });
 
-        bloc.add(DeleteTask(tTask.id));
+        bloc.add(DeleteTaskEvent(tTask.id));
 
         verifyNoMoreInteractions(mockUpdateTask);
       },
       expect: () => [
-        const TaskError(cacheFailureMessage),
+        const ErrorState(cacheFailureMessage),
       ],
     );
   });

@@ -21,23 +21,24 @@ class TaskDetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => serviceLocator<TaskBloc>()..add(GetTask(taskId)),
+      create: (context) =>
+          serviceLocator<TaskBloc>()..add(GetSingleTaskEvent(taskId)),
       child: BlocConsumer<TaskBloc, TaskState>(
         listener: (context, state) {
-          if (state is TaskUpdated) {
+          if (state is UpdatedTaskState) {
             final message = state.task.completed ? 'complete' : 'incomplete';
             showSuccess(context, 'Task marked as $message');
             Navigator.of(context).pop();
-          } else if (state is TaskDeleted) {
+          } else if (state is DeletedTaskState) {
             showSuccess(context, 'Task deleted successfully');
             Navigator.of(context).pop();
-          } else if (state is TaskError) {
+          } else if (state is ErrorState) {
             showError(context, state.message);
           }
         },
-        buildWhen: (previous, current) => current is! TaskError,
+        buildWhen: (previous, current) => current is! ErrorState,
         builder: (context, state) {
-          if (state is TaskLoaded) {
+          if (state is LoadedSingleTaskState) {
             return Scaffold(
               appBar: CustomAppBar(
                 title: 'Task detail',
@@ -64,12 +65,12 @@ class TaskDetailScreen extends StatelessWidget {
             await Navigator.pushNamed(context, CreateTaskScreen.routeName,
                 arguments: task);
 
-            taskBloc.add(GetTask(taskId));
+            taskBloc.add(GetSingleTaskEvent(taskId));
           } else if (value == 'toggle_complete') {
-            context.read<TaskBloc>().add(UpdateTask(task.id, task.title,
+            context.read<TaskBloc>().add(UpdateTaskEvent(task.id, task.title,
                 task.description, task.dueDate.toString(), !task.completed));
           } else if (value == 'delete') {
-            context.read<TaskBloc>().add(DeleteTask(task.id));
+            context.read<TaskBloc>().add(DeleteTaskEvent(task.id));
           }
         },
         icon: const Icon(Icons.more_vert),

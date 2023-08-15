@@ -45,18 +45,18 @@ class CreateTaskScreen extends StatelessWidget {
           create: (_) => serviceLocator<TaskBloc>(),
           child: BlocConsumer<TaskBloc, TaskState>(
             listener: (context, state) {
-              if (state is TaskError) {
+              if (state is ErrorState) {
                 showError(context, state.message);
               }
 
               // updated
-              else if (state is TaskUpdated) {
+              else if (state is UpdatedTaskState) {
                 showSuccess(context, 'Task updated successfully');
                 Navigator.of(context).pop();
               }
 
               // created
-              else if (state is TaskCreated) {
+              else if (state is CreatedTaskState) {
                 showSuccess(context, 'Task created successfully');
                 Navigator.of(context).pop();
               }
@@ -111,7 +111,7 @@ class CreateTaskScreen extends StatelessWidget {
 
   void dispatchCreate(BuildContext context) {
     if (_formKey.currentState!.validate()) {
-      BlocProvider.of<TaskBloc>(context).add(CreateTask(
+      BlocProvider.of<TaskBloc>(context).add(CreateTaskEvent(
         titleController.text,
         descriptionController.text,
         dueDateController.text,
@@ -121,7 +121,7 @@ class CreateTaskScreen extends StatelessWidget {
 
   void dispatchUpdate(BuildContext context) {
     if (_formKey.currentState!.validate()) {
-      BlocProvider.of<TaskBloc>(context).add(UpdateTask(
+      BlocProvider.of<TaskBloc>(context).add(UpdateTaskEvent(
           task!.id,
           titleController.text,
           descriptionController.text,
