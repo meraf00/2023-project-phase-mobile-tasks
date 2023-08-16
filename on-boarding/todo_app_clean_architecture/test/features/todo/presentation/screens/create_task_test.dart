@@ -5,6 +5,7 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:todo_app_clean_architecture/core/network/network_info.dart';
+import 'package:todo_app_clean_architecture/core/presentation/messages.dart';
 import 'package:todo_app_clean_architecture/injection_container.dart' as di;
 import 'package:todo_app_clean_architecture/main.dart';
 
@@ -43,7 +44,7 @@ void main() async {
       await tester.tap(find.text('Add task'));
       await tester.pumpAndSettle();
 
-      expect(find.text('Please enter a title'), findsOneWidget);
+      expect(find.text(emptyTitleMessage), findsOneWidget);
     });
 
     tearDownAll(() {

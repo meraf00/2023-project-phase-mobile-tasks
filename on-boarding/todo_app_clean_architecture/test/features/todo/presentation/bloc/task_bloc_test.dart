@@ -4,6 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:todo_app_clean_architecture/core/error/failures.dart';
+import 'package:todo_app_clean_architecture/core/presentation/messages.dart';
 import 'package:todo_app_clean_architecture/core/presentation/util/input_converter.dart';
 import 'package:todo_app_clean_architecture/features/todo/domain/entities/task.dart';
 import 'package:todo_app_clean_architecture/features/todo/domain/usecases/usecases.dart'
@@ -107,7 +108,7 @@ void main() {
         when(mockCreateTask(any)).thenAnswer((_) async* {
           yield Right(tTask);
         });
-        when(mockInputConverter.stringToDateTime(any))
+        when(mockInputConverter.stringToDateTime(any, future: true))
             .thenAnswer((_) => Right(tDate));
 
         bloc.add(CreateTaskEvent(tTask.title, tTask.description, tDateString));
@@ -121,8 +122,8 @@ void main() {
       'should emit TaskError for when task creation fails',
       build: () => taskBloc,
       act: (bloc) {
-        when(mockInputConverter.stringToDateTime(any))
-            .thenAnswer((_) => const Left(InvalidInputFailure()));
+        when(mockInputConverter.stringToDateTime(any, future: true))
+            .thenAnswer((_) => Left(InvalidInputFailure.invalidDate()));
 
         bloc.add(CreateTaskEvent(tTask.title, tTask.description, tDateString));
 
@@ -141,7 +142,7 @@ void main() {
         when(mockUpdateTask(any)).thenAnswer((_) async* {
           yield Right(tTask);
         });
-        when(mockInputConverter.stringToDateTime(any))
+        when(mockInputConverter.stringToDateTime(any, future: true))
             .thenAnswer((_) => Right(DateTime(2020, 1, 1)));
 
         bloc.add(UpdateTaskEvent(tTask.id, tTask.title, tTask.description,
@@ -156,8 +157,8 @@ void main() {
       'should emit TaskError for when task update fails',
       build: () => taskBloc,
       act: (bloc) {
-        when(mockInputConverter.stringToDateTime(any))
-            .thenAnswer((_) => const Left(InvalidInputFailure()));
+        when(mockInputConverter.stringToDateTime(any, future: true))
+            .thenAnswer((_) => Left(InvalidInputFailure.invalidDate()));
 
         bloc.add(UpdateTaskEvent(tTask.id, tTask.title, tTask.description,
             tDateString, tTask.completed));
@@ -190,7 +191,7 @@ void main() {
       build: () => taskBloc,
       act: (bloc) {
         when(mockDeleteTask(any)).thenAnswer((_) async* {
-          yield const Left(CacheFailure(message: cacheFailureMessage));
+          yield Left(CacheFailure.cacheNotFound());
         });
 
         bloc.add(DeleteTaskEvent(tTask.id));
@@ -198,7 +199,7 @@ void main() {
         verifyNoMoreInteractions(mockUpdateTask);
       },
       expect: () => [
-        const ErrorState(cacheFailureMessage),
+        const ErrorState(cacheMissFailureMessage),
       ],
     );
   });

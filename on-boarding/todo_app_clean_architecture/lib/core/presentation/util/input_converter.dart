@@ -22,16 +22,28 @@ class InputConverter {
     return '${months[datetime.month - 1]} ${datetime.day}, ${datetime.year}';
   }
 
-  Either<InvalidInputFailure, DateTime> stringToDateTime(String str) {
+  Either<InvalidInputFailure, DateTime> stringToDateTime(String str,
+      {bool future = false}) {
     try {
       final date = DateTime.parse(str);
+
+      if (future && date.isBefore(DateTime.now())) {
+        return Left(InvalidInputFailure.invalidDate());
+      }
+
       return Right(date);
     } on FormatException {
-      return const Left(InvalidInputFailure(message: 'Invalid date format'));
+      return Left(InvalidInputFailure.invalidDateFormat());
     }
   }
 }
 
 class InvalidInputFailure extends Failure {
   const InvalidInputFailure({super.message = 'Invalid input'});
+
+  factory InvalidInputFailure.invalidDateFormat() =>
+      const InvalidInputFailure(message: 'Invalid date format');
+
+  factory InvalidInputFailure.invalidDate() =>
+      const InvalidInputFailure(message: 'Date is in the past');
 }

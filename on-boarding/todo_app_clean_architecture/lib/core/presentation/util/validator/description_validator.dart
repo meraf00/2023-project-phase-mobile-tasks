@@ -4,7 +4,7 @@ class DescriptionValidator extends Validator {
   @override
   Either<ValidationFailure, void> validate(String value) {
     if (value.isEmpty) {
-      return const Left(ValidationFailure(message: 'Please enter a description'));
+      return Left(ValidationFailure.emptyDescription());
     }
 
     return const Right(null);

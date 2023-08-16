@@ -4,17 +4,17 @@ class DateValidator extends Validator {
   @override
   Either<ValidationFailure, void> validate(String value) {
     if (value.isEmpty) {
-      return const Left(ValidationFailure(message: 'Please enter a date'));
+      return Left(ValidationFailure.emptyDate());
     }
 
     final date = DateTime.tryParse(value);
 
     if (date == null) {
-      return const Left(ValidationFailure(message: 'Invalid date format'));
+      return Left(ValidationFailure.invalidDateFormat());
     }
 
     if (date.isBefore(DateTime.now())) {
-      return const Left(ValidationFailure(message: 'Date is in the past'));
+      return Left(ValidationFailure.invalidDate());
     }
 
     return const Right(null);

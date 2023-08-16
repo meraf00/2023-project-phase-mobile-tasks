@@ -12,7 +12,7 @@ class CreateTask extends UseCase<Task, CreateParams> {
   CreateTask(this._taskRepository);
 
   @override
-  Stream<Either<Failure, Task>> call(CreateParams params) {
+  Stream<Either<Failure, Task>> call(CreateParams params) {    
     return _taskRepository.createTask(params.task);
   }
 }

@@ -62,17 +62,22 @@ class MockInputConverter extends _i1.Mock implements _i3.InputConverter {
         returnValue: '',
       ) as String);
   @override
-  _i2.Either<_i3.InvalidInputFailure, DateTime> stringToDateTime(String? str) =>
+  _i2.Either<_i3.InvalidInputFailure, DateTime> stringToDateTime(
+    String? str, {
+    bool? future = false,
+  }) =>
       (super.noSuchMethod(
         Invocation.method(
           #stringToDateTime,
           [str],
+          {#future: future},
         ),
         returnValue: _FakeEither_0<_i3.InvalidInputFailure, DateTime>(
           this,
           Invocation.method(
             #stringToDateTime,
             [str],
+            {#future: future},
           ),
         ),
       ) as _i2.Either<_i3.InvalidInputFailure, DateTime>);

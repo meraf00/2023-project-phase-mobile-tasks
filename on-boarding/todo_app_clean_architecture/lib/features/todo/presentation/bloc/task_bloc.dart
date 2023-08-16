@@ -2,13 +2,13 @@ import 'package:dartz/dartz.dart' hide Task;
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../core/presentation/messages.dart';
 import '../../../../core/presentation/util/input_converter.dart';
 import '../../../../core/usecases/usecase.dart';
 import '../../domain/entities/task.dart';
 import '../../domain/usecases/usecases.dart' as usecases;
 
 part 'task_event.dart';
-part 'task_messages.dart';
 part 'task_state.dart';
 
 class TaskBloc extends Bloc<TaskEvent, TaskState> {
@@ -41,7 +41,7 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
 
         result.fold(
           (failure) {
-            state = ErrorState(failure.message);
+            state = ErrorState(mapFailureToMessage(failure));
           },
           (task) {
             state = LoadedAllTasksState(task);
@@ -64,7 +64,7 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
 
         result.fold(
           (failure) {
-            state = ErrorState(failure.message);
+            state = ErrorState(mapFailureToMessage(failure));
           },
           (task) {
             state = LoadedSingleTaskState(task);
@@ -78,12 +78,14 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
     //
     // Create task
     on<CreateTaskEvent>((event, emit) async {
-      final parsedDate = inputConverter.stringToDateTime(event.date);
+      final parsedDate =
+          inputConverter.stringToDateTime(event.date, future: true);
 
-      if (parsedDate.isLeft()) {
-        emit(const ErrorState(invalidDateFailureMessage));
-        return;
-      }
+      parsedDate.fold(
+          (failure) => emit(ErrorState(mapFailureToMessage(failure))),
+          (right) => null);
+
+      if (parsedDate.isLeft()) return;
 
       final task = Task(
           id: -1,
@@ -99,7 +101,7 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
 
         result.fold(
           (failure) {
-            state = ErrorState(failure.message);
+            state = ErrorState(mapFailureToMessage(failure));
           },
           (task) {
             state = CreatedTaskState(task);
@@ -113,13 +115,16 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
     //
     // Update task
     on<UpdateTaskEvent>((event, emit) async {
-      final parsedDate = inputConverter.stringToDateTime(event.date);
+      final parsedDate =
+          inputConverter.stringToDateTime(event.date, future: true);
 
-      if (parsedDate.isLeft()) {
-        emit(const ErrorState(invalidDateFailureMessage));
-        return;
-      }
+      parsedDate.fold(
+          (failure) => emit(ErrorState(mapFailureToMessage(failure))),
+          (right) => null);
 
+      if (parsedDate.isLeft()) return;
+
+      // If date is valid, update task
       final task = Task(
           id: event.id,
           title: event.title,
@@ -134,7 +139,7 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
 
         result.fold(
           (failure) {
-            state = ErrorState(failure.message);
+            state = ErrorState(mapFailureToMessage(failure));
           },
           (task) {
             state = UpdatedTaskState(task);
@@ -155,7 +160,7 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
 
         result.fold(
           (failure) {
-            state = ErrorState(failure.message);
+            state = ErrorState(mapFailureToMessage(failure));
           },
           (task) {
             state = DeletedTaskState(task);

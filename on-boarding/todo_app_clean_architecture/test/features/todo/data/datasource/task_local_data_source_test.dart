@@ -81,7 +81,7 @@ void main() {
       when(mockSharedPreferences.getString(sharedPreferenceStorageKey))
           .thenAnswer((_) => fixture('task_store.json'));
 
-      expect(() async => await dataSource.getTask(2),
+      await expectLater(() async => await dataSource.getTask(2),
           throwsA(isA<CacheException>()));
 
       verify(mockSharedPreferences.getString(sharedPreferenceStorageKey));

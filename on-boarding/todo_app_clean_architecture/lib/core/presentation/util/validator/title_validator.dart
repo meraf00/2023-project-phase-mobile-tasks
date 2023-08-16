@@ -4,7 +4,7 @@ class TitleValidator extends Validator {
   @override
   Either<ValidationFailure, void> validate(String value) {
     if (value.isEmpty) {
-      return const Left(ValidationFailure(message: 'Please enter a title'));
+      return Left(ValidationFailure.emptyTitle());
     }
 
     return const Right(null);

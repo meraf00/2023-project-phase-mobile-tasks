@@ -34,13 +34,13 @@ class TaskRemoteDataSourceImpl extends TaskRemoteDataSource {
           final taskModel = TaskModel.fromJson(decoded);
           return taskModel;
         } on FormatException {
-          throw ServerException(message: 'Invalid JSON format');
+          throw ServerException.invalidResponse();
         }
       } else {
-        throw ServerException(message: 'Failed to load tasks');
+        throw ServerException.operationFailed();
       }
     } catch (e) {
-      throw ServerException(message: 'Network error');
+      throw ServerException.connectionFailed();
     }
   }
 
@@ -53,7 +53,7 @@ class TaskRemoteDataSourceImpl extends TaskRemoteDataSource {
       );
 
       if (response.statusCode != 200) {
-        throw ServerException(message: 'Failed to delete task');
+        throw ServerException.operationFailed();
       }
 
       try {
@@ -61,10 +61,10 @@ class TaskRemoteDataSourceImpl extends TaskRemoteDataSource {
         final taskModel = TaskModel.fromJson(decoded);
         return taskModel;
       } on FormatException {
-        throw ServerException(message: 'Invalid JSON format');
+        throw ServerException.invalidResponse();
       }
     } catch (e) {
-      throw ServerException(message: 'Network error');
+      throw ServerException.connectionFailed();
     }
   }
 
@@ -80,13 +80,13 @@ class TaskRemoteDataSourceImpl extends TaskRemoteDataSource {
           final taskModel = TaskModel.fromJson(decoded);
           return taskModel;
         } on FormatException {
-          throw ServerException(message: 'Invalid JSON format');
+          throw ServerException.invalidResponse();
         }
       } else {
-        throw ServerException(message: 'Failed to load tasks');
+        throw ServerException.operationFailed();
       }
     } catch (e) {
-      throw ServerException(message: 'Network error');
+      throw ServerException.connectionFailed();
     }
   }
 
@@ -103,13 +103,13 @@ class TaskRemoteDataSourceImpl extends TaskRemoteDataSource {
               decoded.map<TaskModel>((e) => TaskModel.fromJson(e)).toList();
           return taskModels;
         } catch (e) {
-          throw ServerException(message: 'Invalid JSON format');
+          throw ServerException.invalidResponse();
         }
       } else {
-        throw ServerException(message: 'Failed to load tasks from server');
+        throw ServerException.operationFailed();
       }
     } catch (e) {
-      throw ServerException(message: 'Network error');
+      throw ServerException.connectionFailed();
     }
   }
 
@@ -123,12 +123,12 @@ class TaskRemoteDataSourceImpl extends TaskRemoteDataSource {
       );
 
       if (response.statusCode != 200) {
-        throw ServerException(message: 'Failed to update task');
+        throw ServerException.operationFailed();
       }
 
       return todo;
     } catch (e) {
-      throw ServerException(message: 'Network error');
+      throw ServerException.connectionFailed();
     }
   }
 }
