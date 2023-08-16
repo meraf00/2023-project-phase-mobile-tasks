@@ -21,14 +21,13 @@ class CacheFailure extends Failure {
       const CacheFailure(message: 'Error while parsing json');
 
   factory CacheFailure.fromException(CacheException exception) {
-    switch (exception) {
-      case CacheException.cacheNotFound:
-        return CacheFailure.cacheNotFound();
-      case CacheException.readError:
-        return CacheFailure.readError();
-      default:
-        return const CacheFailure(message: 'Unknown error');
+    if (exception == CacheException.cacheNotFound()) {
+      return CacheFailure.cacheNotFound();
+    } else if (exception == CacheException.readError()) {
+      return CacheFailure.readError();
     }
+
+    return const CacheFailure(message: 'Unknown error');
   }
 }
 
@@ -45,15 +44,14 @@ class ServerFailure extends Failure {
       const ServerFailure(message: 'Unable to connect to server');
 
   factory ServerFailure.fromException(ServerException exception) {
-    switch (exception) {
-      case ServerException.invalidResponse:
-        return ServerFailure.invalidResponse();
-      case ServerException.operationFailed:
-        return ServerFailure.operationFailed();
-      case ServerException.connectionFailed:
-        return ServerFailure.connectionFailed();
-      default:
-        return const ServerFailure(message: 'Unknown error');
+    if (exception == ServerException.invalidResponse()) {
+      return ServerFailure.invalidResponse();
+    } else if (exception == ServerException.operationFailed()) {
+      return ServerFailure.operationFailed();
+    } else if (exception == ServerException.connectionFailed()) {
+      return ServerFailure.connectionFailed();
     }
+
+    return const ServerFailure(message: 'Unknown error');
   }
 }
