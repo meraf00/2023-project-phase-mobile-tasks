@@ -1,11 +1,34 @@
-class CacheException implements Exception {
+import 'package:equatable/equatable.dart';
+
+class CacheException extends Equatable implements Exception {
   final String message;
 
-  CacheException({required this.message}) : super();
+  const CacheException({required this.message}) : super();
+
+  factory CacheException.cacheNotFound() =>
+      const CacheException(message: 'Cache not found');
+
+  factory CacheException.readError() =>
+      const CacheException(message: 'Error while parsing json');
+
+  @override
+  List<Object?> get props => [message];
 }
 
-class ServerException implements Exception {
+class ServerException extends Equatable implements Exception {
   final String message;
 
-  ServerException({required this.message}) : super();
+  const ServerException({required this.message}) : super();
+
+  factory ServerException.invalidResponse() =>
+      const ServerException(message: 'Invalid JSON format');
+
+  factory ServerException.operationFailed() =>
+      const ServerException(message: 'Operation failed');
+
+  factory ServerException.connectionFailed() =>
+      const ServerException(message: 'Unable to connect to server');
+
+  @override
+  List<Object?> get props => [message];
 }

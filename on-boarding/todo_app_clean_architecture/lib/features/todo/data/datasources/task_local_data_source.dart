@@ -58,7 +58,7 @@ class TaskLocalDataSourceImpl implements TaskLocalDataSource {
       }
     }
 
-    throw CacheException(message: 'Task not found');
+    throw CacheException.cacheNotFound();
   }
 
   @override
@@ -69,8 +69,8 @@ class TaskLocalDataSourceImpl implements TaskLocalDataSource {
       final json = jsonDecode(serialized) as List;
       final tasks = json.map((e) => TaskModel.fromJson(e)).toList();
       return tasks;
-    } on Exception catch (e) {
-      throw CacheException(message: 'Error when parsing json: $e');
+    } catch (e) {
+      throw CacheException.readError();
     }
   }
 
@@ -87,7 +87,7 @@ class TaskLocalDataSourceImpl implements TaskLocalDataSource {
       }
     }
 
-    throw CacheException(message: 'Task not found');
+    throw CacheException.cacheNotFound();
   }
 
   @override
