@@ -2,7 +2,9 @@ import 'package:dartz/dartz.dart';
 
 import '../../error/failures.dart';
 
+/// Class for converting input
 class InputConverter {
+  /// Converts datetime to MMMM dd, yyyy format
   String dateTimeToString(DateTime datetime) {
     const months = [
       'January',
@@ -22,6 +24,10 @@ class InputConverter {
     return '${months[datetime.month - 1]} ${datetime.day}, ${datetime.year}';
   }
 
+  /// Converts string to datetime
+  ///
+  /// Checks if the date is valid
+  /// Checks if the date is in the future if [future] is set to true
   Either<InvalidInputFailure, DateTime> stringToDateTime(String str,
       {bool future = false}) {
     try {
@@ -38,6 +44,7 @@ class InputConverter {
   }
 }
 
+/// Failure class for invalid input
 class InvalidInputFailure extends Failure {
   const InvalidInputFailure({super.message = 'Invalid input'});
 

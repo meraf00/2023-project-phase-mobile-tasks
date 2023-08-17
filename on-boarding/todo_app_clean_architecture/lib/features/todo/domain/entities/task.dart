@@ -1,10 +1,19 @@
 import 'package:equatable/equatable.dart';
 
 class Task extends Equatable {
+  /// Unique identifier for the task
   final int id;
+
+  /// Title of the task
   final String title;
+
+  /// Description of the task
   final String description;
+
+  /// Due date of the task
   final DateTime dueDate;
+
+  /// Whether the task is completed
   final bool completed;
 
   const Task({

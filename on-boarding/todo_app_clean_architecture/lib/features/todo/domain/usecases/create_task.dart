@@ -6,16 +6,24 @@ import '../../../../core/usecases/usecase.dart';
 import '../entities/task.dart';
 import '../repositories/task_repository.dart';
 
+/// Use case for creating a [Task]
+///
+/// Uses [TaskRepository] to create a [Task]
+
 class CreateTask extends UseCase<Task, CreateParams> {
   final TaskRepository _taskRepository;
 
   CreateTask(this._taskRepository);
 
   @override
-  Stream<Either<Failure, Task>> call(CreateParams params) {    
+  Stream<Either<Failure, Task>> call(CreateParams params) {
     return _taskRepository.createTask(params.task);
   }
 }
+
+/// Params for creating a [Task]
+///
+/// Expects the [Task] to be created
 
 class CreateParams extends Equatable {
   final Task task;

@@ -6,6 +6,10 @@ import '../../../../core/usecases/usecase.dart';
 import '../../domain/repositories/task_repository.dart';
 import '../entities/task.dart';
 
+/// Use case for deleting a [Task]
+///
+/// Uses [TaskRepository] to delete a [Task]
+
 class DeleteTask extends UseCase<Task, DeleteParams> {
   final TaskRepository _taskRepository;
 
@@ -16,6 +20,10 @@ class DeleteTask extends UseCase<Task, DeleteParams> {
     return _taskRepository.deleteTask(params.id);
   }
 }
+
+/// Params for deleting a [Task]
+///
+/// Expects the task [id] to be deleted
 
 class DeleteParams extends Equatable {
   final int id;

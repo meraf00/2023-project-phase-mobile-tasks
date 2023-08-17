@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 
+/// Base class for all local exceptions
 class CacheException extends Equatable implements Exception {
   final String message;
 
@@ -15,6 +16,7 @@ class CacheException extends Equatable implements Exception {
   List<Object?> get props => [message];
 }
 
+/// Base class for all server exceptions
 class ServerException extends Equatable implements Exception {
   final String message;
 

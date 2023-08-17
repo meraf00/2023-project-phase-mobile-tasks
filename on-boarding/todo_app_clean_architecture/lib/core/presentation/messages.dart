@@ -14,6 +14,7 @@ const String emptyDateMessage = 'Please enter date';
 const String emptyTitleMessage = 'Please enter title';
 const String emptyDescriptionMessage = 'Please enter description';
 
+/// Convert failure to user friendly message
 String mapFailureToMessage(Failure failure) {
   if (failure == CacheFailure.cacheNotFound()) {
     return cacheMissFailureMessage;

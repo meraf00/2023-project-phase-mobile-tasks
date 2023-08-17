@@ -3,6 +3,7 @@ import '../../domain/entities/task.dart';
 
 part 'task_mapper.dart';
 
+/// Model for [Task]
 class TaskModel extends Equatable {
   final int id;
   final String title;

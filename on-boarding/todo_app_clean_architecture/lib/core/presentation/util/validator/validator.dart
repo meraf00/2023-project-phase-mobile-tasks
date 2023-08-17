@@ -6,10 +6,12 @@ part 'date_validator.dart';
 part 'description_validator.dart';
 part 'title_validator.dart';
 
+/// Base class for all validators
 abstract class Validator {
   Either<ValidationFailure, void> validate(String value);
 }
 
+/// Failure class for validation exceptions
 class ValidationFailure extends Failure {
   const ValidationFailure({required super.message});
 

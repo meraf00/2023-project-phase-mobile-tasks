@@ -2,6 +2,7 @@ import 'package:equatable/equatable.dart';
 
 import 'exception.dart';
 
+/// Base class for all failures
 abstract class Failure extends Equatable {
   final String message;
 
@@ -11,6 +12,7 @@ abstract class Failure extends Equatable {
   List<Object?> get props => [message];
 }
 
+/// Failure class for local exceptions
 class CacheFailure extends Failure {
   const CacheFailure({required super.message});
 
@@ -31,6 +33,7 @@ class CacheFailure extends Failure {
   }
 }
 
+/// Failure class for server exceptions
 class ServerFailure extends Failure {
   const ServerFailure({required super.message});
 

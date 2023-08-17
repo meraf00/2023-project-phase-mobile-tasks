@@ -6,6 +6,10 @@ import '../../../../core/usecases/usecase.dart';
 import '../entities/task.dart';
 import '../repositories/task_repository.dart';
 
+/// Use case for updating a [Task]
+///
+/// Uses [TaskRepository] to update a [Task]
+
 class UpdateTask extends UseCase<Task, UpdateParams> {
   final TaskRepository _taskRepository;
 
@@ -16,6 +20,10 @@ class UpdateTask extends UseCase<Task, UpdateParams> {
     return _taskRepository.updateTask(params.task);
   }
 }
+
+/// Params for updating a [Task]
+///
+/// Expects the [Task] to be updated
 
 class UpdateParams extends Equatable {
   final Task task;
