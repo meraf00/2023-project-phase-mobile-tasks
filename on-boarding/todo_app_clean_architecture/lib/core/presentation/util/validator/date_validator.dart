@@ -1,5 +1,8 @@
 part of 'validator.dart';
 
+/// Validator for date
+///
+/// Checks if the date is empty, in the past, or in invalid format
 class DateValidator extends Validator {
   @override
   Either<ValidationFailure, void> validate(String value) {

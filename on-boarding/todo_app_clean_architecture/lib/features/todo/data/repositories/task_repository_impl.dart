@@ -11,6 +11,12 @@ import '../datasources/task_local_data_source.dart';
 import '../datasources/task_remote_data_source.dart';
 import '../models/task_model.dart';
 
+/// Implementation of [TaskRepository]
+///
+/// Uses [TaskLocalDataSource] and [TaskRemoteDataSource] to perform CRUD operations
+///
+/// Uses [NetworkInfo] to check network connection
+
 class TaskRepositoryImpl extends TaskRepository {
   final TaskLocalDataSource localDataSource;
   final TaskRemoteDataSource remoteDataSource;

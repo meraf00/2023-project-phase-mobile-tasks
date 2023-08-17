@@ -5,9 +5,13 @@ import '../../../../core/error/exception.dart';
 
 import '../models/task_model.dart';
 
+/// Shared preference key for storing cached tasks
 const sharedPreferenceStorageKey = 'CACHED_TASKS';
+
+/// Shared preference key for storing last used id
 const sharedPreferenceIdKey = 'CACHED_TASKS_LAST_USED_ID';
 
+/// Interface for local data source
 abstract class TaskLocalDataSource {
   Future<List<TaskModel>> getTasks();
   Future<TaskModel> getTask(int id);
@@ -16,11 +20,18 @@ abstract class TaskLocalDataSource {
   Future<TaskModel> deleteTask(int id);
 }
 
+/// Implementation of [TaskLocalDataSource]
+///
+/// Uses [SharedPreferences] to store cached tasks
 class TaskLocalDataSourceImpl implements TaskLocalDataSource {
   final SharedPreferences sharedPreferences;
 
   TaskLocalDataSourceImpl({required this.sharedPreferences});
 
+  /// Generates a new id for a task
+  ///
+  /// Increments the last used id by 1 that's stored in [SharedPreferences] with key
+  /// [sharedPreferenceIdKey] and returns it
   Future<int> _generateId() async {
     int id = sharedPreferences.getInt(sharedPreferenceIdKey) ?? 1;
     await sharedPreferences.setInt(sharedPreferenceIdKey, id + 1);

@@ -6,6 +6,7 @@ import '../../../../core/constants/constants.dart';
 import '../../../../core/error/exception.dart';
 import '../models/task_model.dart';
 
+/// Interface for remote data source
 abstract class TaskRemoteDataSource {
   Future<List<TaskModel>> getTasks();
   Future<TaskModel> getTask(int id);
@@ -14,6 +15,8 @@ abstract class TaskRemoteDataSource {
   Future<TaskModel> deleteTask(int id);
 }
 
+
+/// Implementation of [TaskRemoteDataSource]
 class TaskRemoteDataSourceImpl extends TaskRemoteDataSource {
   final http.Client client;
 

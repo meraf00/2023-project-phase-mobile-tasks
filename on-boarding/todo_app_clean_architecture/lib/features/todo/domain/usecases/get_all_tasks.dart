@@ -8,6 +8,11 @@ import '../../../../core/usecases/usecase.dart';
 import '../entities/task.dart';
 import '../repositories/task_repository.dart';
 
+/// Use case for getting all [Task]s
+///
+/// Uses [TaskRepository] to get all [Task]s
+/// takes no params
+
 class GetAllTasks extends UseCase<List<Task>, NoParams> {
   final TaskRepository _taskRepository;
 

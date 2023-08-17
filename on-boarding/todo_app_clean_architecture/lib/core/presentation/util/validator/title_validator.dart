@@ -1,5 +1,8 @@
 part of 'validator.dart';
 
+/// Validator for description
+///
+/// Checks if the title is empty
 class TitleValidator extends Validator {
   @override
   Either<ValidationFailure, void> validate(String value) {
