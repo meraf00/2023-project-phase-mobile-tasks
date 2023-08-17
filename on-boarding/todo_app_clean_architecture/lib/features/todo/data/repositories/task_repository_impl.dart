@@ -36,17 +36,18 @@ class TaskRepositoryImpl extends TaskRepository {
       if (isConnected) {
         try {
           final taskModel = await remoteDataSource.createTask(task.toModel());
-          controller.add(Right(taskModel.toEntity()));
+
+          try {
+            await localDataSource.createTask(taskModel);
+            controller.add(Right(taskModel.toEntity()));
+          } on CacheException catch (e) {
+            controller.add(Left(CacheFailure.fromException(e)));
+          }
         } on ServerException catch (e) {
           controller.add(Left(ServerFailure.fromException(e)));
         }
-      }
-
-      try {
-        final taskModel = await localDataSource.createTask(task.toModel());
-        controller.add(Right(taskModel.toEntity()));
-      } on CacheException catch (e) {
-        controller.add(Left(CacheFailure.fromException(e)));
+      } else {
+        controller.add(Left(ServerFailure.connectionFailed()));
       }
     });
 
@@ -60,17 +61,19 @@ class TaskRepositoryImpl extends TaskRepository {
     networkInfo.isConnected.then((isConnected) async {
       if (isConnected) {
         try {
-          await remoteDataSource.deleteTask(id);
+          final taskModel = await remoteDataSource.deleteTask(id);
+
+          try {
+            await localDataSource.deleteTask(id);
+            controller.add(Right(taskModel.toEntity()));
+          } on CacheException catch (e) {
+            controller.add(Left(CacheFailure.fromException(e)));
+          }
         } on ServerException catch (e) {
           controller.add(Left(ServerFailure.fromException(e)));
         }
-      }
-
-      try {
-        final task = await localDataSource.deleteTask(id);
-        controller.add(Right(task.toEntity()));
-      } on CacheException catch (e) {
-        controller.add(Left(CacheFailure.fromException(e)));
+      } else {
+        controller.add(Left(ServerFailure.connectionFailed()));
       }
     });
 
@@ -95,9 +98,6 @@ class TaskRepositoryImpl extends TaskRepository {
         } on ServerException catch (e) {
           controller.add(Left(ServerFailure.fromException(e)));
         }
-      } else {
-        final task = await localDataSource.getTask(id);
-        controller.add(Right(task.toEntity()));
       }
     });
 
@@ -123,6 +123,7 @@ class TaskRepositoryImpl extends TaskRepository {
           await localDataSource.cacheTasks(taskModels);
 
           final tasks = taskModels.map((e) => e.toEntity()).toList();
+
           controller.add(Right(tasks));
         } on ServerException catch (e) {
           controller.add(Left(ServerFailure.fromException(e)));
@@ -137,20 +138,22 @@ class TaskRepositoryImpl extends TaskRepository {
   Stream<Either<Failure, Task>> updateTask(Task task) {
     final controller = StreamController<Either<Failure, Task>>();
 
-    localDataSource.updateTask(task.toModel()).then((updatedTask) {
-      controller.add(Right(updatedTask.toEntity()));
-    }).catchError((exception) {
-      controller.add(Left(CacheFailure.fromException(exception)));
-    });
-
     networkInfo.isConnected.then((isConnected) async {
       if (isConnected) {
         try {
           final updatedTask = await remoteDataSource.updateTask(task.toModel());
-          controller.add(Right(updatedTask.toEntity()));
+
+          try {
+            await localDataSource.updateTask(updatedTask);
+            controller.add(Right(updatedTask.toEntity()));
+          } on CacheException catch (e) {
+            controller.add(Left(CacheFailure.fromException(e)));
+          }
         } on ServerException catch (e) {
           controller.add(Left(ServerFailure.fromException(e)));
         }
+      } else {
+        controller.add(Left(ServerFailure.connectionFailed()));
       }
     });
 

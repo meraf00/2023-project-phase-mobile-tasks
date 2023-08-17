@@ -94,10 +94,7 @@ void main() {
         () async {
       when(mockSharedPreferences.getString(sharedPreferenceStorageKey))
           .thenAnswer((_) => fixture('empty_task_store.json'));
-      when(mockSharedPreferences.getInt(sharedPreferenceIdKey))
-          .thenAnswer((_) => 1);
-      when(mockSharedPreferences.setInt(sharedPreferenceIdKey, 2))
-          .thenAnswer((_) async => true);
+
       when(mockSharedPreferences.setString(
               sharedPreferenceStorageKey, jsonEncode([tTask.toJson()])))
           .thenAnswer((_) async => true);
@@ -105,8 +102,6 @@ void main() {
       await dataSource.createTask(tTask);
 
       verify(mockSharedPreferences.getString(sharedPreferenceStorageKey));
-      verify(mockSharedPreferences.getInt(sharedPreferenceIdKey));
-      verify(mockSharedPreferences.setInt(sharedPreferenceIdKey, 2));
       verify(mockSharedPreferences.setString(
           sharedPreferenceStorageKey, jsonEncode([tTask.toJson()])));
       verifyNoMoreInteractions(mockSharedPreferences);
