@@ -8,16 +8,14 @@ import '../models/task_model.dart';
 /// Shared preference key for storing cached tasks
 const sharedPreferenceStorageKey = 'CACHED_TASKS';
 
-/// Shared preference key for storing last used id
-const sharedPreferenceIdKey = 'CACHED_TASKS_LAST_USED_ID';
-
 /// Interface for local data source
 abstract class TaskLocalDataSource {
+  Future<void> cacheTasks(List<TaskModel> tasks);
   Future<List<TaskModel>> getTasks();
-  Future<TaskModel> getTask(int id);
+  Future<TaskModel> getTask(String id);
   Future<TaskModel> createTask(TaskModel todo);
   Future<TaskModel> updateTask(TaskModel todo);
-  Future<TaskModel> deleteTask(int id);
+  Future<TaskModel> deleteTask(String id);
 }
 
 /// Implementation of [TaskLocalDataSource]
@@ -28,28 +26,15 @@ class TaskLocalDataSourceImpl implements TaskLocalDataSource {
 
   TaskLocalDataSourceImpl({required this.sharedPreferences});
 
-  /// Generates a new id for a task
-  ///
-  /// Increments the last used id by 1 that's stored in [SharedPreferences] with key
-  /// [sharedPreferenceIdKey] and returns it
-  Future<int> _generateId() async {
-    int id = sharedPreferences.getInt(sharedPreferenceIdKey) ?? 1;
-    await sharedPreferences.setInt(sharedPreferenceIdKey, id + 1);
-    return id;
+  @override
+  Future<void> cacheTasks(List<TaskModel> tasks) async {
+    await sharedPreferences.setString(
+        sharedPreferenceStorageKey, jsonEncode(tasks));
   }
 
   @override
   Future<TaskModel> createTask(TaskModel task) async {
     final tasks = await getTasks();
-
-    final id = await _generateId();
-
-    task = TaskModel(
-        id: id,
-        title: task.title,
-        description: task.description,
-        dueDate: task.dueDate,
-        completed: task.completed);
 
     tasks.add(task);
 
@@ -60,7 +45,7 @@ class TaskLocalDataSourceImpl implements TaskLocalDataSource {
   }
 
   @override
-  Future<TaskModel> getTask(int id) async {
+  Future<TaskModel> getTask(String id) async {
     final tasks = await getTasks();
 
     for (final task in tasks) {
@@ -78,7 +63,7 @@ class TaskLocalDataSourceImpl implements TaskLocalDataSource {
         sharedPreferences.getString(sharedPreferenceStorageKey) ?? '[]';
     try {
       final json = jsonDecode(serialized) as List;
-      final tasks = json.map((e) => TaskModel.fromJson(e)).toList();
+      final tasks = json.map<TaskModel>((e) => TaskModel.fromJson(e)).toList();
       return tasks;
     } catch (e) {
       throw CacheException.readError();
@@ -102,7 +87,7 @@ class TaskLocalDataSourceImpl implements TaskLocalDataSource {
   }
 
   @override
-  Future<TaskModel> deleteTask(int id) async {
+  Future<TaskModel> deleteTask(String id) async {
     final tasks = await getTasks();
 
     final task = await getTask(id);

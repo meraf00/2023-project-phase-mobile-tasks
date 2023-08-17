@@ -1,2 +1,2 @@
-// Url for the API (fake url since we don't have backend yet)
-const apiBaseUrl = 'https://api.todo.org/';
+// Url for the API
+const apiBaseUrl = 'https://mock-todo-api-ib6b.onrender.com/api/v1/todo';

@@ -2,7 +2,7 @@ import 'package:equatable/equatable.dart';
 
 class Task extends Equatable {
   /// Unique identifier for the task
-  final int id;
+  final String id;
 
   /// Title of the task
   final String title;

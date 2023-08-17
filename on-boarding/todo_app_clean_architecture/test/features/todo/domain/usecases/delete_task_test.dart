@@ -18,9 +18,9 @@ void main() {
     usecase = DeleteTask(mockTaskRepository);
   });
 
-  const tTaskId = 1;
+  const tTaskId = '1';
   final tTask = Task(
-      id: 1,
+      id: '1',
       title: 'Task 1',
       description: 'Task 1 description',
       dueDate: DateTime(2019, 1, 1),

@@ -23,14 +23,14 @@ void main() {
   });
 
   final tTask = TaskModel(
-      id: 1,
+      id: '1',
       title: 'Task 1',
       description: 'Task 1 description',
       completed: true,
       dueDate: DateTime(2019, 1, 1));
 
   final tTaskUpdated = TaskModel(
-      id: 1,
+      id: '1',
       title: 'Task 2',
       description: 'Task 2 description',
       completed: true,
@@ -81,7 +81,7 @@ void main() {
       when(mockSharedPreferences.getString(sharedPreferenceStorageKey))
           .thenAnswer((_) => fixture('task_store.json'));
 
-      await expectLater(() async => await dataSource.getTask(2),
+      await expectLater(() async => await dataSource.getTask('2'),
           throwsA(isA<CacheException>()));
 
       verify(mockSharedPreferences.getString(sharedPreferenceStorageKey));
@@ -94,10 +94,7 @@ void main() {
         () async {
       when(mockSharedPreferences.getString(sharedPreferenceStorageKey))
           .thenAnswer((_) => fixture('empty_task_store.json'));
-      when(mockSharedPreferences.getInt(sharedPreferenceIdKey))
-          .thenAnswer((_) => 1);
-      when(mockSharedPreferences.setInt(sharedPreferenceIdKey, 2))
-          .thenAnswer((_) async => true);
+
       when(mockSharedPreferences.setString(
               sharedPreferenceStorageKey, jsonEncode([tTask.toJson()])))
           .thenAnswer((_) async => true);
@@ -105,8 +102,6 @@ void main() {
       await dataSource.createTask(tTask);
 
       verify(mockSharedPreferences.getString(sharedPreferenceStorageKey));
-      verify(mockSharedPreferences.getInt(sharedPreferenceIdKey));
-      verify(mockSharedPreferences.setInt(sharedPreferenceIdKey, 2));
       verify(mockSharedPreferences.setString(
           sharedPreferenceStorageKey, jsonEncode([tTask.toJson()])));
       verifyNoMoreInteractions(mockSharedPreferences);

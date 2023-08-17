@@ -19,7 +19,7 @@ void main() {
   });
 
   final tTask = Task(
-    id: 1,
+    id: '1',
     title: 'Test Task',
     description: 'Test Description',
     dueDate: DateTime(2020, 1, 1),

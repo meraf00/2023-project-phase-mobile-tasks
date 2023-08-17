@@ -3,7 +3,7 @@ import 'package:todo_app_clean_architecture/features/todo/data/models/task_model
 
 void main() {
   final tTaskModel = TaskModel(
-    id: 1,
+    id: '1',
     title: 'Task 1',
     description: 'Task 1 description',
     dueDate: DateTime(2020, 1, 1),
@@ -14,11 +14,11 @@ void main() {
     final result = tTaskModel.toJson();
 
     final expectedJson = {
-      'id': 1,
+      'id': '1',
       'title': 'Task 1',
       'description': 'Task 1 description',
       'dueDate': '2020-01-01T00:00:00.000',
-      'completed': false,
+      'status': 'In Progress',
     };
 
     expect(result, expectedJson);
@@ -26,11 +26,11 @@ void main() {
 
   test('fromJson should convert JSON to TaskModel', () async {
     final result = TaskModel.fromJson(const {
-      'id': 1,
+      'id': '1',
       'title': 'Task 1',
       'description': 'Task 1 description',
       'dueDate': '2020-01-01T00:00:00.000',
-      'completed': false,
+      'status': 'In Progress',
     });
 
     expect(result, tTaskModel);

@@ -93,7 +93,7 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
       if (parsedDate.isLeft()) return;
 
       final task = Task(
-          id: -1,
+          id: '',
           title: event.title,
           description: event.description,
           completed: false,

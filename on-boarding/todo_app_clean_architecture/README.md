@@ -184,6 +184,20 @@ lib
 
 ## Timeline
 
+### August 17, 2023
+
+- Integrate to API
+- Update fetch policy
+
+  - When network is available
+
+    - fetch data from remote data source and cache it in local data source
+    - all CRUD operations are functional
+
+  - When network is not available
+    - fetch data from local data source
+    - only view task and view all task is functional provided that the data is cached in local data source
+
 ### August 16, 2023
 
 - Error handling and reporting

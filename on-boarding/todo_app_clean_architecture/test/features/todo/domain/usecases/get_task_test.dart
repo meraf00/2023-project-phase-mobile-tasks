@@ -18,7 +18,7 @@ void main() {
     usecase = GetTask(mockTaskRepository);
   });
 
-  const tTaskId = 1;
+  const tTaskId = '1';
 
   final tTask = Task(
     id: tTaskId,

@@ -43,7 +43,7 @@ class MockTaskRepository extends _i1.Mock implements _i2.TaskRepository {
             _i3.Stream<_i4.Either<_i5.Failure, List<_i6.Task>>>.empty(),
       ) as _i3.Stream<_i4.Either<_i5.Failure, List<_i6.Task>>>);
   @override
-  _i3.Stream<_i4.Either<_i5.Failure, _i6.Task>> getTask(int? id) =>
+  _i3.Stream<_i4.Either<_i5.Failure, _i6.Task>> getTask(String? id) =>
       (super.noSuchMethod(
         Invocation.method(
           #getTask,
@@ -70,7 +70,7 @@ class MockTaskRepository extends _i1.Mock implements _i2.TaskRepository {
         returnValue: _i3.Stream<_i4.Either<_i5.Failure, _i6.Task>>.empty(),
       ) as _i3.Stream<_i4.Either<_i5.Failure, _i6.Task>>);
   @override
-  _i3.Stream<_i4.Either<_i5.Failure, _i6.Task>> deleteTask(int? id) =>
+  _i3.Stream<_i4.Either<_i5.Failure, _i6.Task>> deleteTask(String? id) =>
       (super.noSuchMethod(
         Invocation.method(
           #deleteTask,

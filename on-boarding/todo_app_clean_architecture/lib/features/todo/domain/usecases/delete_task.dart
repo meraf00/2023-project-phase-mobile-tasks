@@ -26,7 +26,7 @@ class DeleteTask extends UseCase<Task, DeleteParams> {
 /// Expects the task [id] to be deleted
 
 class DeleteParams extends Equatable {
-  final int id;
+  final String id;
 
   const DeleteParams({required this.id});
 

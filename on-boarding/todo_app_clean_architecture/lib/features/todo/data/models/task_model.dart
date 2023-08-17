@@ -5,7 +5,7 @@ part 'task_mapper.dart';
 
 /// Model for [Task]
 class TaskModel extends Equatable {
-  final int id;
+  final String id;
   final String title;
   final String description;
   final DateTime dueDate;
@@ -27,7 +27,7 @@ class TaskModel extends Equatable {
         title: json['title'],
         description: json['description'],
         dueDate: DateTime.parse(json['dueDate']),
-        completed: json['completed'],
+        completed: json['status'] == 'Completed',
       );
 
   Map<String, dynamic> toJson() {
@@ -36,7 +36,17 @@ class TaskModel extends Equatable {
       'title': title,
       'description': description,
       'dueDate': dueDate.toIso8601String(),
-      'completed': completed,
+      'status': completed ? 'Completed' : 'In Progress',
+    };
+  }
+
+  Map<String, String> createJson() {
+    return {
+      'title': title,
+      'description': description,
+      'dueDate':
+          '${dueDate.month.toString().padLeft(2, "0")}/${dueDate.day.toString().padLeft(2, "0")}/${dueDate.year.toString().padLeft(4, "0")}',
+      'status': completed ? 'Completed' : 'In Progress',
     };
   }
 }

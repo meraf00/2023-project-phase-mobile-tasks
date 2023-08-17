@@ -71,7 +71,7 @@ void main() async {
     setUpAll(() async {
       SharedPreferences.setMockInitialValues({
         sharedPreferenceStorageKey:
-            '[{"id":1,"title":"Task 1","description":"Task 1 description","dueDate":"2019-01-01T00:00:00.000","completed":true},{"id":2,"title":"Task 2","description":"Task 2 description","dueDate":"2019-01-01T00:00:00.000","completed":true}]'
+            '[{"id":"1","title":"Task 1","description":"Task 1 description","dueDate":"2019-01-01T00:00:00.000","status":"Completed"},{"id":"2","title":"Task 2","description":"Task 2 description","dueDate":"2019-01-01T00:00:00.000","status":"Completed"}]'
       });
 
       di.serviceLocator.allowReassignment = true;
@@ -86,6 +86,8 @@ void main() async {
       await navigateToTaskList(tester);
 
       final taskCardFinder = find.byType(TaskCard);
+
+      await expectLater(taskCardFinder, findsWidgets);
 
       expect(taskCardFinder, findsNWidgets(2));
       expect(find.text('Task 1'), findsOneWidget);

@@ -46,6 +46,16 @@ class MockTaskLocalDataSource extends _i1.Mock
   }
 
   @override
+  _i4.Future<void> cacheTasks(List<_i2.TaskModel>? tasks) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #cacheTasks,
+          [tasks],
+        ),
+        returnValue: _i4.Future<void>.value(),
+        returnValueForMissingStub: _i4.Future<void>.value(),
+      ) as _i4.Future<void>);
+  @override
   _i4.Future<List<_i2.TaskModel>> getTasks() => (super.noSuchMethod(
         Invocation.method(
           #getTasks,
@@ -54,7 +64,7 @@ class MockTaskLocalDataSource extends _i1.Mock
         returnValue: _i4.Future<List<_i2.TaskModel>>.value(<_i2.TaskModel>[]),
       ) as _i4.Future<List<_i2.TaskModel>>);
   @override
-  _i4.Future<_i2.TaskModel> getTask(int? id) => (super.noSuchMethod(
+  _i4.Future<_i2.TaskModel> getTask(String? id) => (super.noSuchMethod(
         Invocation.method(
           #getTask,
           [id],
@@ -98,7 +108,7 @@ class MockTaskLocalDataSource extends _i1.Mock
         )),
       ) as _i4.Future<_i2.TaskModel>);
   @override
-  _i4.Future<_i2.TaskModel> deleteTask(int? id) => (super.noSuchMethod(
+  _i4.Future<_i2.TaskModel> deleteTask(String? id) => (super.noSuchMethod(
         Invocation.method(
           #deleteTask,
           [id],
@@ -131,7 +141,7 @@ class MockTaskRemoteDataSource extends _i1.Mock
         returnValue: _i4.Future<List<_i2.TaskModel>>.value(<_i2.TaskModel>[]),
       ) as _i4.Future<List<_i2.TaskModel>>);
   @override
-  _i4.Future<_i2.TaskModel> getTask(int? id) => (super.noSuchMethod(
+  _i4.Future<_i2.TaskModel> getTask(String? id) => (super.noSuchMethod(
         Invocation.method(
           #getTask,
           [id],
@@ -175,7 +185,7 @@ class MockTaskRemoteDataSource extends _i1.Mock
         )),
       ) as _i4.Future<_i2.TaskModel>);
   @override
-  _i4.Future<_i2.TaskModel> deleteTask(int? id) => (super.noSuchMethod(
+  _i4.Future<_i2.TaskModel> deleteTask(String? id) => (super.noSuchMethod(
         Invocation.method(
           #deleteTask,
           [id],

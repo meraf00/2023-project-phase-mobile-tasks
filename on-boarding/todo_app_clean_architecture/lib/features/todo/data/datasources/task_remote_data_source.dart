@@ -9,12 +9,11 @@ import '../models/task_model.dart';
 /// Interface for remote data source
 abstract class TaskRemoteDataSource {
   Future<List<TaskModel>> getTasks();
-  Future<TaskModel> getTask(int id);
+  Future<TaskModel> getTask(String id);
   Future<TaskModel> createTask(TaskModel todo);
   Future<TaskModel> updateTask(TaskModel todo);
-  Future<TaskModel> deleteTask(int id);
+  Future<TaskModel> deleteTask(String id);
 }
-
 
 /// Implementation of [TaskRemoteDataSource]
 class TaskRemoteDataSourceImpl extends TaskRemoteDataSource {
@@ -26,14 +25,15 @@ class TaskRemoteDataSourceImpl extends TaskRemoteDataSource {
   Future<TaskModel> createTask(TaskModel todo) async {
     try {
       final response = await client.post(
-        Uri.parse('$apiBaseUrl/task'),
+        Uri.parse(apiBaseUrl),
         headers: {'Content-Type': 'application/json'},
-        body: jsonEncode(todo.toJson()),
+        body: jsonEncode(todo.createJson()),
       );
 
-      if (response.statusCode == 201) {
+      if (response.statusCode == 200) {
         try {
-          final decoded = jsonDecode(response.body);
+          final decoded = jsonDecode(response.body)['data'];
+
           final taskModel = TaskModel.fromJson(decoded);
           return taskModel;
         } on FormatException {
@@ -48,10 +48,10 @@ class TaskRemoteDataSourceImpl extends TaskRemoteDataSource {
   }
 
   @override
-  Future<TaskModel> deleteTask(int id) async {
+  Future<TaskModel> deleteTask(String id) async {
     try {
       final response = await client.delete(
-        Uri.parse('$apiBaseUrl/task/$id'),
+        Uri.parse('$apiBaseUrl/$id'),
         headers: {'Content-Type': 'application/json'},
       );
 
@@ -60,8 +60,10 @@ class TaskRemoteDataSourceImpl extends TaskRemoteDataSource {
       }
 
       try {
-        final decoded = jsonDecode(response.body);
+        final decoded = jsonDecode(response.body)['date'];
+
         final taskModel = TaskModel.fromJson(decoded);
+
         return taskModel;
       } on FormatException {
         throw ServerException.invalidResponse();
@@ -72,14 +74,14 @@ class TaskRemoteDataSourceImpl extends TaskRemoteDataSource {
   }
 
   @override
-  Future<TaskModel> getTask(int id) async {
+  Future<TaskModel> getTask(String id) async {
     try {
-      final response = await client.get(Uri.parse('$apiBaseUrl/task/$id'),
+      final response = await client.get(Uri.parse('$apiBaseUrl/$id'),
           headers: {'Content-Type': 'application/json'});
 
       if (response.statusCode == 200) {
         try {
-          final decoded = jsonDecode(response.body);
+          final decoded = jsonDecode(response.body)['data'];
           final taskModel = TaskModel.fromJson(decoded);
           return taskModel;
         } on FormatException {
@@ -96,14 +98,16 @@ class TaskRemoteDataSourceImpl extends TaskRemoteDataSource {
   @override
   Future<List<TaskModel>> getTasks() async {
     try {
-      final response = await client.get(Uri.parse('$apiBaseUrl/task'),
+      final response = await client.get(Uri.parse(apiBaseUrl),
           headers: {'Content-Type': 'application/json'});
 
       if (response.statusCode == 200) {
         try {
-          final decoded = jsonDecode(response.body);
+          final decoded = jsonDecode(response.body)['data'];
+
           final taskModels =
               decoded.map<TaskModel>((e) => TaskModel.fromJson(e)).toList();
+
           return taskModels;
         } catch (e) {
           throw ServerException.invalidResponse();
@@ -120,7 +124,7 @@ class TaskRemoteDataSourceImpl extends TaskRemoteDataSource {
   Future<TaskModel> updateTask(TaskModel todo) async {
     try {
       final response = await client.put(
-        Uri.parse('$apiBaseUrl/task'),
+        Uri.parse('$apiBaseUrl/${todo.id}'),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode(todo.toJson()),
       );
