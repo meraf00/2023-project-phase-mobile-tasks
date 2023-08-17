@@ -22,16 +22,16 @@ void main() {
     remoteDataSource = TaskRemoteDataSourceImpl(client: mockClient);
   });
 
-  const getAllTasksApiUrl = '$apiBaseUrl/task';
-  const getTaskApiUrl = '$apiBaseUrl/task/1';
-  const createTaskApiUrl = '$apiBaseUrl/task';
-  const updateTaskApiUrl = '$apiBaseUrl/task/1';
-  const deleteTaskApiUrl = '$apiBaseUrl/task/1';
+  const getAllTasksApiUrl = apiBaseUrl;
+  const getTaskApiUrl = '$apiBaseUrl/1';
+  const createTaskApiUrl = apiBaseUrl;
+  const updateTaskApiUrl = '$apiBaseUrl/1';
+  const deleteTaskApiUrl = '$apiBaseUrl/1';
 
-  const tTaskId = 1;
+  const tTaskId = '1';
 
   final tTaskModel = TaskModel(
-    id: 1,
+    id: '1',
     title: 'Task 1',
     description: 'Task 1 description',
     dueDate: DateTime(2019, 1, 1),
@@ -45,7 +45,8 @@ void main() {
         'should perform GET request to $getAllTasksApiUrl with header application/json header',
         () async {
       when(mockClient.get(any, headers: anyNamed('headers'))).thenAnswer(
-          (_) async => http.Response(fixture('task_store.json'), 200));
+          (_) async => http.Response(
+              fixture('get_all_tasks_server_response.json'), 200));
 
       await remoteDataSource.getTasks();
 
@@ -60,7 +61,8 @@ void main() {
         'should return list of TaskModel when the response code is 200 (success)',
         () async {
       when(mockClient.get(any, headers: anyNamed('headers'))).thenAnswer(
-          (_) async => http.Response(fixture('task_store.json'), 200));
+          (_) async => http.Response(
+              fixture('get_all_tasks_server_response.json'), 200));
 
       final result = await remoteDataSource.getTasks();
 
@@ -77,7 +79,8 @@ void main() {
     test('should throw exception when the response code is not 200 (success)',
         () async {
       when(mockClient.get(any, headers: anyNamed('headers'))).thenAnswer(
-          (_) async => http.Response(fixture('task_store.json'), 404));
+          (_) async => http.Response(
+              fixture('get_all_tasks_server_response.json'), 404));
 
       expect(() async => await remoteDataSource.getTasks(),
           throwsA(isA<ServerException>()));
@@ -95,7 +98,8 @@ void main() {
         'should perform GET request to $getTaskApiUrl with header application/json header',
         () async {
       when(mockClient.get(any, headers: anyNamed('headers'))).thenAnswer(
-          (_) async => http.Response(fixture('task_model.json'), 200));
+          (_) async =>
+              http.Response(fixture('server_success_response.json'), 200));
 
       await remoteDataSource.getTask(tTaskId);
 
@@ -109,7 +113,8 @@ void main() {
     test('should return TaskModel when the response code is 200 (success)',
         () async {
       when(mockClient.get(any, headers: anyNamed('headers'))).thenAnswer(
-          (_) async => http.Response(fixture('task_model.json'), 200));
+          (_) async =>
+              http.Response(fixture('server_success_response.json'), 200));
 
       final result = await remoteDataSource.getTask(tTaskId);
 
@@ -126,7 +131,8 @@ void main() {
     test('should throw exception when the response code is not 200 (success)',
         () async {
       when(mockClient.get(any, headers: anyNamed('headers'))).thenAnswer(
-          (_) async => http.Response(fixture('task_model.json'), 404));
+          (_) async =>
+              http.Response(fixture('server_success_response.json'), 404));
 
       expect(() async => await remoteDataSource.getTask(tTaskId),
           throwsA(isA<ServerException>()));
@@ -145,23 +151,23 @@ void main() {
         () async {
       when(mockClient.post(any,
               headers: anyNamed('headers'), body: anyNamed('body')))
-          .thenAnswer(
-              (_) async => http.Response(fixture('task_model.json'), 201));
+          .thenAnswer((_) async =>
+              http.Response(fixture('server_success_response.json'), 200));
 
       await remoteDataSource.createTask(tTaskModel);
 
       verify(mockClient.post(Uri.parse(createTaskApiUrl),
           headers: {'Content-Type': 'application/json'},
-          body: jsonEncode(tTaskModel.toJson())));
+          body: jsonEncode(tTaskModel.createJson())));
       verifyNoMoreInteractions(mockClient);
     });
 
-    test('should return TaskModel when the response code is 201 (created)',
+    test('should return TaskModel when the response code is 200 (success)',
         () async {
       when(mockClient.post(any,
               headers: anyNamed('headers'), body: anyNamed('body')))
-          .thenAnswer(
-              (_) async => http.Response(fixture('task_model.json'), 201));
+          .thenAnswer((_) async =>
+              http.Response(fixture('server_success_response.json'), 200));
 
       final result = await remoteDataSource.createTask(tTaskModel);
 
@@ -169,11 +175,11 @@ void main() {
 
       verify(mockClient.post(Uri.parse(createTaskApiUrl),
           headers: {'Content-Type': 'application/json'},
-          body: jsonEncode(tTaskModel.toJson())));
+          body: jsonEncode(tTaskModel.createJson())));
       verifyNoMoreInteractions(mockClient);
     });
 
-    test('should throw exception when the response code is not 201 (created)',
+    test('should throw exception when the response code is not 200 (success)',
         () async {
       when(mockClient.post(any,
               headers: anyNamed('headers'), body: anyNamed('body')))
@@ -184,7 +190,7 @@ void main() {
 
       verify(mockClient.post(Uri.parse(createTaskApiUrl),
           headers: {'Content-Type': 'application/json'},
-          body: jsonEncode(tTaskModel.toJson())));
+          body: jsonEncode(tTaskModel.createJson())));
       verifyNoMoreInteractions(mockClient);
     });
   });
@@ -195,12 +201,12 @@ void main() {
         () async {
       when(mockClient.put(any,
               headers: anyNamed('headers'), body: anyNamed('body')))
-          .thenAnswer(
-              (_) async => http.Response(fixture('task_model.json'), 200));
+          .thenAnswer((_) async =>
+              http.Response(fixture('server_success_response.json'), 200));
 
       await remoteDataSource.updateTask(tTaskModel);
 
-      verify(mockClient.put(Uri.parse(createTaskApiUrl),
+      verify(mockClient.put(Uri.parse(updateTaskApiUrl),
           headers: {'Content-Type': 'application/json'},
           body: jsonEncode(tTaskModel.toJson())));
       verifyNoMoreInteractions(mockClient);
@@ -212,10 +218,11 @@ void main() {
               headers: anyNamed('headers'), body: anyNamed('body')))
           .thenAnswer((_) async => http.Response('Server error', 500));
 
-      expect(() async => await remoteDataSource.updateTask(tTaskModel),
+      await expectLater(
+          () async => await remoteDataSource.updateTask(tTaskModel),
           throwsA(isA<ServerException>()));
 
-      verify(mockClient.put(Uri.parse(createTaskApiUrl),
+      verify(mockClient.put(Uri.parse(updateTaskApiUrl),
           headers: {'Content-Type': 'application/json'},
           body: jsonEncode(tTaskModel.toJson())));
       verifyNoMoreInteractions(mockClient);
@@ -227,7 +234,8 @@ void main() {
         'should perform DELETE request to $deleteTaskApiUrl with header application/json header',
         () async {
       when(mockClient.delete(any, headers: anyNamed('headers'))).thenAnswer(
-          (_) async => http.Response(fixture('task_model.json'), 200));
+          (_) async =>
+              http.Response(fixture('server_delete_response.json'), 200));
 
       await remoteDataSource.deleteTask(tTaskId);
 

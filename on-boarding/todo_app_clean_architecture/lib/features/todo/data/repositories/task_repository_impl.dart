@@ -54,7 +54,7 @@ class TaskRepositoryImpl extends TaskRepository {
   }
 
   @override
-  Stream<Either<Failure, Task>> deleteTask(int id) {
+  Stream<Either<Failure, Task>> deleteTask(String id) {
     final controller = StreamController<Either<Failure, Task>>();
 
     networkInfo.isConnected.then((isConnected) async {
@@ -78,7 +78,7 @@ class TaskRepositoryImpl extends TaskRepository {
   }
 
   @override
-  Stream<Either<Failure, Task>> getTask(int id) {
+  Stream<Either<Failure, Task>> getTask(String id) {
     final controller = StreamController<Either<Failure, Task>>();
 
     localDataSource.getTask(id).then((taskModel) {
@@ -119,6 +119,9 @@ class TaskRepositoryImpl extends TaskRepository {
       if (isConnected) {
         try {
           final taskModels = await remoteDataSource.getTasks();
+
+          await localDataSource.cacheTasks(taskModels);
+
           final tasks = taskModels.map((e) => e.toEntity()).toList();
           controller.add(Right(tasks));
         } on ServerException catch (e) {

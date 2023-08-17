@@ -12,7 +12,7 @@ final class LoadAllTasksEvent extends TaskEvent {}
 
 /// Event for fetching task with [id]
 final class GetSingleTaskEvent extends TaskEvent {
-  final int id;
+  final String id;
 
   const GetSingleTaskEvent(this.id);
 
@@ -34,7 +34,7 @@ final class CreateTaskEvent extends TaskEvent {
 
 /// Event for updating task with [id]
 final class UpdateTaskEvent extends TaskEvent {
-  final int id;
+  final String id;
   final String title;
   final String description;
   final String date;
@@ -49,7 +49,7 @@ final class UpdateTaskEvent extends TaskEvent {
 
 /// Event for deleting task with [id]
 final class DeleteTaskEvent extends TaskEvent {
-  final int id;
+  final String id;
 
   const DeleteTaskEvent(this.id);
 

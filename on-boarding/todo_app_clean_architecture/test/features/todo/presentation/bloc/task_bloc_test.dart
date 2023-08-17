@@ -49,14 +49,14 @@ void main() {
     );
   });
 
-  const tTaskId = 1;
+  const tTaskId = '1';
 
   final tDate = DateTime(2020, 1, 1);
 
   const tDateString = '2020-01-01';
 
   final tTask = Task(
-    id: 1,
+    id: '1',
     title: 'Task 1',
     description: 'Task description',
     dueDate: DateTime(2020, 1, 1),

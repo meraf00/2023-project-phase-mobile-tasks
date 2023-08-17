@@ -33,14 +33,14 @@ void main() {
         remoteDataSource: mockTaskRemoteDataSource);
   });
 
-  const tTaskId = 1;
+  const tTaskId = '1';
   final tTask = Task(
-      id: 1,
+      id: '1',
       title: 'Test Task',
       description: 'Test Description',
       dueDate: DateTime(2020, 1, 1));
   final tTaskModel = TaskModel(
-      id: 1,
+      id: '1',
       title: 'Test Task',
       description: 'Test Description',
       dueDate: DateTime(2020, 1, 1),

@@ -14,7 +14,7 @@ import 'create_task_screen.dart';
 class TaskDetailScreen extends StatelessWidget {
   static const routeName = '/task-detail';
 
-  final int taskId;
+  final String taskId;
 
   const TaskDetailScreen({super.key, required this.taskId});
 

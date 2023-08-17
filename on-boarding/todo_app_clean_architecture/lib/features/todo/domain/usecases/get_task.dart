@@ -26,7 +26,7 @@ class GetTask extends UseCase<Task, GetTaskParams> {
 /// Expects the task [id] to be retrieved
 
 class GetTaskParams extends Equatable {
-  final int id;
+  final String id;
 
   const GetTaskParams({required this.id});
 

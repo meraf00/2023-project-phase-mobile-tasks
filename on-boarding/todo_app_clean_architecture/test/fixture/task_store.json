@@ -1,9 +1,9 @@
 [
   {
-    "id": 1,
+    "id": "1",
     "title": "Task 1",
     "description": "Task 1 description",
-    "completed": true,
+    "status": "Completed",
     "dueDate": "2019-01-01T00:00:00.000"
   }
 ]

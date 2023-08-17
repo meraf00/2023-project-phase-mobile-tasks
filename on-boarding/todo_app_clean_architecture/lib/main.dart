@@ -108,7 +108,7 @@ class App extends StatelessWidget {
 
           // Task detail screen
           else if (settings.name == TaskDetailScreen.routeName) {
-            final taskId = settings.arguments as int;
+            final taskId = settings.arguments as String;
 
             return MaterialPageRoute(
               builder: (context) => TaskDetailScreen(taskId: taskId),
